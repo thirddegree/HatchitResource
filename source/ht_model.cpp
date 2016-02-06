@@ -1,0 +1,70 @@
+/**
+**    Hatchit Engine
+**    Copyright(c) 2015 Third-Degree
+**
+**    GNU Lesser General Public License
+**    This file may be used under the terms of the GNU Lesser
+**    General Public License version 3 as published by the Free
+**    Software Foundation and appearing in the file LICENSE.LGPLv3 included
+**    in the packaging of this file. Please review the following information
+**    to ensure the GNU Lesser General Public License requirements
+**    will be met: https://www.gnu.org/licenses/lgpl.html
+**
+**/
+
+#include <ht_model.h>
+#include <ht_assimp.h>
+#include <ht_debug.h>
+namespace Hatchit {
+
+    namespace Resource {
+
+        Model::Model()
+        {
+
+        }
+
+        Model::~Model()
+        {
+
+        }
+
+        bool Model::VInitFromFile(Core::File* file)
+        {
+            if(!file)
+                return false;
+
+            Assimp::Importer _importer;
+            
+            const aiScene* scene = _importer.ReadFile(file->Path().c_str(),
+                aiProcess_CalcTangentSpace |
+                aiProcess_Triangulate |
+                aiProcess_GenNormals |
+                aiProcess_JoinIdenticalVertices |
+                aiProcess_SortByPType |
+                aiProcess_GenUVCoords |
+                aiProcess_TransformUVCoords |
+                aiProcess_FlipUVs);
+            if(!scene)
+            {
+#ifdef _DEBUG
+                Core::DebugPrintF("ASSIMP READ ERROR: %s\n", _importer.GetErrorString());
+#endif
+                return false;
+            }            
+            
+#ifdef _DEBUG
+            Core::DebugPrintF("Assimp Load [%s]\n", file->Name().c_str());
+            Core::DebugPrintF("[#Meshes]: \t%d\n", scene->mNumMeshes);
+            Core::DebugPrintF("[#Materials]: \t%d\n", scene->mNumMaterials);
+#endif
+
+            //Load Mesh Data
+            
+
+            return true;
+        }
+
+    }
+}
+
