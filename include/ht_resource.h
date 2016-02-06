@@ -17,6 +17,7 @@
 #include <ht_platform.h>
 #include <ht_types.h>
 #include <ht_noncopy.h>
+#include <ht_file.h>
 
 namespace Hatchit {
 
@@ -29,10 +30,12 @@ namespace Hatchit {
 
             virtual ~Resource();
 
-            virtual void IncrementRef();
-            virtual void DecrementRef();
+            void IncrementRef();
+            void DecrementRef();
 
             uint32_t RefCount();
+
+            virtual bool VInitFromFile(Core::File* file) = 0;
 
         private:
             uint32_t  m_refcount;
