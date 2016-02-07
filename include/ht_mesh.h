@@ -15,27 +15,24 @@
 #pragma once
 
 #include <ht_platform.h>
-#include <ht_resourceobject.h>
-#include <ht_file.h>
-#include <ht_mesh.h>
+#include <ht_assimp.h>
+#include <vector>
+#include <memory>
 
 namespace Hatchit {
 
     namespace Resource {
 
-        class HT_API Model : public ResourceObject
+        class HT_API Mesh
         {
         public:
-            Model();
+            Mesh(aiMesh* mesh);
 
-            ~Model();
-        
-            bool VInitFromFile(Core::File* file) override;
+            ~Mesh();
 
-            
         private:
-            std::vector<Mesh*> m_meshes;
-
+            std::vector<aiVector3D> m_vertices;
         };
+        typedef std::unique_ptr<Mesh> MeshPtr;
     }
 }

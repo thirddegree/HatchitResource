@@ -12,30 +12,22 @@
 **
 **/
 
-#pragma once
-
-#include <ht_platform.h>
-#include <ht_resourceobject.h>
-#include <ht_file.h>
 #include <ht_mesh.h>
+#include <ht_debug.h>
+#include <iterator>
 
 namespace Hatchit {
 
     namespace Resource {
 
-        class HT_API Model : public ResourceObject
+        Mesh::Mesh(aiMesh* mesh)
         {
-        public:
-            Model();
+            std::copy(mesh->mVertices, mesh->mVertices + mesh->mNumVertices, std::back_inserter(m_vertices));
+        }
 
-            ~Model();
-        
-            bool VInitFromFile(Core::File* file) override;
+        Mesh::~Mesh()
+        {
 
-            
-        private:
-            std::vector<Mesh*> m_meshes;
-
-        };
+        }
     }
 }
