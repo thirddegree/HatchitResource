@@ -15,14 +15,14 @@
 #pragma once
 
 #include <ht_platform.h>
-#include <ht_resource.h>
+#include <ht_resourceobject.h>
 #include <ht_file.h>
 
 namespace Hatchit {
 
     namespace Resource {
 
-        class HT_API Model : public Resource
+        class HT_API Model : public ResourceObject
         {
         public:
             Model();

@@ -57,6 +57,15 @@ namespace Hatchit {
             Core::DebugPrintF("Assimp Load [%s]\n", file->Name().c_str());
             Core::DebugPrintF("[#Meshes]: \t%d\n", scene->mNumMeshes);
             Core::DebugPrintF("[#Materials]: \t%d\n", scene->mNumMaterials);
+            for (int i = 0; i < scene->mNumMeshes; i++)
+            {
+                aiMesh* mesh = scene->mMeshes[i];
+
+                Core::DebugPrintF("[Mesh#%d]:\n", i);
+                Core::DebugPrintF("\t[#Vertices]: \t%d\n", mesh->mNumVertices);
+                Core::DebugPrintF("\t[#Faces]: \t%d\n", mesh->mNumFaces);
+                Core::DebugPrintF("\t[#Bones]: \t%d\n", mesh->mNumBones);
+            }
 #endif
 
             //Load Mesh Data

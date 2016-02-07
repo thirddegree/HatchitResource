@@ -12,34 +12,34 @@
 **
 **/
 
-#include <ht_resource.h>
+#include <ht_resourceobject.h>
 
 namespace Hatchit {
 
     namespace Resource {
 
-        Resource::Resource()
+        ResourceObject::ResourceObject()
         {
             m_refcount = 1;
         }
 
-        Resource::~Resource()
+        ResourceObject::~ResourceObject()
         {
 
         }
 
-        void Resource::IncrementRef()
+        void ResourceObject::IncrementRef()
         {
             m_refcount++;
         }
 
-        void Resource::DecrementRef()
+        void ResourceObject::DecrementRef()
         {
             if(m_refcount > 0)
                 m_refcount--;
         }
 
-        uint32_t Resource::RefCount()
+        uint32_t ResourceObject::RefCount()
         {
             return m_refcount;
         }

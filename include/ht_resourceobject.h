@@ -23,12 +23,12 @@ namespace Hatchit {
 
     namespace Resource {
 
-        class HT_API Resource : public Core::INonCopy
+        class HT_API ResourceObject : public Core::INonCopy
         {
         public:
-            Resource();
+            ResourceObject();
 
-            virtual ~Resource();
+            virtual ~ResourceObject();
 
             void IncrementRef();
             void DecrementRef();
