@@ -31,7 +31,7 @@ namespace Hatchit {
             ~Model();
         
             bool VInitFromFile(Core::File* file) override;
-
+			void VOnLoaded() override;
             
         private:
             std::vector<Mesh*> m_meshes;

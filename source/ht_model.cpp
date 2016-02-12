@@ -78,6 +78,11 @@ namespace Hatchit {
             return true;
         }
 
+		void Model::VOnLoaded() 
+		{
+		
+		}
+
     }
 }
 
