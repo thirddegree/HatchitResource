@@ -59,7 +59,7 @@ namespace Hatchit {
             Core::DebugPrintF("[#Materials]: \t%d\n", scene->mNumMaterials);
 #endif
             //Load Mesh Data
-            for (int i = 0; i < scene->mNumMeshes; i++)
+            for (uint32_t i = 0; i < scene->mNumMeshes; i++)
             {
                 aiMesh* mesh = scene->mMeshes[i];
 
