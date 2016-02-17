@@ -29,5 +29,11 @@ namespace Hatchit {
         {
 
         }
+
+		std::vector<aiVector3D> Mesh::getVertices() { return m_vertices; }
+		std::vector<aiVector3D> Mesh::getNormals() { return m_normals; }
+		std::vector<aiVector2D> Mesh::getUVs() { return m_uvs; }
+
+		std::vector<int> Mesh::getIndices() { return m_indices; }
     }
 }

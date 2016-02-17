@@ -30,8 +30,18 @@ namespace Hatchit {
 
             ~Mesh();
 
+			std::vector<aiVector3D> getVertices();
+			std::vector<aiVector3D> getNormals();
+			std::vector<aiVector2D> getUVs();
+
+			std::vector<int> getIndices();
+
         private:
             std::vector<aiVector3D> m_vertices;
+			std::vector<aiVector3D> m_normals;
+			std::vector<aiVector2D> m_uvs;
+
+			std::vector<int> m_indices;
         };
         typedef std::unique_ptr<Mesh> MeshPtr;
     }
