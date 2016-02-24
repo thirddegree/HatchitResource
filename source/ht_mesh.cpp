@@ -23,6 +23,7 @@ namespace Hatchit {
         Mesh::Mesh(aiMesh* mesh)
         {
             std::copy(mesh->mVertices, mesh->mVertices + mesh->mNumVertices, std::back_inserter(m_vertices));
+			std::copy(mesh->mFaces, mesh->mFaces + mesh->mNumFaces, std::back_inserter(m_indices));
         }
 
         Mesh::~Mesh()
@@ -34,6 +35,6 @@ namespace Hatchit {
 		std::vector<aiVector3D> Mesh::getNormals() { return m_normals; }
 		std::vector<aiVector2D> Mesh::getUVs() { return m_uvs; }
 
-		std::vector<int> Mesh::getIndices() { return m_indices; }
+		std::vector<aiFace> Mesh::getIndices() { return m_indices; }
     }
 }
