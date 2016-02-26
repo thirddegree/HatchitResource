@@ -23,7 +23,12 @@ namespace Hatchit {
         Mesh::Mesh(aiMesh* mesh)
         {
             std::copy(mesh->mVertices, mesh->mVertices + mesh->mNumVertices, std::back_inserter(m_vertices));
-			std::copy(mesh->mFaces, mesh->mFaces + mesh->mNumFaces, std::back_inserter(m_indices));
+            if(mesh->HasNormals())
+                std::copy(mesh->mNormals, mesh->mNormals + mesh->mNumVertices, std::back_inserter(m_normals));
+            if(mesh->HasTextureCoords(0))
+                std::copy(mesh->mTextureCoords[0], mesh->mTextureCoords[0] + mesh->mNumVertices, std::back_inserter(m_uvs));
+
+            std::copy(mesh->mFaces, mesh->mFaces + mesh->mNumFaces, std::back_inserter(m_indices));
         }
 
         Mesh::~Mesh()
@@ -31,10 +36,10 @@ namespace Hatchit {
 
         }
 
-		std::vector<aiVector3D> Mesh::getVertices() { return m_vertices; }
-		std::vector<aiVector3D> Mesh::getNormals() { return m_normals; }
-		std::vector<aiVector2D> Mesh::getUVs() { return m_uvs; }
+        std::vector<aiVector3D> Mesh::getVertices() { return m_vertices; }
+        std::vector<aiVector3D> Mesh::getNormals() { return m_normals; }
+        std::vector<aiVector3D> Mesh::getUVs() { return m_uvs; }
 
-		std::vector<aiFace> Mesh::getIndices() { return m_indices; }
+        std::vector<aiFace> Mesh::getIndices() { return m_indices; }
     }
 }

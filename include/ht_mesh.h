@@ -32,14 +32,14 @@ namespace Hatchit {
 
 			std::vector<aiVector3D> getVertices();
 			std::vector<aiVector3D> getNormals();
-			std::vector<aiVector2D> getUVs();
+			std::vector<aiVector3D> getUVs();
 
 			std::vector<aiFace> getIndices();
 
         private:
             std::vector<aiVector3D> m_vertices;
 			std::vector<aiVector3D> m_normals;
-			std::vector<aiVector2D> m_uvs;
+			std::vector<aiVector3D> m_uvs;
 
 			std::vector<aiFace>     m_indices;
         };
