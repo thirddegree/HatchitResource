@@ -17,7 +17,7 @@
 
 namespace Hatchit {
 
-    namespace Image {
+    namespace Resource {
 
         Bitmap::Bitmap()
         {
@@ -47,6 +47,11 @@ namespace Hatchit {
             return m_channels;
         }
 
+        const int32_t Bitmap::GetBPP() const
+        {
+            return m_bpp;
+        }
+
         const BYTE* Bitmap::GetData() const
         {
             return m_data;
@@ -68,23 +73,30 @@ namespace Hatchit {
                 break;
             case Channels::L:
                 req_channels = 1;
+                bitmap->m_bpp = 32;
                 break;
             case Channels::LA:
                 req_channels = 2;
+                bitmap->m_bpp = 32;
                 break;
             case Channels::RGB:
                 req_channels = 3;
+                bitmap->m_bpp = 32;
                 break;
             case Channels::RGBA:
                 req_channels = 4;
+                bitmap->m_bpp = 32;
                 break;
 
             default:
                 break;
             }
+
             bitmap->m_data = stbi_load_from_file(file->Handle(),
                 &bitmap->m_width, &bitmap->m_height, &bitmap->m_channels,
                 req_channels);
+            if (channels == Channels::AUTO)
+                bitmap->m_bpp = bitmap->m_channels * 8;
 
             return bitmap;
         }
