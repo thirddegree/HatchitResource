@@ -36,10 +36,6 @@ namespace Hatchit {
             uint32_t RefCount();
 
             virtual bool VInitFromFile(Core::File* file) = 0;
-			virtual void VOnLoaded() = 0;
-
-		protected:
-			void* m_data;
 
         private:
             uint32_t  m_refcount;

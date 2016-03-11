@@ -31,9 +31,8 @@ namespace Hatchit {
             ~Model();
         
             bool VInitFromFile(Core::File* file) override;
-			void VOnLoaded() override;
-            
-			const std::vector<Mesh*>& GetMeshes() const;
+
+            const std::vector<Mesh*>& GetMeshes() const;
         private:
             std::vector<Mesh*> m_meshes;
 

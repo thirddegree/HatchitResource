@@ -78,15 +78,10 @@ namespace Hatchit {
             return true;
         }
 
-		void Model::VOnLoaded() 
-		{
-		
-		}
-
-		const std::vector<Mesh*>& Model::GetMeshes() const
-		{
-			return m_meshes;
-		}
+        const std::vector<Mesh*>& Model::GetMeshes() const
+        {
+            return m_meshes;
+        }
 
     }
 }
