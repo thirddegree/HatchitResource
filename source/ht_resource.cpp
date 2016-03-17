@@ -5,7 +5,7 @@ namespace Hatchit
     namespace Resource
     {
         template<typename ResourceType>
-        Resource<ResourceType>::Handle Resource<ResourceType>::GetResourceHandle(const FileName& fileName)
+        Resource<ResourceType>::Handle Resource<ResourceType>::GetResourceHandle(const std::string& fileName)
         {
             if (s_resourceBank.count(fileName) == 0)
             {
@@ -16,7 +16,7 @@ namespace Hatchit
         }
 
         template<typename ResourceType>
-        ResourceType Resource<ResourceType>::LoadFromFile(const FileName& fileName)
+        ResourceType Resource<ResourceType>::LoadFromFile(const std::string& fileName)
         {
             ResourceType rawResource;
             rawResource.InitFromFile(fileName);
@@ -72,7 +72,7 @@ namespace Hatchit
         }
 
         template<typename ResourceType>
-        void Resource<ResourceType>::DecrementRef(const FileName& key)
+        void Resource<ResourceType>::DecrementRef(const std::string& key)
         {
             m_refCount--;
             if (m_refCount == 0)

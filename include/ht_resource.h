@@ -10,8 +10,6 @@ namespace Hatchit
 {
     namespace Resource
     {
-        using FileName = std::string;
-
         template<typename ResourceType>
         class HT_API Resource : public Core::INonCopy
         {
@@ -31,17 +29,17 @@ namespace Hatchit
                 Handle(ResourceType* ptr);
 
                 ResourceType* m_ptr;
-                FileName m_fileName;
+                std::string m_fileName;
             };
 
-            static Handle GetResourceHandle(const FileName& fileName);
+            static Handle GetResourceHandle(const std::string& fileName);
         protected:
-            virtual void InitFromFile(const FileName& file) = 0;
-            static std::map<FileName, ResourceType> s_resourceBank;
-            static ResourceType LoadFromFile(const FileName& fileName);
+            virtual void InitFromFile(const std::string& file) = 0;
+            static std::map<std::string, ResourceType> s_resourceBank;
+            static ResourceType LoadFromFile(const std::string& fileName);
         private:
             void IncrementRef();
-            void DecrementRef(const FileName& key);
+            void DecrementRef(const std::string& key);
             uint32_t m_refCount;
         };
     }
