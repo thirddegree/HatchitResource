@@ -20,8 +20,8 @@ namespace Hatchit
                 Handle(const Handle& rhs);
                 Handle(Handle&& rhs);
                 ~Handle();
-                operator=(const Handle& rhs);
-                operator=(Handle&& rhs);
+                Handle& operator=(const Handle& rhs);
+                Handle& operator=(Handle&& rhs);
 
                 ResourceType* operator->();
             private:
@@ -51,3 +51,5 @@ namespace Hatchit
     T is going to be the actual implementation of the data.
     Then we create a TPtr alias that is equivalent to Resource<T>::Handle
 */
+
+#include <ht_resource.inl>

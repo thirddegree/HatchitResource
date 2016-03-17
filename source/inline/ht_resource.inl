@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ht_resource.h>
 
 namespace Hatchit
@@ -45,18 +47,20 @@ namespace Hatchit
         }
 
         template<typename ResourceType>
-        Resource<ResourceType>::Handle::operator=(const Resource<ResourceType>::Handle& rhs)
+        Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(const Resource<ResourceType>::Handle& rhs)
         {
             static_cast<Resource<ResourceType>*>(rhs.m_ptr)->IncrementRef();
             static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef(m_fileName);
             m_ptr = rhs.m_ptr;
+            return *this;
         }
 
         template<typename ResourceType>
-        Resource<ResourceType>::Handle::operator=(Resource<ResourceType>::Handle&& rhs)
+        Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(Resource<ResourceType>::Handle&& rhs)
         {
             static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef(m_fileName);
             m_ptr = rhs.m_ptr;
+            return *this;
         }
 
         template<typename ResourceType>
