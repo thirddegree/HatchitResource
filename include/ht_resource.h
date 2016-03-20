@@ -26,7 +26,7 @@ namespace Hatchit
                 ResourceType* operator->();
             private:
                 friend class Resource;
-                Handle(ResourceType* ptr);
+                Handle(ResourceType* ptr, std::string fileName);
 
                 ResourceType* m_ptr;
                 std::string m_fileName;
