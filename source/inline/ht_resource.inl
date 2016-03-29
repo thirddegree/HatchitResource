@@ -7,7 +7,7 @@ namespace Hatchit
     namespace Resource
     {
         template<typename ResourceType>
-        Resource<ResourceType>::Handle Resource<ResourceType>::GetResourceHandle(const std::string& fileName)
+        typename Resource<ResourceType>::Handle Resource<ResourceType>::GetResourceHandle(const std::string& fileName)
         {
             if (s_resourceBank.count(fileName) == 0)
             {
@@ -32,13 +32,13 @@ namespace Hatchit
         }
 
         template<typename ResourceType>
-        Resource<ResourceType>::Handle::Handle(const Resource<ResourceType>::Handle& rhs) : m_ptr(rhs.m_ptr), m_fileName(rhs.m_fileName)
+        Resource<ResourceType>::Handle::Handle(const Handle& rhs) : m_ptr(rhs.m_ptr), m_fileName(rhs.m_fileName)
         {
             static_cast<Resource<ResourceType>*>(m_ptr)->IncrementRef();
         }
 
         template<typename ResourceType>
-        Resource<ResourceType>::Handle::Handle(Resource<ResourceType>::Handle&& rhs) : m_ptr(rhs.m_ptr), m_fileName(rhs.m_fileName) {}
+        Resource<ResourceType>::Handle::Handle(Handle&& rhs) : m_ptr(rhs.m_ptr), m_fileName(rhs.m_fileName) {}
 
         template<typename ResourceType>
         Resource<ResourceType>::Handle::~Handle()
@@ -47,7 +47,7 @@ namespace Hatchit
         }
 
         template<typename ResourceType>
-        Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(const Resource<ResourceType>::Handle& rhs)
+        typename Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(const Handle& rhs)
         {
             static_cast<Resource<ResourceType>*>(rhs.m_ptr)->IncrementRef();
             static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef(m_fileName);
@@ -57,7 +57,7 @@ namespace Hatchit
         }
 
         template<typename ResourceType>
-        Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(Resource<ResourceType>::Handle&& rhs)
+        typename Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(Handle&& rhs)
         {
             static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef(m_fileName);
             m_ptr = rhs.m_ptr;

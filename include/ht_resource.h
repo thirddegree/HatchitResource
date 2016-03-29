@@ -13,7 +13,7 @@ namespace Hatchit
         template<typename ResourceType>
         class HT_API Resource : public Core::INonCopy
         {
-            static_assert(std::is_base_of<Resource<ResourceType>, ResourceType>::value);
+            static_assert(std::is_base_of<Resource<ResourceType>, ResourceType>::value, "child class of template does not match template type");
         public:
             class Handle
             {
