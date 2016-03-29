@@ -13,10 +13,11 @@ namespace Hatchit
         template<typename ResourceType>
         class HT_API Resource : public Core::INonCopy
         {
-            static_assert(std::is_base_of<Resource<ResourceType>, ResourceType>::value, "child class of template does not match template type");
+            //static_assert(std::is_base_of<Resource<ResourceType>, ResourceType>::value, "child class of template does not match template type");
         public:
             class Handle
             {
+			public:
                 Handle(const Handle& rhs);
                 Handle(Handle&& rhs);
                 ~Handle();
@@ -29,18 +30,19 @@ namespace Hatchit
                 Handle(ResourceType* ptr, std::string fileName);
 
                 ResourceType* m_ptr;
-                std::string m_fileName;
+                
             };
 
             static Handle GetResourceHandle(const std::string& fileName);
         protected:
-            virtual void InitFromFile(const std::string& file) = 0;
+            virtual bool VInitFromFile(const std::string& file) = 0;
             static std::map<std::string, ResourceType> s_resourceBank;
             static ResourceType LoadFromFile(const std::string& fileName);
         private:
             void IncrementRef();
-            void DecrementRef(const std::string& key);
+            void DecrementRef();
             uint32_t m_refCount;
+			std::string m_fileName;
         };
     }
 }

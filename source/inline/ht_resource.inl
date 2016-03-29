@@ -43,14 +43,14 @@ namespace Hatchit
         template<typename ResourceType>
         Resource<ResourceType>::Handle::~Handle()
         {
-            static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef(m_fileName);
+            static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
         }
 
         template<typename ResourceType>
         typename Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(const Handle& rhs)
         {
             static_cast<Resource<ResourceType>*>(rhs.m_ptr)->IncrementRef();
-            static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef(m_fileName);
+            static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
             m_ptr = rhs.m_ptr;
             m_fileName = rhs.m_fileName;
             return *this;
@@ -59,7 +59,7 @@ namespace Hatchit
         template<typename ResourceType>
         typename Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(Handle&& rhs)
         {
-            static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef(m_fileName);
+            static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
             m_ptr = rhs.m_ptr;
             m_fileName = rhs.m_fileName;
             return *this;
@@ -78,12 +78,12 @@ namespace Hatchit
         }
 
         template<typename ResourceType>
-        void Resource<ResourceType>::DecrementRef(const std::string& key)
+        void Resource<ResourceType>::DecrementRef()
         {
             m_refCount--;
             if (m_refCount == 0)
             {
-                s_resourceBank.erase(key);
+                s_resourceBank.erase(m_fileName);
             }
         }
     }
