@@ -33,12 +33,10 @@ namespace Hatchit
                 ResourceType* operator->();
             private:
                 friend class Resource;
-                Handle(ResourceType* ptr, File* file);
+                Handle(ResourceType* ptr);
 
                 ResourceType* m_ptr;
                 std::string m_fileName;
-                Handle(ResourceType* ptr);
-		ResourceType* m_ptr;
             };
 
             static Handle GetResourceHandle(const std::string& fileName);
@@ -56,7 +54,7 @@ namespace Hatchit
             void IncrementRef();
             void DecrementRef();
             uint32_t m_refCount;
-	    std::string m_fileName;
+	        std::string m_fileName;
         };
 
 		

@@ -11,21 +11,15 @@ namespace Hatchit
         template<typename ResourceType>
         typename Resource<ResourceType>::Handle Resource<ResourceType>::GetResourceHandle(const std::string& fileName)
         {
-			ResourceType* resource = ResourceManager::GetRawPointer<ResourceType>(fileName);
-
-<<<<<<< HEAD
+            ResourceType* resource = ResourceManager::GetRawPointer<ResourceType>(fileName);
+            return Resource<ResourceType>::Handle(resource);
+        }
         template<typename ResourceType>
         ResourceType Resource<ResourceType>::LoadFromFile(const std::string& fileName)
         {
             ResourceType rawResource;
-            File file;
-
-            file.Open(Core::os_exec_dir() + fileName, FileMode::ReadText);
-            rawResource.VInitFromFile(&file);
+            rawResource.VInitFromFile(fileName);
             return rawResource;
-=======
-			return Resource<ResourceType>::Handle(resource);
->>>>>>> 644e465e8b5e584cb67afb3cc278c5be707ce245
         }
 
         template<typename ResourceType>
