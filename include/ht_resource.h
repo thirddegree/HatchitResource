@@ -2,6 +2,7 @@
 
 #include <ht_platform.h>
 #include <ht_noncopy.h>
+#include <ht_singleton.h>
 #include <ht_file.h>
 #include <map>
 #include <type_traits>
@@ -10,6 +11,7 @@ namespace Hatchit
 {
     namespace Resource
     {
+
         template<typename ResourceType>
         class HT_API Resource : public Core::INonCopy
         {
@@ -27,23 +29,22 @@ namespace Hatchit
                 ResourceType* operator->();
             private:
                 friend class Resource;
-                Handle(ResourceType* ptr, std::string fileName);
-
-                ResourceType* m_ptr;
-                
+                Handle(ResourceType* ptr);
+				ResourceType* m_ptr;
             };
 
             static Handle GetResourceHandle(const std::string& fileName);
         protected:
             virtual bool VInitFromFile(const std::string& file) = 0;
-            static std::map<std::string, ResourceType> s_resourceBank;
-            static ResourceType LoadFromFile(const std::string& fileName);
+            //static std::map<std::string, ResourceType*> s_resourceBank;
         private:
             void IncrementRef();
             void DecrementRef();
             uint32_t m_refCount;
 			std::string m_fileName;
         };
+
+		
     }
 }
 
