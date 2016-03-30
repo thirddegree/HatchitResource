@@ -4,8 +4,11 @@
 #include <ht_noncopy.h>
 #include <ht_singleton.h>
 #include <ht_file.h>
+#include <ht_jsonhelper.h>
 #include <map>
 #include <type_traits>
+
+using namespace Hatchit::Core;
 
 namespace Hatchit
 {
@@ -16,7 +19,7 @@ namespace Hatchit
         class HT_API Resource : public Core::INonCopy
         {
         public:
-			virtual ~Resource() { };
+	    virtual ~Resource() { };
 
             class Handle
             {
@@ -33,18 +36,27 @@ namespace Hatchit
             private:
                 friend class Resource;
                 Handle(ResourceType* ptr);
-				ResourceType* m_ptr;
+
+                ResourceType* m_ptr;
+                std::string m_fileName;
             };
 
             static Handle GetResourceHandle(const std::string& fileName);
         protected:
-			Resource(std::string fileName);
+
+            static std::map<std::string, ResourceType> s_resourceBank;
+            static ResourceType LoadFromFile(const std::string& fileName);
+
+            Core::Guid m_guid;
+	    Resource(std::string fileName);
+	    
             virtual bool VInitFromFile(const std::string& file) = 0;
+
         private:
             void IncrementRef();
             void DecrementRef();
             uint32_t m_refCount;
-			std::string m_fileName;
+	        std::string m_fileName;
         };
 
 		
