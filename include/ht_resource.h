@@ -2,6 +2,7 @@
 
 #include <ht_platform.h>
 #include <ht_noncopy.h>
+#include <ht_singleton.h>
 #include <ht_file.h>
 #include <ht_jsonhelper.h>
 #include <map>
@@ -13,13 +14,16 @@ namespace Hatchit
 {
     namespace Resource
     {
+
         template<typename ResourceType>
         class HT_API Resource : public Core::INonCopy
         {
-            static_assert(std::is_base_of<Resource<ResourceType>, ResourceType>::value, "child class of template does not match template type");
         public:
+			virtual ~Resource() { };
+
             class Handle
             {
+			public:
                 Handle(const Handle& rhs);
                 Handle(Handle&& rhs);
                 ~Handle();
@@ -29,24 +33,37 @@ namespace Hatchit
                 ResourceType* operator->();
             private:
                 friend class Resource;
+<<<<<<< HEAD
                 Handle(ResourceType* ptr, File* file);
 
                 ResourceType* m_ptr;
                 std::string m_fileName;
+=======
+                Handle(ResourceType* ptr);
+				ResourceType* m_ptr;
+>>>>>>> 644e465e8b5e584cb67afb3cc278c5be707ce245
             };
 
             static Handle GetResourceHandle(const std::string& fileName);
         protected:
+<<<<<<< HEAD
             virtual bool VInitFromFile(File* file) = 0;
             static std::map<std::string, ResourceType> s_resourceBank;
             static ResourceType LoadFromFile(const std::string& fileName);
 
             Core::Guid m_guid;
+=======
+			Resource(std::string fileName);
+            virtual bool VInitFromFile(const std::string& file) = 0;
+>>>>>>> 644e465e8b5e584cb67afb3cc278c5be707ce245
         private:
             void IncrementRef();
-            void DecrementRef(const std::string& key);
+            void DecrementRef();
             uint32_t m_refCount;
+			std::string m_fileName;
         };
+
+		
     }
 }
 

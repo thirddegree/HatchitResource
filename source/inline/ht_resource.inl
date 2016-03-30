@@ -1,6 +1,8 @@
 #pragma once
 
 #include <ht_resource.h>
+#include <ht_resourcemanager.h>
+#include <cassert>
 
 namespace Hatchit
 {
@@ -9,14 +11,9 @@ namespace Hatchit
         template<typename ResourceType>
         typename Resource<ResourceType>::Handle Resource<ResourceType>::GetResourceHandle(const std::string& fileName)
         {
-            if (s_resourceBank.count(fileName) == 0)
-            {
-                //File not loaded, load file
-                s_resourceBank[fileName] = LoadFromFile(fileName);
-            }
-            return Resource<ResourceType>::Handle(&s_resourceBank[fileName], fileName);
-        }
+			ResourceType* resource = ResourceManager::GetRawPointer<ResourceType>(fileName);
 
+<<<<<<< HEAD
         template<typename ResourceType>
         ResourceType Resource<ResourceType>::LoadFromFile(const std::string& fileName)
         {
@@ -26,45 +23,52 @@ namespace Hatchit
             file.Open(Core::os_exec_dir() + fileName, FileMode::ReadText);
             rawResource.VInitFromFile(&file);
             return rawResource;
+=======
+			return Resource<ResourceType>::Handle(resource);
+>>>>>>> 644e465e8b5e584cb67afb3cc278c5be707ce245
         }
 
         template<typename ResourceType>
-        Resource<ResourceType>::Handle::Handle(ResourceType* ptr, std::string fileName) : m_ptr(ptr), m_fileName(std::move(fileName))
+        Resource<ResourceType>::Handle::Handle(ResourceType* ptr) : m_ptr(ptr)
         {
-            static_cast<Resource<ResourceType>*>(m_ptr)->IncrementRef();
+			if(m_ptr)
+				static_cast<Resource<ResourceType>*>(m_ptr)->IncrementRef();
         }
 
         template<typename ResourceType>
-        Resource<ResourceType>::Handle::Handle(const Handle& rhs) : m_ptr(rhs.m_ptr), m_fileName(rhs.m_fileName)
+        Resource<ResourceType>::Handle::Handle(const Handle& rhs) : m_ptr(rhs.m_ptr)
         {
-            static_cast<Resource<ResourceType>*>(m_ptr)->IncrementRef();
+			if(m_ptr)
+				static_cast<Resource<ResourceType>*>(m_ptr)->IncrementRef();
         }
 
         template<typename ResourceType>
-        Resource<ResourceType>::Handle::Handle(Handle&& rhs) : m_ptr(rhs.m_ptr), m_fileName(rhs.m_fileName) {}
+        Resource<ResourceType>::Handle::Handle(Handle&& rhs) : m_ptr(rhs.m_ptr) {}
 
         template<typename ResourceType>
         Resource<ResourceType>::Handle::~Handle()
         {
-            static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef(m_fileName);
+			if(m_ptr)
+				static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
         }
 
         template<typename ResourceType>
         typename Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(const Handle& rhs)
         {
-            static_cast<Resource<ResourceType>*>(rhs.m_ptr)->IncrementRef();
-            static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef(m_fileName);
+			if(rhs.m_ptr)
+				static_cast<Resource<ResourceType>*>(rhs.m_ptr)->IncrementRef();
+			if(m_ptr)
+				static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
             m_ptr = rhs.m_ptr;
-            m_fileName = rhs.m_fileName;
             return *this;
         }
 
         template<typename ResourceType>
         typename Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(Handle&& rhs)
         {
-            static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef(m_fileName);
+			if(m_ptr)
+				static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
             m_ptr = rhs.m_ptr;
-            m_fileName = rhs.m_fileName;
             return *this;
         }
 
@@ -74,6 +78,9 @@ namespace Hatchit
             return m_ptr;
         }
 
+		template<typename ResourceType>
+		Resource<ResourceType>::Resource(std::string fileName) : m_refCount(0), m_fileName(std::move(fileName)) {};
+
         template<typename ResourceType>
         void Resource<ResourceType>::IncrementRef()
         {
@@ -81,13 +88,11 @@ namespace Hatchit
         }
 
         template<typename ResourceType>
-        void Resource<ResourceType>::DecrementRef(const std::string& key)
+        void Resource<ResourceType>::DecrementRef()
         {
             m_refCount--;
             if (m_refCount == 0)
-            {
-                s_resourceBank.erase(key);
-            }
+               ResourceManager::ReleaseRawPointer<ResourceType>(m_fileName);
         }
     }
 }
