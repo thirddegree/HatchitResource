@@ -33,29 +33,24 @@ namespace Hatchit
                 ResourceType* operator->();
             private:
                 friend class Resource;
-<<<<<<< HEAD
                 Handle(ResourceType* ptr, File* file);
 
                 ResourceType* m_ptr;
                 std::string m_fileName;
-=======
                 Handle(ResourceType* ptr);
 				ResourceType* m_ptr;
->>>>>>> 644e465e8b5e584cb67afb3cc278c5be707ce245
             };
 
             static Handle GetResourceHandle(const std::string& fileName);
         protected:
-<<<<<<< HEAD
-            virtual bool VInitFromFile(File* file) = 0;
+
             static std::map<std::string, ResourceType> s_resourceBank;
             static ResourceType LoadFromFile(const std::string& fileName);
 
             Core::Guid m_guid;
-=======
 			Resource(std::string fileName);
             virtual bool VInitFromFile(const std::string& file) = 0;
->>>>>>> 644e465e8b5e584cb67afb3cc278c5be707ce245
+
         private:
             void IncrementRef();
             void DecrementRef();
