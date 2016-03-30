@@ -15,7 +15,7 @@
 #pragma once
 
 #include <ht_platform.h>
-#include <ht_resourceobject.h>
+#include <ht_resource.h>
 #include <ht_file.h>
 #include <ht_mesh.h>
 
@@ -23,19 +23,21 @@ namespace Hatchit {
 
     namespace Resource {
 
-        class HT_API Model : public ResourceObject
+        class HT_API Model : public Resource<Model>
         {
         public:
-            Model();
+            Model(std::string fileName);
 
             ~Model();
         
-            bool VInitFromFile(Core::File* file) override;
+			bool VInitFromFile(const std::string& file) override;
 
             const std::vector<Mesh*>& GetMeshes() const;
         private:
             std::vector<Mesh*> m_meshes;
 
         };
+
+		using ModelHandle = Model::Handle;
     }
 }
