@@ -18,6 +18,9 @@
 #include <ht_types.h>
 #include <ht_noncopy.h>
 #include <ht_file.h>
+#include <ht_jsonhelper.h>
+
+using namespace Hatchit::Core;
 
 namespace Hatchit {
 
@@ -36,6 +39,8 @@ namespace Hatchit {
             uint32_t RefCount();
 
             virtual bool VInitFromFile(Core::File* file) = 0;
+
+			Core::Guid m_guid;
 
         private:
             uint32_t  m_refcount;
