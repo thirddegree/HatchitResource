@@ -21,7 +21,10 @@ namespace Hatchit
         ResourceType Resource<ResourceType>::LoadFromFile(const std::string& fileName)
         {
             ResourceType rawResource;
-            rawResource.InitFromFile(fileName);
+            File file;
+
+            file.Open(Core::os_exec_dir() + fileName, FileMode::ReadText);
+            rawResource.VInitFromFile(&file);
             return rawResource;
         }
 

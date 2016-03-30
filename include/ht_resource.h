@@ -3,8 +3,11 @@
 #include <ht_platform.h>
 #include <ht_noncopy.h>
 #include <ht_file.h>
+#include <ht_jsonhelper.h>
 #include <map>
 #include <type_traits>
+
+using namespace Hatchit::Core;
 
 namespace Hatchit
 {
@@ -26,7 +29,7 @@ namespace Hatchit
                 ResourceType* operator->();
             private:
                 friend class Resource;
-                Handle(ResourceType* ptr, std::string fileName);
+                Handle(ResourceType* ptr, File* file);
 
                 ResourceType* m_ptr;
                 std::string m_fileName;
@@ -34,9 +37,11 @@ namespace Hatchit
 
             static Handle GetResourceHandle(const std::string& fileName);
         protected:
-            virtual void InitFromFile(const std::string& file) = 0;
+            virtual bool VInitFromFile(File* file) = 0;
             static std::map<std::string, ResourceType> s_resourceBank;
             static ResourceType LoadFromFile(const std::string& fileName);
+
+            Core::Guid m_guid;
         private:
             void IncrementRef();
             void DecrementRef(const std::string& key);
