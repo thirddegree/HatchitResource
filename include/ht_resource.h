@@ -28,6 +28,8 @@ namespace Hatchit
                 Handle& operator=(Handle&& rhs);
 
                 ResourceType* operator->();
+                const ResourceType* operator->() const;
+
             private:
                 friend class Resource;
                 Handle(ResourceType* ptr);

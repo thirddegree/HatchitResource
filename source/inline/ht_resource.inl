@@ -65,6 +65,11 @@ namespace Hatchit
         {
             return m_ptr;
         }
+        template<typename ResourceType>
+        const ResourceType* Resource<ResourceType>::Handle::operator->() const
+        {
+            return m_ptr;
+        }
 
 		template<typename ResourceType>
 		Resource<ResourceType>::Resource(std::string fileName) : m_refCount(0), m_fileName(std::move(fileName)) {};
