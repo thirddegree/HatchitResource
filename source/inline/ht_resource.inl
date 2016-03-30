@@ -66,6 +66,9 @@ namespace Hatchit
             return m_ptr;
         }
 
+		template<typename ResourceType>
+		Resource<ResourceType>::Resource(std::string fileName) : m_refCount(0), m_fileName(std::move(fileName)) {};
+
         template<typename ResourceType>
         void Resource<ResourceType>::IncrementRef()
         {
@@ -77,7 +80,7 @@ namespace Hatchit
         {
             m_refCount--;
             if (m_refCount == 0)
-               ResourceManager::ReleaseRawPointer(m_fileName);
+               ResourceManager::ReleaseRawPointer<ResourceType>(m_fileName);
         }
     }
 }

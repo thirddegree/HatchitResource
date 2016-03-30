@@ -15,8 +15,9 @@ namespace Hatchit
         template<typename ResourceType>
         class HT_API Resource : public Core::INonCopy
         {
-            //static_assert(std::is_base_of<Resource<ResourceType>, ResourceType>::value, "child class of template does not match template type");
         public:
+			virtual ~Resource() { };
+
             class Handle
             {
 			public:
@@ -35,8 +36,8 @@ namespace Hatchit
 
             static Handle GetResourceHandle(const std::string& fileName);
         protected:
+			Resource(std::string fileName);
             virtual bool VInitFromFile(const std::string& file) = 0;
-            //static std::map<std::string, ResourceType*> s_resourceBank;
         private:
             void IncrementRef();
             void DecrementRef();

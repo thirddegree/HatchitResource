@@ -28,17 +28,9 @@ namespace Hatchit
 
 		}
 
-		void ResourceManager::ReleaseRawPointer(const std::string& name)
+		ResourceManager& ResourceManager::GetInstance()
 		{
-			ResourceManager& _instance = ResourceManager::instance();
-
-			std::map<std::string, void*>::iterator it = _instance.m_resources.find(name);
-			if (it != _instance.m_resources.end())
-			{
-				delete _instance.m_resources[name];
-
-				_instance.m_resources.erase(it);
-			}
+			return ResourceManager::instance();
 		}
 	}
 }
