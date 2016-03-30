@@ -17,7 +17,6 @@
 #include <ht_platform.h>
 #include <ht_singleton.h>
 #include <ht_string.h>
-#include <ht_resource.h>
 #include <map>
 
 namespace Hatchit
