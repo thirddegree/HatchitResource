@@ -19,11 +19,8 @@ namespace Hatchit {
 
     namespace Resource {
 
-        Model::Model(std::string fileName) : Resource<Model>(std::move(fileName))
-        {
-
-        }
-
+        Model::Model(std::string fileName) : Resource<Model>(std::move(fileName)) {}
+        
         Model::~Model()
         {
 
@@ -31,12 +28,9 @@ namespace Hatchit {
 
         bool Model::VInitFromFile(const std::string& file)
         {
-			Core::File f;
-			f.Open(Core::os_exec_dir() + file, Core::FileMode::ReadBinary);
-
             Assimp::Importer _importer;
             
-            const aiScene* scene = _importer.ReadFile(f.Path().c_str(),
+            const aiScene* scene = _importer.ReadFile(Core::os_exec_dir() + file,
                 aiProcess_CalcTangentSpace |
                 aiProcess_Triangulate |
                 aiProcess_GenNormals |
@@ -54,7 +48,7 @@ namespace Hatchit {
             }            
             
 #ifdef _DEBUG
-            Core::DebugPrintF("Assimp Load [%s]\n", f.Name().c_str());
+            Core::DebugPrintF("Assimp Load [%s]\n", file);
             Core::DebugPrintF("[#Meshes]: \t%d\n", scene->mNumMeshes);
             Core::DebugPrintF("[#Materials]: \t%d\n", scene->mNumMaterials);
 #endif
@@ -71,9 +65,6 @@ namespace Hatchit {
 #endif
                 m_meshes.push_back(new Mesh(mesh));
             }
-
-           
-            
 
             return true;
         }
