@@ -17,6 +17,9 @@ namespace Hatchit
         }
 
         template<typename ResourceType>
+        Resource<ResourceType>::Handle::Handle() : m_ptr() {}
+
+        template<typename ResourceType>
         Resource<ResourceType>::Handle::Handle(ResourceType* ptr) : m_ptr(ptr)
         {
             if(m_ptr)

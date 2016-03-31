@@ -54,6 +54,7 @@ namespace Hatchit
                 ResourceType* resource = new ResourceType(name);
                 if (!resource->VInitFromFile(name))
                 {
+                    delete resource;
                     return nullptr;
                 }
                 _instance.m_resources.insert(std::make_pair(name, resource));
