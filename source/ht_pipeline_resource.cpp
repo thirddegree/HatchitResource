@@ -26,82 +26,78 @@ namespace Hatchit {
         bool Pipeline::VInitFromFile(const std::string& filename)
         {
             nlohmann::json json;
-            std::ifstream jsonStream(filename);
+            std::ifstream jsonStream(Core::os_exec_dir() + filename);
 
             if (jsonStream.is_open())
             {
                 jsonStream >> json;
 
-                JsonExtractGuid(json, "GUID", m_guid);
-
                 //Extract shader paths
-                std::string vertexShaderPath;
-                std::string pixelShaderPath;
-                JsonExtractString(json["Shaders"], "Vertex", vertexShaderPath);
-                JsonExtractString(json["Shaders"], "Pixel", pixelShaderPath);
+                //std::string vertexShaderPath;
+                //std::string pixelShaderPath;
+                //JsonExtractString(json["Shaders"], "Vertex", vertexShaderPath);
+                //JsonExtractString(json["Shaders"], "Pixel", pixelShaderPath);
 
                 // Extract Rasterizer state
                 nlohmann::json json_rasterState = json["RasterState"];
-                RasterizerState rasterState{};
                 std::string polygonMode;
                 std::string cullMode;
                 double lineWidth;
 
                 JsonExtractString(json_rasterState, "PolygonMode", polygonMode);
                 JsonExtractString(json_rasterState, "CullMode", cullMode);
-                JsonExtractBool(json_rasterState, "FrontCounterClockwise", rasterState.frontCounterClockwise);
-                JsonExtractBool(json_rasterState, "DepthClampEnable", rasterState.depthClampEnable);
-                JsonExtractBool(json_rasterState, "DiscardEnable", rasterState.discardEnable);
+                JsonExtractBool(json_rasterState, "FrontCounterClockwise", m_rasterizationState.frontCounterClockwise);
+                JsonExtractBool(json_rasterState, "DepthClampEnable", m_rasterizationState.depthClampEnable);
+                JsonExtractBool(json_rasterState, "DiscardEnable", m_rasterizationState.discardEnable);
                 JsonExtractDouble(json_rasterState, "LineWidth", lineWidth);
 
-                rasterState.lineWidth = static_cast<float>(lineWidth);
+                m_rasterizationState.lineWidth = static_cast<float>(lineWidth);
 
                 if (polygonMode == "LINE")
-                    rasterState.polygonMode = PolygonMode::LINE;
+                    m_rasterizationState.polygonMode = PolygonMode::LINE;
                 else
-                    rasterState.polygonMode = PolygonMode::SOLID;
+                    m_rasterizationState.polygonMode = PolygonMode::SOLID;
 
                 if (cullMode == "FRONT")
-                    rasterState.cullMode = CullMode::FRONT;
+                    m_rasterizationState.cullMode = CullMode::FRONT;
                 else if (cullMode == "BACK")
-                    rasterState.cullMode = CullMode::BACK;
+                    m_rasterizationState.cullMode = CullMode::BACK;
                 else
-                    rasterState.cullMode = CullMode::NONE;
+                    m_rasterizationState.cullMode = CullMode::NONE;
 
                 // Extract Multisampler state
                 nlohmann::json json_multisampleState = json["MultisampleState"];
-                MultisampleState multisampleState{};
                 int64_t sampleCount;
                 double minSamples;
 
                 JsonExtractInt64(json_multisampleState, "SampleCount", sampleCount);
                 JsonExtractDouble(json_multisampleState, "MinSamples", minSamples);
-                JsonExtractBool(json_multisampleState, "PerSampleShading", multisampleState.perSampleShading);
+                JsonExtractBool(json_multisampleState, "PerSampleShading", m_multisampleState.perSampleShading);
 
-                multisampleState.minSamples = static_cast<float>(minSamples);
+                m_multisampleState.minSamples = static_cast<float>(minSamples);
 
                 switch (sampleCount)
                 {
                 case 1:
-                    multisampleState.samples = SampleCount::SAMPLE_1_BIT;
+                    m_multisampleState.samples = SampleCount::SAMPLE_1_BIT;
                     break;
                 case 2:
-                    multisampleState.samples = SampleCount::SAMPLE_2_BIT;
+                    m_multisampleState.samples = SampleCount::SAMPLE_2_BIT;
                     break;
                 case 4:
-                    multisampleState.samples = SampleCount::SAMPLE_4_BIT;
+                    m_multisampleState.samples = SampleCount::SAMPLE_4_BIT;
                     break;
                 case 8:
-                    multisampleState.samples = SampleCount::SAMPLE_8_BIT;
+                    m_multisampleState.samples = SampleCount::SAMPLE_8_BIT;
                     break;
                 case 16:
-                    multisampleState.samples = SampleCount::SAMPLE_16_BIT;
+                    m_multisampleState.samples = SampleCount::SAMPLE_16_BIT;
                     break;
                 case 32:
-                    multisampleState.samples = SampleCount::SAMPLE_32_BIT;
+                    m_multisampleState.samples = SampleCount::SAMPLE_32_BIT;
                     break;
                 case 64:
-                    multisampleState.samples = SampleCount::SAMPLE_64_BIT;
+                    m_multisampleState.samples = SampleCount::SAMPLE_64_BIT;
                     break;
                 }
 
@@ -169,8 +165,8 @@ namespace Hatchit {
             return true;
         }
 
-        Pipeline::RasterizerState Pipeline::GetRasterizerState() { return m_rasterizerState; }
-        Pipeline::MultisampleState Pipeline::GetMultisamplesState() { return m_multisampleState; }
+        Pipeline::RasterizerState Pipeline::GetRasterizationState() { return m_rasterizationState; }
+        Pipeline::MultisampleState Pipeline::GetMultisampleState() { return m_multisampleState; }
 
         std::map<std::string, ShaderVariable*> Pipeline::GetShaderVariables() { return m_shaderVariables; }
         std::map<Pipeline::ShaderSlot, std::string> Pipeline::GetShaderPaths() { return m_shaderPaths; }

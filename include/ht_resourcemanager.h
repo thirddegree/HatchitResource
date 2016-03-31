@@ -21,59 +21,59 @@
 
 namespace Hatchit
 {
-	namespace Resource
-	{
-		class HT_API ResourceManager : public Core::Singleton<ResourceManager>
-		{
-		public:
-			static void Initialize();
+    namespace Resource
+    {
+        class HT_API ResourceManager : public Core::Singleton<ResourceManager>
+        {
+        public:
+            static void Initialize();
 
-			static void DeInitialize();
+            static void DeInitialize();
 
-			template<typename ResourceType>
-			static ResourceType* GetRawPointer(const std::string& name);
+            template<typename ResourceType>
+            static ResourceType* GetRawPointer(const std::string& name);
 
-			template<typename ResourceType>
-			static void ReleaseRawPointer(const std::string& name);
+            template<typename ResourceType>
+            static void ReleaseRawPointer(const std::string& name);
 
-		private:
-			static ResourceManager& GetInstance();
+        private:
+            static ResourceManager& GetInstance();
 
-			std::map<std::string, void*> m_resources;
-		};
+            std::map<std::string, void*> m_resources;
+        };
 
-		template <typename ResourceType>
-		ResourceType* ResourceManager::GetRawPointer(const std::string& name)
-		{
-			ResourceManager& _instance = ResourceManager::GetInstance();
+        template <typename ResourceType>
+        ResourceType* ResourceManager::GetRawPointer(const std::string& name)
+        {
+            ResourceManager& _instance = ResourceManager::GetInstance();
 
-			std::map<std::string, void*>::iterator it = _instance.m_resources.find(name);
-			if (it == _instance.m_resources.end())
-			{
-				//Resource not found. Must allocate
-				ResourceType* resource = new ResourceType(name);
-				if (!resource->VInitFromFile(name))
-				{
-					return nullptr;
-				}
-				_instance.m_resources.insert(std::make_pair(name, resource));
-			}
-			
-			return reinterpret_cast<ResourceType*>(_instance.m_resources[name]);
-		}
+            std::map<std::string, void*>::iterator it = _instance.m_resources.find(name);
+            if (it == _instance.m_resources.end())
+            {
+                //Resource not found. Must allocate
+                ResourceType* resource = new ResourceType(name);
+                if (!resource->VInitFromFile(name))
+                {
+                    return nullptr;
+                }
+                _instance.m_resources.insert(std::make_pair(name, resource));
+            }
+            
+            return reinterpret_cast<ResourceType*>(_instance.m_resources[name]);
+        }
 
-		template<typename ResourceType>
-		void ResourceManager::ReleaseRawPointer(const std::string& name)
-		{
-			ResourceManager& _instance = ResourceManager::GetInstance();
+        template<typename ResourceType>
+        void ResourceManager::ReleaseRawPointer(const std::string& name)
+        {
+            ResourceManager& _instance = ResourceManager::GetInstance();
 
-			std::map<std::string, void*>::iterator it = _instance.m_resources.find(name);
-			if (it != _instance.m_resources.end())
-			{
-				delete (reinterpret_cast<ResourceType*>(_instance.m_resources[name]));
+            std::map<std::string, void*>::iterator it = _instance.m_resources.find(name);
+            if (it != _instance.m_resources.end())
+            {
+                delete (reinterpret_cast<ResourceType*>(_instance.m_resources[name]));
 
-				_instance.m_resources.erase(it);
-			}
-		}
-	}
+                _instance.m_resources.erase(it);
+            }
+        }
+    }
 }

@@ -11,23 +11,23 @@ namespace Hatchit
         template<typename ResourceType>
         typename Resource<ResourceType>::Handle Resource<ResourceType>::GetResourceHandle(const std::string& fileName)
         {
-			ResourceType* resource = ResourceManager::GetRawPointer<ResourceType>(fileName);
+            ResourceType* resource = ResourceManager::GetRawPointer<ResourceType>(fileName);
 
-			return Resource<ResourceType>::Handle(resource);
+            return Resource<ResourceType>::Handle(resource);
         }
 
         template<typename ResourceType>
         Resource<ResourceType>::Handle::Handle(ResourceType* ptr) : m_ptr(ptr)
         {
-			if(m_ptr)
-				static_cast<Resource<ResourceType>*>(m_ptr)->IncrementRef();
+            if(m_ptr)
+                static_cast<Resource<ResourceType>*>(m_ptr)->IncrementRef();
         }
 
         template<typename ResourceType>
         Resource<ResourceType>::Handle::Handle(const Handle& rhs) : m_ptr(rhs.m_ptr)
         {
-			if(m_ptr)
-				static_cast<Resource<ResourceType>*>(m_ptr)->IncrementRef();
+            if(m_ptr)
+                static_cast<Resource<ResourceType>*>(m_ptr)->IncrementRef();
         }
 
         template<typename ResourceType>
@@ -36,17 +36,17 @@ namespace Hatchit
         template<typename ResourceType>
         Resource<ResourceType>::Handle::~Handle()
         {
-			if(m_ptr)
-				static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
+            if(m_ptr)
+                static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
         }
 
         template<typename ResourceType>
         typename Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(const Handle& rhs)
         {
-			if(rhs.m_ptr)
-				static_cast<Resource<ResourceType>*>(rhs.m_ptr)->IncrementRef();
-			if(m_ptr)
-				static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
+            if(rhs.m_ptr)
+                static_cast<Resource<ResourceType>*>(rhs.m_ptr)->IncrementRef();
+            if(m_ptr)
+                static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
             m_ptr = rhs.m_ptr;
             return *this;
         }
@@ -54,8 +54,8 @@ namespace Hatchit
         template<typename ResourceType>
         typename Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(Handle&& rhs)
         {
-			if(m_ptr)
-				static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
+            if(m_ptr)
+                static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
             m_ptr = rhs.m_ptr;
             return *this;
         }
@@ -71,8 +71,8 @@ namespace Hatchit
             return m_ptr;
         }
 
-		template<typename ResourceType>
-		Resource<ResourceType>::Resource(std::string fileName) : m_refCount(0), m_fileName(std::move(fileName)) {};
+        template<typename ResourceType>
+        Resource<ResourceType>::Resource(std::string fileName) : m_refCount(0), m_fileName(std::move(fileName)) {};
 
         template<typename ResourceType>
         void Resource<ResourceType>::IncrementRef()
