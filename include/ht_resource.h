@@ -21,6 +21,7 @@ namespace Hatchit
             class Handle
             {
             public:
+                Handle();
                 Handle(const Handle& rhs);
                 Handle(Handle&& rhs);
                 ~Handle();
