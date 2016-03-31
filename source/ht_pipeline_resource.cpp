@@ -33,10 +33,24 @@ namespace Hatchit {
                 jsonStream >> json;
 
                 //Extract shader paths
-                //std::string vertexShaderPath;
-                //std::string pixelShaderPath;
-                //JsonExtractString(json["Shaders"], "Vertex", vertexShaderPath);
-                //JsonExtractString(json["Shaders"], "Pixel", pixelShaderPath);
+                nlohmann::json shaderPaths = json["Shaders"];
+                nlohmann::json spvShaders = shaderPaths["spv"];
+                nlohmann::json csoShaders = shaderPaths["cso"];
+
+                JsonExtractString(spvShaders, "Vertex",          m_spvShaderPaths[ShaderSlot::VERTEX]);
+                JsonExtractString(spvShaders, "Fragment",        m_spvShaderPaths[ShaderSlot::FRAGMENT]);
+                JsonExtractString(spvShaders, "Geometry",        m_spvShaderPaths[ShaderSlot::GEOMETRY]);
+                JsonExtractString(spvShaders, "Tess_Control",    m_spvShaderPaths[ShaderSlot::TESS_CONTROL]);
+                JsonExtractString(spvShaders, "Tess_Eval",       m_spvShaderPaths[ShaderSlot::TESS_EVAL]);
+                JsonExtractString(spvShaders, "Compute",         m_spvShaderPaths[ShaderSlot::COMPUTE]);
+
+                JsonExtractString(csoShaders, "Vertex",          m_csoShaderPaths[ShaderSlot::VERTEX]);
+                JsonExtractString(csoShaders, "Fragment",        m_csoShaderPaths[ShaderSlot::FRAGMENT]);
+                JsonExtractString(csoShaders, "Geometry",        m_csoShaderPaths[ShaderSlot::GEOMETRY]);
+                JsonExtractString(csoShaders, "Tess_Control",    m_csoShaderPaths[ShaderSlot::TESS_CONTROL]);
+                JsonExtractString(csoShaders, "Tess_Eval",       m_csoShaderPaths[ShaderSlot::TESS_EVAL]);
+                JsonExtractString(csoShaders, "Compute",         m_csoShaderPaths[ShaderSlot::COMPUTE]);
+
 
                 // Extract Rasterizer state
                 nlohmann::json json_rasterState = json["RasterState"];
@@ -169,7 +183,9 @@ namespace Hatchit {
         Pipeline::MultisampleState Pipeline::GetMultisampleState() { return m_multisampleState; }
 
         std::map<std::string, ShaderVariable*> Pipeline::GetShaderVariables() { return m_shaderVariables; }
-        std::map<Pipeline::ShaderSlot, std::string> Pipeline::GetShaderPaths() { return m_shaderPaths; }
+
+        std::map<Pipeline::ShaderSlot, std::string> Pipeline::GetSPVShaderPaths() { return m_spvShaderPaths; }
+        std::map<Pipeline::ShaderSlot, std::string> Pipeline::GetCSOShaderPaths() { return m_csoShaderPaths; }
     }
 
 }
