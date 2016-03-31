@@ -16,11 +16,11 @@ namespace Hatchit
         class HT_API Resource : public Core::INonCopy
         {
         public:
-			virtual ~Resource() { };
+            virtual ~Resource() { };
 
             class Handle
             {
-			public:
+            public:
                 Handle(const Handle& rhs);
                 Handle(Handle&& rhs);
                 ~Handle();
@@ -33,21 +33,21 @@ namespace Hatchit
             private:
                 friend class Resource;
                 Handle(ResourceType* ptr);
-				ResourceType* m_ptr;
+                ResourceType* m_ptr;
             };
 
             static Handle GetResourceHandle(const std::string& fileName);
         protected:
-			Resource(std::string fileName);
+            Resource(std::string fileName);
             virtual bool VInitFromFile(const std::string& file) = 0;
         private:
             void IncrementRef();
             void DecrementRef();
             uint32_t m_refCount;
-			std::string m_fileName;
+            std::string m_fileName;
         };
 
-		
+        
     }
 }
 

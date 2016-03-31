@@ -17,7 +17,7 @@
 #include <ht_platform.h>
 #include <ht_resource.h>
 #include <ht_file.h>
-#include <ht_mesh.h>
+#include <ht_mesh_resource.h>
 
 namespace Hatchit {
 

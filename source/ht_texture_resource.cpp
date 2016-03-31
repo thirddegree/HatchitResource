@@ -1,4 +1,4 @@
-#include <ht_textureresource.h>
+#include <ht_texture_resource.h>
 #include <ht_image.h>
 
 namespace Hatchit

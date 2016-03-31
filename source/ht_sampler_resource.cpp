@@ -1,4 +1,4 @@
-#include "ht_samplerresource.h"
+#include "ht_sampler_resource.h"
 
 namespace Hatchit
 {

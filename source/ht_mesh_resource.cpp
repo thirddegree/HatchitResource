@@ -12,7 +12,7 @@
 **
 **/
 
-#include <ht_mesh.h>
+#include <ht_mesh_resource.h>
 #include <ht_debug.h>
 #include <iterator>
 
