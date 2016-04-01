@@ -31,6 +31,7 @@ namespace Hatchit
                 ResourceType* operator->();
                 const ResourceType* operator->() const;
 
+                bool IsValid() const;
             private:
                 friend class Resource;
                 Handle(ResourceType* ptr);
