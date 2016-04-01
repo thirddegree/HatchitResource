@@ -34,6 +34,11 @@ namespace Hatchit
             // Inherited via Resource
             virtual bool VInitFromFile(const std::string & file) override;
 
+            FilterMode GetFilterMode();
+            WrapMode GetWrapMode();
+            ColorSpace GetColorSpace();
+
+        private:
             FilterMode m_filterMode;
             WrapMode m_wrapMode;
             ColorSpace m_colorSpace;
