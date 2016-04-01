@@ -15,6 +15,8 @@
 #include <ht_model.h>
 #include <ht_assimp.h>
 #include <ht_debug.h>
+#include <ht_path_singleton.h>
+
 namespace Hatchit {
 
     namespace Resource {
@@ -30,7 +32,7 @@ namespace Hatchit {
         {
             Assimp::Importer _importer;
             
-            const aiScene* scene = _importer.ReadFile(Core::os_exec_dir() + file,
+            const aiScene* scene = _importer.ReadFile(Core::Path::Value(Core::Path::Directory::Models) + file,
                 aiProcess_CalcTangentSpace |
                 aiProcess_Triangulate |
                 aiProcess_GenNormals |

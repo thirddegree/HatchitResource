@@ -13,6 +13,7 @@
 **/
 
 #include <ht_shader_resource.h>
+#include <ht_path_singleton.h>
 
 namespace Hatchit {
 
@@ -36,7 +37,7 @@ namespace Hatchit {
             Core::File file;
             try
             {
-                file.Open(Core::os_exec_dir() + filename, Core::FileMode::ReadBinary);
+                file.Open(Core::Path::Value(Core::Path::Directory::Shaders) + filename, Core::FileMode::ReadBinary);
             }
             catch (std::exception)
             {

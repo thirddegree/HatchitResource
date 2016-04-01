@@ -1,5 +1,6 @@
 #include <ht_texture_resource.h>
 #include <ht_image.h>
+#include <ht_path_singleton.h>
 
 namespace Hatchit
 {
@@ -10,7 +11,7 @@ namespace Hatchit
         bool Texture::VInitFromFile(const std::string& file)
         {
             Core::File f;
-            f.Open(Core::os_exec_dir() + file, Core::FileMode::ReadBinary);
+            f.Open(Core::Path::Value(Core::Path::Directory::Textures) + file, Core::FileMode::ReadBinary);
 
             Image* bitmap = Image::Load(&f, Image::Channels::AUTO);
 

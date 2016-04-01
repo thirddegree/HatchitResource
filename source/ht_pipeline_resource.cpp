@@ -13,6 +13,7 @@
 **/
 
 #include <ht_pipeline_resource.h>
+#include <ht_path_singleton.h>
 
 namespace Hatchit {
 
@@ -26,7 +27,7 @@ namespace Hatchit {
         bool Pipeline::VInitFromFile(const std::string& filename)
         {
             nlohmann::json json;
-            std::ifstream jsonStream(Core::os_exec_dir() + filename);
+            std::ifstream jsonStream(Path::Value(Path::Directory::Pipelines) + filename);
 
             if (jsonStream.is_open())
             {
