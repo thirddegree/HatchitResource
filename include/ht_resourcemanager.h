@@ -45,6 +45,9 @@ namespace Hatchit
         template <typename ResourceType>
         ResourceType* ResourceManager::GetRawPointer(const std::string& name)
         {
+            if (name.empty())
+                return nullptr;
+
             ResourceManager& _instance = ResourceManager::GetInstance();
 
             std::map<std::string, void*>::iterator it = _instance.m_resources.find(name);

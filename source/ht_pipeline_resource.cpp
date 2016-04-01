@@ -32,25 +32,75 @@ namespace Hatchit {
             {
                 jsonStream >> json;
 
-                //Extract shader paths
+                //Extract shaders
                 nlohmann::json shaderPaths = json["Shaders"];
                 nlohmann::json spvShaders = shaderPaths["spv"];
                 nlohmann::json csoShaders = shaderPaths["cso"];
 
-                JsonExtractString(spvShaders, "Vertex",          m_spvShaderPaths[ShaderSlot::VERTEX]);
-                JsonExtractString(spvShaders, "Fragment",        m_spvShaderPaths[ShaderSlot::FRAGMENT]);
-                JsonExtractString(spvShaders, "Geometry",        m_spvShaderPaths[ShaderSlot::GEOMETRY]);
-                JsonExtractString(spvShaders, "Tess_Control",    m_spvShaderPaths[ShaderSlot::TESS_CONTROL]);
-                JsonExtractString(spvShaders, "Tess_Eval",       m_spvShaderPaths[ShaderSlot::TESS_EVAL]);
-                JsonExtractString(spvShaders, "Compute",         m_spvShaderPaths[ShaderSlot::COMPUTE]);
+                std::string vertexPath;
+                std::string fragmentPath;
+                std::string geometryPath;
+                std::string tessControlPath;
+                std::string tessEvalPath;
+                std::string computePath;
 
-                JsonExtractString(csoShaders, "Vertex",          m_csoShaderPaths[ShaderSlot::VERTEX]);
-                JsonExtractString(csoShaders, "Fragment",        m_csoShaderPaths[ShaderSlot::FRAGMENT]);
-                JsonExtractString(csoShaders, "Geometry",        m_csoShaderPaths[ShaderSlot::GEOMETRY]);
-                JsonExtractString(csoShaders, "Tess_Control",    m_csoShaderPaths[ShaderSlot::TESS_CONTROL]);
-                JsonExtractString(csoShaders, "Tess_Eval",       m_csoShaderPaths[ShaderSlot::TESS_EVAL]);
-                JsonExtractString(csoShaders, "Compute",         m_csoShaderPaths[ShaderSlot::COMPUTE]);
+                //Extract SPV shader paths
+                JsonExtractString(spvShaders, "Vertex", vertexPath);
+                JsonExtractString(spvShaders, "Fragment", fragmentPath);
+                JsonExtractString(spvShaders, "Geometry", geometryPath);
+                JsonExtractString(spvShaders, "Tess_Control", tessControlPath);
+                JsonExtractString(spvShaders, "Tess_Eval", tessEvalPath);
+                JsonExtractString(spvShaders, "Compute", computePath);
 
+                ShaderHandle vertexHandle       = Shader::GetResourceHandle(vertexPath);
+                ShaderHandle fragmentHandle     = Shader::GetResourceHandle(fragmentPath);
+                ShaderHandle geometryHandle     = Shader::GetResourceHandle(geometryPath);
+                ShaderHandle tessControlHandle  = Shader::GetResourceHandle(tessControlPath);
+                ShaderHandle tessEvalHandle     = Shader::GetResourceHandle(tessEvalPath);
+                ShaderHandle computeHandle      = Shader::GetResourceHandle(computePath);
+
+                //Load SPV Shaders by handle
+                if(vertexHandle.IsValid())
+                    m_spvShaderHandles[ShaderSlot::VERTEX]          = vertexHandle;
+                if (fragmentHandle.IsValid())
+                    m_spvShaderHandles[ShaderSlot::FRAGMENT]        = fragmentHandle;
+                if (geometryHandle.IsValid())
+                    m_spvShaderHandles[ShaderSlot::GEOMETRY]        = geometryHandle;
+                if (tessControlHandle.IsValid())
+                    m_spvShaderHandles[ShaderSlot::TESS_CONTROL]    = tessControlHandle;
+                if (tessEvalHandle.IsValid())
+                    m_spvShaderHandles[ShaderSlot::TESS_EVAL]       = tessEvalHandle;
+                if (computeHandle.IsValid())
+                    m_spvShaderHandles[ShaderSlot::COMPUTE]         = computeHandle;
+
+                //Extract CSO shader path
+                //Reuse existing string objects
+                JsonExtractString(csoShaders, "Vertex",         vertexPath);
+                JsonExtractString(csoShaders, "Fragment",       fragmentPath);
+                JsonExtractString(csoShaders, "Geometry",       geometryPath);
+                JsonExtractString(csoShaders, "Tess_Control",   tessControlPath);
+                JsonExtractString(csoShaders, "Tess_Eval",      tessEvalPath);
+                JsonExtractString(csoShaders, "Compute",        computePath);
+
+                vertexHandle        = Shader::GetResourceHandle(vertexPath);
+                fragmentHandle      = Shader::GetResourceHandle(fragmentPath);
+                geometryHandle      = Shader::GetResourceHandle(geometryPath);
+                tessControlHandle   = Shader::GetResourceHandle(tessControlPath);
+                tessEvalHandle      = Shader::GetResourceHandle(tessEvalPath);
+                computeHandle       = Shader::GetResourceHandle(computePath);
+
+                if (vertexHandle.IsValid())
+                    m_csoShaderHandles[ShaderSlot::VERTEX] = vertexHandle;
+                if (fragmentHandle.IsValid())
+                    m_csoShaderHandles[ShaderSlot::FRAGMENT] = fragmentHandle;
+                if (geometryHandle.IsValid())
+                    m_csoShaderHandles[ShaderSlot::GEOMETRY] = geometryHandle;
+                if (tessControlHandle.IsValid())
+                    m_csoShaderHandles[ShaderSlot::TESS_CONTROL] = tessControlHandle;
+                if (tessEvalHandle.IsValid())
+                    m_csoShaderHandles[ShaderSlot::TESS_EVAL] = tessEvalHandle;
+                if (computeHandle.IsValid())
+                    m_csoShaderHandles[ShaderSlot::COMPUTE] = computeHandle;
 
                 // Extract Rasterizer state
                 nlohmann::json json_rasterState = json["RasterState"];
@@ -184,8 +234,8 @@ namespace Hatchit {
 
         std::map<std::string, ShaderVariable*> Pipeline::GetShaderVariables() { return m_shaderVariables; }
 
-        std::map<Pipeline::ShaderSlot, std::string> Pipeline::GetSPVShaderPaths() { return m_spvShaderPaths; }
-        std::map<Pipeline::ShaderSlot, std::string> Pipeline::GetCSOShaderPaths() { return m_csoShaderPaths; }
+        std::map<Pipeline::ShaderSlot, ShaderHandle> Pipeline::GetSPVShaderPaths() { return m_spvShaderHandles; }
+        std::map<Pipeline::ShaderSlot, ShaderHandle> Pipeline::GetCSOShaderPaths() { return m_csoShaderHandles; }
     }
 
 }

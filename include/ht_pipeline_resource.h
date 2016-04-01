@@ -32,6 +32,7 @@
 #include <ht_jsonhelper.h>
 #include <ht_shadervariable.h>
 #include <ht_math.h>
+#include <ht_shader_resource.h>
 
 #include <fstream>
 
@@ -97,7 +98,7 @@ namespace Hatchit {
             };
 
             Pipeline(std::string name);
-            virtual ~Pipeline() = default;
+            virtual ~Pipeline() {};
             bool VInitFromFile(const std::string& filename) override;
 
             RasterizerState GetRasterizationState();
@@ -105,8 +106,8 @@ namespace Hatchit {
 
             std::map<std::string, ShaderVariable*> GetShaderVariables();
 
-            std::map<ShaderSlot, std::string> GetSPVShaderPaths();
-            std::map<ShaderSlot, std::string> GetCSOShaderPaths();
+            std::map<ShaderSlot, ShaderHandle> GetSPVShaderPaths();
+            std::map<ShaderSlot, ShaderHandle> GetCSOShaderPaths();
 
         private:
             RasterizerState     m_rasterizationState;
@@ -114,10 +115,9 @@ namespace Hatchit {
 
             std::map<std::string, ShaderVariable*>   m_shaderVariables;
 
-            std::map<ShaderSlot, std::string> m_spvShaderPaths;
-            std::map<ShaderSlot, std::string> m_csoShaderPaths;
+            std::map<ShaderSlot, ShaderHandle> m_spvShaderHandles;
+            std::map<ShaderSlot, ShaderHandle> m_csoShaderHandles;
         };
-
 
         using PipelineHandle = Pipeline::Handle;
     }

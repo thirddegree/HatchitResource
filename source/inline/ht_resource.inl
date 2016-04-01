@@ -75,6 +75,12 @@ namespace Hatchit
         }
 
         template<typename ResourceType>
+        bool Resource<ResourceType>::Handle::IsValid() const
+        {
+            return m_ptr != nullptr;
+        }
+
+        template<typename ResourceType>
         Resource<ResourceType>::Resource(std::string fileName) : m_refCount(0), m_fileName(std::move(fileName)) {};
 
         template<typename ResourceType>

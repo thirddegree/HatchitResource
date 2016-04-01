@@ -12,6 +12,10 @@ namespace Hatchit
 
             return true;
         }
+
+        Sampler::FilterMode Sampler::GetFilterMode() { return m_filterMode; }
+        Sampler::WrapMode Sampler::GetWrapMode() { return m_wrapMode; }
+        Sampler::ColorSpace Sampler::GetColorSpace() { return m_colorSpace; }
     }
 }
 
