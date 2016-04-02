@@ -173,7 +173,7 @@ namespace Hatchit {
 
                 for (unsigned i = 0; i < shaderVariables.size(); i++)
                 {
-                    Core::JsonExtractString(shaderVariables[i], "Name", name);
+                    JsonExtractString(shaderVariables[i], "Name", name);
                     JsonExtractString(shaderVariables[i], "Type", type);
 
                     if (type == "INT")
