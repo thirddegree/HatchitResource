@@ -101,13 +101,13 @@ namespace Hatchit {
             virtual ~Pipeline() {};
             bool VInitFromFile(const std::string& filename) override;
 
-            RasterizerState GetRasterizationState();
-            MultisampleState GetMultisampleState();
+            const RasterizerState& GetRasterizationState() const;
+            const MultisampleState& GetMultisampleState() const;
 
-            std::map<std::string, ShaderVariable*> GetShaderVariables();
+            const std::map<std::string, ShaderVariable*>& GetShaderVariables() const;
 
-            std::map<ShaderSlot, ShaderHandle> GetSPVShaderPaths();
-            std::map<ShaderSlot, ShaderHandle> GetCSOShaderPaths();
+            const std::map<ShaderSlot, ShaderHandle>& GetSPVShaderPaths() const;
+            const std::map<ShaderSlot, ShaderHandle>& GetCSOShaderPaths() const;
 
         private:
             RasterizerState     m_rasterizationState;

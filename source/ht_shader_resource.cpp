@@ -57,8 +57,8 @@ namespace Hatchit {
             return true;
         }
 
-        BYTE* Shader::GetBytecode() { return m_bytecode; }
-        size_t Shader::GetBytecodeSize() { return m_bytecodeSize; }
+        const BYTE* Shader::GetBytecode() const { return m_bytecode; }
+        size_t Shader::GetBytecodeSize() const { return m_bytecodeSize; }
     }
 
 }

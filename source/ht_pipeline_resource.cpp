@@ -230,13 +230,13 @@ namespace Hatchit {
             return true;
         }
 
-        Pipeline::RasterizerState Pipeline::GetRasterizationState() { return m_rasterizationState; }
-        Pipeline::MultisampleState Pipeline::GetMultisampleState() { return m_multisampleState; }
+        const Pipeline::RasterizerState& Pipeline::GetRasterizationState() const { return m_rasterizationState; }
+        const Pipeline::MultisampleState& Pipeline::GetMultisampleState() const { return m_multisampleState; }
 
-        std::map<std::string, ShaderVariable*> Pipeline::GetShaderVariables() { return m_shaderVariables; }
+        const std::map<std::string, ShaderVariable*>& Pipeline::GetShaderVariables() const { return m_shaderVariables; }
 
-        std::map<Pipeline::ShaderSlot, ShaderHandle> Pipeline::GetSPVShaderPaths() { return m_spvShaderHandles; }
-        std::map<Pipeline::ShaderSlot, ShaderHandle> Pipeline::GetCSOShaderPaths() { return m_csoShaderHandles; }
+        const std::map<Pipeline::ShaderSlot, ShaderHandle>& Pipeline::GetSPVShaderPaths() const { return m_spvShaderHandles; }
+        const std::map<Pipeline::ShaderSlot, ShaderHandle>& Pipeline::GetCSOShaderPaths() const { return m_csoShaderHandles; }
     }
 
 }
