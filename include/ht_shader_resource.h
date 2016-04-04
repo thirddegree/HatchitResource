@@ -31,8 +31,8 @@ namespace Hatchit {
 
             bool VInitFromFile(const std::string& filename) override;
 
-            BYTE* GetBytecode();
-            size_t GetBytecodeSize();
+            const BYTE* GetBytecode() const;
+            size_t GetBytecodeSize() const;
 
         private:
             BYTE* m_bytecode;

@@ -64,11 +64,6 @@ namespace Hatchit
         }
 
         template<typename ResourceType>
-        ResourceType* Resource<ResourceType>::Handle::operator->()
-        {
-            return m_ptr;
-        }
-        template<typename ResourceType>
         const ResourceType* Resource<ResourceType>::Handle::operator->() const
         {
             return m_ptr;

@@ -28,7 +28,6 @@ namespace Hatchit
                 Handle& operator=(const Handle& rhs);
                 Handle& operator=(Handle&& rhs);
 
-                ResourceType* operator->();
                 const ResourceType* operator->() const;
 
                 bool IsValid() const;
