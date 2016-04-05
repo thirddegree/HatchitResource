@@ -12,11 +12,13 @@ namespace Hatchit
     namespace Resource
     {
         template<typename ResourceType>
-        class Handle
+        class Resource;
+
+        template<typename ResourceType>
+        class HT_API Handle
         {
         public:
             Handle();
-            Handle(ResourceType* resource, uint32_t* refCounter, const std::string* m_mapKey);
             Handle(const Handle& rhs);
             Handle(Handle&& rhs);
             ~Handle();
@@ -30,6 +32,8 @@ namespace Hatchit
 
             bool IsValid() const;
         private:
+            friend class Resource<ResourceType>;
+            Handle(ResourceType* resource, uint32_t* refCounter, const std::string* m_mapKey);
             ResourceType* m_ptr;
             uint32_t* m_refCount;
             const std::string* m_mapKey;
