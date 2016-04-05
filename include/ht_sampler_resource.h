@@ -44,6 +44,6 @@ namespace Hatchit
             ColorSpace m_colorSpace;
         };
 
-        using SamplerHandle = Sampler::Handle;
+        using SamplerHandle = Handle<Sampler>;
     }
 }

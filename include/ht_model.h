@@ -38,6 +38,6 @@ namespace Hatchit {
 
         };
 
-        using ModelHandle = Model::Handle;
+        using ModelHandle = Handle<Model>;
     }
 }

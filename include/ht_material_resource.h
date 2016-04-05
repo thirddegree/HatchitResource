@@ -22,6 +22,6 @@ namespace Hatchit
             std::vector<std::string> m_textures;
         };
 
-        using MaterialHandle = Material::Handle;
+        using MaterialHandle = Handle<Material>;
     }
 }

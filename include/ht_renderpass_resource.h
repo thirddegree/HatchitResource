@@ -32,6 +32,6 @@ namespace Hatchit
             std::vector<std::string> m_outputPaths;
         };
 
-        using RenderPassHandle = RenderPass::Handle;
+        using RenderPassHandle = Handle<RenderPass>;
     }
 }

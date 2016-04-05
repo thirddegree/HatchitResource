@@ -33,6 +33,6 @@ namespace Hatchit
             const BYTE* m_data;
         };
 
-        using TextureHandle = Texture::Handle;
+        using TextureHandle = Handle<Texture>;
     }
 }

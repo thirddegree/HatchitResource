@@ -119,7 +119,7 @@ namespace Hatchit {
             std::map<ShaderSlot, ShaderHandle> m_csoShaderHandles;
         };
 
-        using PipelineHandle = Pipeline::Handle;
+        using PipelineHandle = Handle<Pipeline>;
     }
 
 }

@@ -9,68 +9,100 @@ namespace Hatchit
     namespace Resource
     {
         template<typename ResourceType>
-        typename Resource<ResourceType>::Handle Resource<ResourceType>::GetResourceHandle(const std::string& fileName)
-        {
-            ResourceType* resource = ResourceManager::GetRawPointer<ResourceType>(fileName);
+        Handle<ResourceType>::Handle()
+            : m_ptr(),
+            m_refCount(),
+            m_mapKey() {}
 
-            return Resource<ResourceType>::Handle(resource);
+        template<typename ResourceType>
+        Handle<ResourceType>::Handle(ResourceType* ptr, uint32_t* refCounter, const std::string* mapKey) 
+            : m_ptr(ptr),
+            m_refCount(refCounter),
+            m_mapKey(mapKey)
+        {
+            if(m_refCount)
+                ++(*m_refCount);
         }
 
         template<typename ResourceType>
-        Resource<ResourceType>::Handle::Handle() : m_ptr() {}
-
-        template<typename ResourceType>
-        Resource<ResourceType>::Handle::Handle(ResourceType* ptr) : m_ptr(ptr)
+        Handle<ResourceType>::Handle(const Handle& rhs) 
+            : m_ptr(rhs.m_ptr),
+            m_refCount(rhs.m_refCount),
+            m_mapKey(rhs.m_mapKey)
         {
-            if(m_ptr)
-                static_cast<Resource<ResourceType>*>(m_ptr)->IncrementRef();
+            if(m_refCount)
+                ++(*m_refCount);
         }
 
         template<typename ResourceType>
-        Resource<ResourceType>::Handle::Handle(const Handle& rhs) : m_ptr(rhs.m_ptr)
+        Handle<ResourceType>::Handle(Handle&& rhs) 
+            : m_ptr(rhs.m_ptr),
+            m_refCount(rhs.m_refCount),
+            m_mapKey(rhs.m_mapKey) {}
+
+        template<typename ResourceType>
+        Handle<ResourceType>::~Handle()
         {
-            if(m_ptr)
-                static_cast<Resource<ResourceType>*>(m_ptr)->IncrementRef();
+            if (m_refCount && !--(*m_refCount))
+            {
+                //Delete here
+                ResourceManager::ReleaseRawPointer<ResourceType>(*m_mapKey);
+                m_ptr = nullptr;
+                m_refCount = nullptr;
+                m_mapKey = nullptr;
+            }
         }
 
         template<typename ResourceType>
-        Resource<ResourceType>::Handle::Handle(Handle&& rhs) : m_ptr(rhs.m_ptr) {}
-
-        template<typename ResourceType>
-        Resource<ResourceType>::Handle::~Handle()
+        Handle<ResourceType>& Handle<ResourceType>::operator=(const Handle& rhs)
         {
-            if(m_ptr)
-                static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
-        }
-
-        template<typename ResourceType>
-        typename Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(const Handle& rhs)
-        {
-            if(rhs.m_ptr)
-                static_cast<Resource<ResourceType>*>(rhs.m_ptr)->IncrementRef();
-            if(m_ptr)
-                static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
+            if (m_refCount && !--(*m_refCount))
+            {
+                //Delete here
+                ResourceManager::ReleaseRawPointer<ResourceType>(*m_mapKey);
+                m_ptr = nullptr;
+                m_refCount = nullptr;
+                m_mapKey = nullptr;
+            }
             m_ptr = rhs.m_ptr;
+            m_refCount = rhs.m_refCount;
+            m_mapKey = rhs.m_mapKey;
+            if (m_refCount)
+                ++m_refCount;
+
             return *this;
         }
 
         template<typename ResourceType>
-        typename Resource<ResourceType>::Handle& Resource<ResourceType>::Handle::operator=(Handle&& rhs)
+        Handle<ResourceType>& Handle<ResourceType>::operator=(Handle&& rhs)
         {
-            if(m_ptr)
-                static_cast<Resource<ResourceType>*>(m_ptr)->DecrementRef();
+            if (m_refCount && !--(*m_refCount))
+            {
+                //Delete here
+            }
             m_ptr = rhs.m_ptr;
+            m_refCount = rhs.m_refCount;
+            m_mapKey = rhs.m_mapKey;
+
             return *this;
         }
 
         template<typename ResourceType>
-        const ResourceType* Resource<ResourceType>::Handle::operator->() const
+        const ResourceType* Handle<ResourceType>::operator->() const
         {
             return m_ptr;
         }
 
         template<typename ResourceType>
-        bool Resource<ResourceType>::Handle::IsValid() const
+        template<typename NewResourceType>
+        Handle<NewResourceType> Handle<ResourceType>::CastHandle()
+        {
+            NewResourceType* nrt = dynamic_cast<NewResourceType*>(m_ptr);
+            return Handle<NewResourceType>(nrt, m_refCount, m_mapKey);
+        }
+
+        template<typename ResourceType>
+        bool Handle<ResourceType>::IsValid() const
         {
             return m_ptr != nullptr;
         }
@@ -79,17 +111,13 @@ namespace Hatchit
         Resource<ResourceType>::Resource(std::string fileName) : m_refCount(0), m_fileName(std::move(fileName)) {};
 
         template<typename ResourceType>
-        void Resource<ResourceType>::IncrementRef()
+        Handle<ResourceType> Resource<ResourceType>::GetResourceHandle(const std::string& fileName)
         {
-            m_refCount++;
-        }
-
-        template<typename ResourceType>
-        void Resource<ResourceType>::DecrementRef()
-        {
-            m_refCount--;
-            if (m_refCount == 0)
-               ResourceManager::ReleaseRawPointer<ResourceType>(m_fileName);
+            ResourceType* resource = ResourceManager::GetRawPointer<ResourceType>(fileName);
+            if (resource)
+                return Handle<ResourceType>(resource, &(resource->m_refCount), &(resource->m_fileName));
+            else
+                return Handle<ResourceType>();
         }
     }
 }
