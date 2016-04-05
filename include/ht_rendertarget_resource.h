@@ -20,6 +20,6 @@ namespace Hatchit {
             std::string m_format;
         };
 
-        using RenderTargetHandle = RenderTarget::Handle;
+        using RenderTargetHandle = Handle<RenderTarget>;
     }
 }
