@@ -11,6 +11,33 @@ namespace Hatchit
 {
     namespace Resource
     {
+        template<typename ResourceType>
+        class Resource;
+
+        template<typename ResourceType>
+        class HT_API Handle
+        {
+        public:
+            Handle();
+            Handle(const Handle& rhs);
+            Handle(Handle&& rhs);
+            ~Handle();
+            Handle& operator=(const Handle& rhs);
+            Handle& operator=(Handle&& rhs);
+
+            const ResourceType* operator->() const;
+
+            template<typename NewResourceType>
+            Handle<NewResourceType> CastHandle();
+
+            bool IsValid() const;
+        private:
+            friend class Resource<ResourceType>;
+            Handle(ResourceType* resource, uint32_t* refCounter, const std::string* m_mapKey);
+            ResourceType* m_ptr;
+            uint32_t* m_refCount;
+            const std::string* m_mapKey;
+        };
 
         template<typename ResourceType>
         class HT_API Resource : public Core::INonCopy
@@ -18,32 +45,11 @@ namespace Hatchit
         public:
             virtual ~Resource() { };
 
-            class Handle
-            {
-            public:
-                Handle();
-                Handle(const Handle& rhs);
-                Handle(Handle&& rhs);
-                ~Handle();
-                Handle& operator=(const Handle& rhs);
-                Handle& operator=(Handle&& rhs);
-
-                const ResourceType* operator->() const;
-
-                bool IsValid() const;
-            private:
-                friend class Resource;
-                Handle(ResourceType* ptr);
-                ResourceType* m_ptr;
-            };
-
-            static Handle GetResourceHandle(const std::string& fileName);
+            static Handle<ResourceType> GetResourceHandle(const std::string& fileName);
         protected:
             Resource(std::string fileName);
             virtual bool VInitFromFile(const std::string& file) = 0;
         private:
-            void IncrementRef();
-            void DecrementRef();
             uint32_t m_refCount;
             std::string m_fileName;
         };

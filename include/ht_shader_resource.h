@@ -39,7 +39,7 @@ namespace Hatchit {
             size_t m_bytecodeSize;
         };
 
-        using ShaderHandle = Shader::Handle;
+        using ShaderHandle = Handle<Shader>;
 
     }
 
