@@ -73,21 +73,23 @@ namespace Hatchit {
         template<>
         inline void HT_API ShaderVariableTemplate<int>::SetData(int data)
         {
-            m_data = new BYTE[sizeof(int)];
             memcpy(m_data, &data, sizeof(int));
-            m_type = Type::INT;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<int>::ShaderVariableTemplate()
         {
+            m_data = new BYTE[sizeof(int)];
             SetData(0);
+            m_type = Type::INT;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<int>::ShaderVariableTemplate(int data)
         {
+            m_data = new BYTE[sizeof(int)];
             SetData(data);
+            m_type = Type::INT;
         }
 
 
@@ -95,21 +97,23 @@ namespace Hatchit {
         template<>
         inline void HT_API ShaderVariableTemplate<float>::SetData(float data)
         {
-            m_data = new BYTE[sizeof(float)];
             memcpy(m_data, &data, sizeof(float));
-            m_type = Type::FLOAT;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<float>::ShaderVariableTemplate()
         {
+            m_data = new BYTE[sizeof(float)];
             SetData(0.0f);
+            m_type = Type::FLOAT;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<float>::ShaderVariableTemplate(float data)
         {
+            m_data = new BYTE[sizeof(float)];
             SetData(data);
+            m_type = Type::FLOAT;
         }
        
 
@@ -117,21 +121,23 @@ namespace Hatchit {
         template<>
         inline void HT_API ShaderVariableTemplate<double>::SetData(double data)
         {
-            m_data = new BYTE[sizeof(double)];
             memcpy(m_data, &data, sizeof(double));
-            m_type = Type::DOUBLE;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<double>::ShaderVariableTemplate()
         {
+            m_data = new BYTE[sizeof(double)];
             SetData(0.0);
+            m_type = Type::DOUBLE;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<double>::ShaderVariableTemplate(double data)
         {
+            m_data = new BYTE[sizeof(double)];
             SetData(data);
+            m_type = Type::DOUBLE;
         }
 
 
@@ -139,42 +145,46 @@ namespace Hatchit {
         template<>
         inline void HT_API ShaderVariableTemplate<Math::Vector2>::SetData(Math::Vector2 data)
         {
-            m_data = new BYTE[sizeof(float) * 2];
             memcpy(m_data, data.m_data, sizeof(float) * 2);
-            m_type = Type::FLOAT2;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<Math::Vector2>::ShaderVariableTemplate()
         {
+            m_data = new BYTE[sizeof(float) * 2];
             SetData(Math::Vector2());
+            m_type = Type::FLOAT2;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<Math::Vector2>::ShaderVariableTemplate(Math::Vector2 data)
         {
+            m_data = new BYTE[sizeof(float) * 2];
             SetData(data);
+            m_type = Type::FLOAT2;
         }
 
 
 	    template<>
         inline void HT_API ShaderVariableTemplate<Math::Vector3>::SetData(Math::Vector3 data)
         {
-            m_data = new BYTE[sizeof(float) * 3];
             memcpy(m_data, data.m_data, sizeof(float) * 3);
-            m_type = Type::FLOAT3;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<Math::Vector3>::ShaderVariableTemplate()
         {
+            m_data = new BYTE[sizeof(float) * 3];
             SetData(Math::Vector3());
+            m_type = Type::FLOAT3;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<Math::Vector3>::ShaderVariableTemplate(Math::Vector3 data)
         {
+            m_data = new BYTE[sizeof(float) * 3];
             SetData(data);
+            m_type = Type::FLOAT3;
         }       
 
 
@@ -182,21 +192,23 @@ namespace Hatchit {
         template<>
         inline void HT_API ShaderVariableTemplate<Math::Vector4>::SetData(Math::Vector4 data)
         {
-            m_data = new BYTE[sizeof(float) * 4];
             memcpy(m_data, data.data, sizeof(float) * 4);
-            m_type = Type::FLOAT4;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<Math::Vector4>::ShaderVariableTemplate()
         {
+            m_data = new BYTE[sizeof(float) * 4];
             SetData(Math::Vector4());
+            m_type = Type::FLOAT4;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<Math::Vector4>::ShaderVariableTemplate(Math::Vector4 data)
         {
+            m_data = new BYTE[sizeof(float) * 4];
             SetData(data);
+            m_type = Type::FLOAT4;
         }
 
 
@@ -204,21 +216,23 @@ namespace Hatchit {
         template<>
         inline void HT_API ShaderVariableTemplate<Math::Matrix4>::SetData(Math::Matrix4 data)
         {
-            m_data = new BYTE[sizeof(float) * 16];
             memcpy(this->m_data, data.data, sizeof(float) * 16);
-            m_type = Type::MAT4;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<Math::Matrix4>::ShaderVariableTemplate()
         {
+            m_data = new BYTE[sizeof(float) * 16];
             SetData(Math::Matrix4());
+            m_type = Type::MAT4;
         }
 
         template <>
         inline HT_API ShaderVariableTemplate<Math::Matrix4>::ShaderVariableTemplate(Math::Matrix4 data)
         {
+            m_data = new BYTE[sizeof(float) * 16];
             SetData(data);
+            m_type = Type::MAT4;
         }
 
 
