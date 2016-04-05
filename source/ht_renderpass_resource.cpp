@@ -13,17 +13,43 @@
 **/
 
 #include <ht_renderpass_resource.h>
-
 namespace Hatchit
 {
     namespace Resource
     {
+        using namespace Core;
+
         RenderPass::RenderPass(std::string name) : Resource(std::move(name)) {}
 
-        bool RenderPass::VInitFromFile(const std::string& file)
+        bool RenderPass::VInitFromFile(const std::string& filename)
         {
-            //TODO: Initialize resource from file here
-            return true;
+            nlohmann::json json;
+            std::ifstream jsonStream(Path::Value(Path::Directory::RenderPasses) + filename);
+
+            if (jsonStream.is_open())
+            {
+                jsonStream >> json;
+                nlohmann::json json_inputPaths = json["Input"];
+                nlohmann::json json_outputPaths = json["Output"];
+                m_inputPaths = std::vector<std::string>(json_inputPaths.size());
+                m_outputPaths = std::vector<std::string>(json_outputPaths.size());
+
+                for (int i = 0; i < json_inputPaths.size(); i++)
+                {
+                    m_inputPaths[i] = json_inputPaths[i].get<std::string>();
+                }
+
+                for (int i = 0; i < json_outputPaths.size(); i++)
+                {
+                    m_outputPaths[i] = json_outputPaths[i].get<std::string>();
+                }
+
+                jsonStream.close();
+                return true;
+            }
+
+            DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderPasses) + filename);
+            return false;
         }
     }
 }

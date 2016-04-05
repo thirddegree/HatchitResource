@@ -13,7 +13,6 @@
 **/
 
 #include <ht_pipeline_resource.h>
-#include <ht_path_singleton.h>
 
 namespace Hatchit {
 
@@ -107,25 +106,22 @@ namespace Hatchit {
                 nlohmann::json json_rasterState = json["RasterState"];
                 std::string polygonMode;
                 std::string cullMode;
-                double lineWidth;
 
                 JsonExtractString(json_rasterState, "PolygonMode", polygonMode);
                 JsonExtractString(json_rasterState, "CullMode", cullMode);
                 JsonExtractBool(json_rasterState, "FrontCounterClockwise", m_rasterizationState.frontCounterClockwise);
                 JsonExtractBool(json_rasterState, "DepthClampEnable", m_rasterizationState.depthClampEnable);
                 JsonExtractBool(json_rasterState, "DiscardEnable", m_rasterizationState.discardEnable);
-                JsonExtractDouble(json_rasterState, "LineWidth", lineWidth);
+                JsonExtractFloat(json_rasterState, "LineWidth", m_rasterizationState.lineWidth);
 
-                m_rasterizationState.lineWidth = static_cast<float>(lineWidth);
-
-                if (polygonMode == "LINE")
+                if (polygonMode == "LINE" || polygonMode == "Line")
                     m_rasterizationState.polygonMode = PolygonMode::LINE;
                 else
                     m_rasterizationState.polygonMode = PolygonMode::SOLID;
 
-                if (cullMode == "FRONT")
+                if (cullMode == "FRONT" || cullMode == "Front")
                     m_rasterizationState.cullMode = CullMode::FRONT;
-                else if (cullMode == "BACK")
+                else if (cullMode == "BACK" || cullMode == "Back")
                     m_rasterizationState.cullMode = CullMode::BACK;
                 else
                     m_rasterizationState.cullMode = CullMode::NONE;
@@ -133,13 +129,10 @@ namespace Hatchit {
                 // Extract Multisampler state
                 nlohmann::json json_multisampleState = json["MultisampleState"];
                 int64_t sampleCount;
-                double minSamples;
 
                 JsonExtractInt64(json_multisampleState, "SampleCount", sampleCount);
-                JsonExtractDouble(json_multisampleState, "MinSamples", minSamples);
+                JsonExtractFloat(json_multisampleState, "MinSamples", m_multisampleState.minSamples);
                 JsonExtractBool(json_multisampleState, "PerSampleShading", m_multisampleState.perSampleShading);
-
-                m_multisampleState.minSamples = static_cast<float>(minSamples);
 
                 switch (sampleCount)
                 {
@@ -176,43 +169,43 @@ namespace Hatchit {
                     JsonExtractString(shaderVariables[i], "Name", name);
                     JsonExtractString(shaderVariables[i], "Type", type);
 
-                    if (type == "INT")
+                    if (type == "INT" || type == "Int")
                     {
-                        uint64_t value;
-                        JsonExtractUint64(shaderVariables[i], "Value", value);
-                        m_shaderVariables[name] = new IntVariable(static_cast<uint32_t>(value));
+                        uint32_t value;
+                        JsonExtractUint32(shaderVariables[i], "Value", value);
+                        m_shaderVariables[name] = new IntVariable(value);
                     }
-                    else if (type == "FLOAT")
+                    else if (type == "FLOAT" || type == "Float")
                     {
-                        double value;
-                        JsonExtractDouble(shaderVariables[i], "Value", value);
-                        m_shaderVariables[name] = new FloatVariable(static_cast<float>(value));
+                        float value;
+                        JsonExtractFloat(shaderVariables[i], "Value", value);
+                        m_shaderVariables[name] = new FloatVariable(value);
                     }
-                    else if (type == "DOUBLE")
+                    else if (type == "DOUBLE" || type == "Double")
                     {
                         double value;
                         JsonExtractDouble(shaderVariables[i], "Value", value);
                         m_shaderVariables[name] = new DoubleVariable(value);
                     }
-                    else if (type == "FLOAT2")
+                    else if (type == "FLOAT2" || type == "Float2")
                     {
                         nlohmann::json jsonVec = shaderVariables[i]["Value"];
                         Math::Vector2 vec = Math::Vector2(jsonVec[0], jsonVec[1]);
                         m_shaderVariables[name] = new Float2Variable(vec);
                     }
-                    else if (type == "FLOAT3")
+                    else if (type == "FLOAT3" || type == "Float3")
                     {
                         nlohmann::json jsonVec = shaderVariables[i]["Value"];
                         Math::Vector3 vec = Math::Vector3(jsonVec[0], jsonVec[1], jsonVec[2]);
                         m_shaderVariables[name] = new Float3Variable(vec);
                     }
-                    else if (type == "FLOAT4")
+                    else if (type == "FLOAT4" || type == "Float4")
                     {
                         nlohmann::json jsonVec = shaderVariables[i]["Value"];
                         Math::Vector4 vec = Math::Vector4(jsonVec[0], jsonVec[1], jsonVec[2], jsonVec[3]);
                         m_shaderVariables[name] = new Float4Variable(vec);
                     }
-                    else if (type == "MATRIX4")
+                    else if (type == "MATRIX4" || type == "Matrix4")
                     {
                         nlohmann::json jsonMat = shaderVariables[i]["Value"];
                         Math::Matrix4 mat = Math::Matrix4(jsonMat[0], jsonMat[1], jsonMat[2], jsonMat[3],
@@ -223,11 +216,12 @@ namespace Hatchit {
                     }
                 }
 
+                jsonStream.close();
                 return true;
             }
 
-            DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", filename);
-            return true;
+            DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Pipelines) + filename);
+            return false;
         }
 
         const Pipeline::RasterizerState& Pipeline::GetRasterizationState() const { return m_rasterizationState; }

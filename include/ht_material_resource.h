@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ht_resource.h>
+#include <ht_shadervariable.h>
 
 namespace Hatchit
 {
@@ -9,16 +10,15 @@ namespace Hatchit
         class HT_API Material : public Resource<Material>
         {
         public:
-            Material(std::string name);
+            Material(std::string filename);
             virtual ~Material() = default;
 
-
-            virtual bool VInitFromFile(const std::string& file) override;
+            virtual bool VInitFromFile(const std::string& filename) override;
 
         private:
             std::string m_pipeline;
             std::string m_renderPass;
-            std::vector<std::string> m_shaderVariables;
+            std::map<std::string, ShaderVariable*> m_shaderVariables;
             std::vector<std::string> m_textures;
         };
 
