@@ -1,7 +1,6 @@
 #pragma once
 
 #include <ht_resource.h>
-#include <ht_resourcemanager.h>
 #include <cassert>
 
 namespace Hatchit
