@@ -106,14 +106,20 @@ namespace Hatchit {
 
             const std::map<std::string, ShaderVariable*>& GetShaderVariables() const;
 
-            const std::map<ShaderSlot, ShaderHandle>& GetSPVShaderPaths() const;
-            const std::map<ShaderSlot, ShaderHandle>& GetCSOShaderPaths() const;
+            const std::map<ShaderSlot, std::string>& GetSPVShaderPaths() const;
+            const std::map<ShaderSlot, std::string>& GetCSOShaderPaths() const;
+
+            const std::map<ShaderSlot, ShaderHandle>& GetSPVShaderHandles() const;
+            const std::map<ShaderSlot, ShaderHandle>& GetCSOShaderHandles() const;
 
         private:
             RasterizerState     m_rasterizationState;
             MultisampleState    m_multisampleState;
 
             std::map<std::string, ShaderVariable*>   m_shaderVariables;
+
+            std::map<ShaderSlot, std::string> m_spvShaderPaths;
+            std::map<ShaderSlot, std::string> m_csoShaderPaths;
 
             std::map<ShaderSlot, ShaderHandle> m_spvShaderHandles;
             std::map<ShaderSlot, ShaderHandle> m_csoShaderHandles;

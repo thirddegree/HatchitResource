@@ -60,18 +60,36 @@ namespace Hatchit {
                 ShaderHandle computeHandle      = Shader::GetHandle(computePath);
 
                 //Load SPV Shaders by handle
-                if(vertexHandle.IsValid())
-                    m_spvShaderHandles[ShaderSlot::VERTEX]          = vertexHandle;
+                if (vertexHandle.IsValid())
+                {
+                    m_spvShaderPaths[ShaderSlot::VERTEX] = vertexPath;
+                    m_spvShaderHandles[ShaderSlot::VERTEX] = vertexHandle;
+                }
                 if (fragmentHandle.IsValid())
-                    m_spvShaderHandles[ShaderSlot::FRAGMENT]        = fragmentHandle;
+                {
+                    m_spvShaderPaths[ShaderSlot::FRAGMENT] = fragmentPath;
+                    m_spvShaderHandles[ShaderSlot::FRAGMENT] = fragmentHandle;
+                }
                 if (geometryHandle.IsValid())
-                    m_spvShaderHandles[ShaderSlot::GEOMETRY]        = geometryHandle;
+                {
+                    m_spvShaderPaths[ShaderSlot::GEOMETRY] = geometryPath;
+                    m_spvShaderHandles[ShaderSlot::GEOMETRY] = geometryHandle;
+                }
                 if (tessControlHandle.IsValid())
-                    m_spvShaderHandles[ShaderSlot::TESS_CONTROL]    = tessControlHandle;
+                {
+                    m_spvShaderPaths[ShaderSlot::TESS_CONTROL] = tessControlPath;
+                    m_spvShaderHandles[ShaderSlot::TESS_CONTROL] = tessControlHandle;
+                }
                 if (tessEvalHandle.IsValid())
-                    m_spvShaderHandles[ShaderSlot::TESS_EVAL]       = tessEvalHandle;
+                {
+                    m_spvShaderPaths[ShaderSlot::TESS_EVAL] = tessEvalPath;
+                    m_spvShaderHandles[ShaderSlot::TESS_EVAL] = tessEvalHandle;
+                }
                 if (computeHandle.IsValid())
-                    m_spvShaderHandles[ShaderSlot::COMPUTE]         = computeHandle;
+                {
+                    m_spvShaderPaths[ShaderSlot::COMPUTE] = computePath;
+                    m_spvShaderHandles[ShaderSlot::COMPUTE] = computeHandle;
+                }
 
                 //Extract CSO shader path
                 //Reuse existing string objects
@@ -90,17 +108,35 @@ namespace Hatchit {
                 computeHandle       = Shader::GetHandle(computePath);
 
                 if (vertexHandle.IsValid())
+                {
+                    m_csoShaderPaths[ShaderSlot::VERTEX] = vertexPath;
                     m_csoShaderHandles[ShaderSlot::VERTEX] = vertexHandle;
+                }
                 if (fragmentHandle.IsValid())
+                {
+                    m_csoShaderPaths[ShaderSlot::FRAGMENT] = fragmentPath;
                     m_csoShaderHandles[ShaderSlot::FRAGMENT] = fragmentHandle;
+                }
                 if (geometryHandle.IsValid())
+                {
+                    m_csoShaderPaths[ShaderSlot::GEOMETRY] = geometryPath;
                     m_csoShaderHandles[ShaderSlot::GEOMETRY] = geometryHandle;
+                }
                 if (tessControlHandle.IsValid())
+                {
+                    m_csoShaderPaths[ShaderSlot::TESS_CONTROL] = tessControlPath;
                     m_csoShaderHandles[ShaderSlot::TESS_CONTROL] = tessControlHandle;
+                }
                 if (tessEvalHandle.IsValid())
+                {
+                    m_csoShaderPaths[ShaderSlot::TESS_EVAL] = tessEvalPath;
                     m_csoShaderHandles[ShaderSlot::TESS_EVAL] = tessEvalHandle;
+                }
                 if (computeHandle.IsValid())
+                {
+                    m_csoShaderPaths[ShaderSlot::COMPUTE] = computePath;
                     m_csoShaderHandles[ShaderSlot::COMPUTE] = computeHandle;
+                }
 
                 // Extract Rasterizer state
                 nlohmann::json json_rasterState = json["RasterState"];
@@ -229,8 +265,11 @@ namespace Hatchit {
 
         const std::map<std::string, ShaderVariable*>& Pipeline::GetShaderVariables() const { return m_shaderVariables; }
 
-        const std::map<Pipeline::ShaderSlot, ShaderHandle>& Pipeline::GetSPVShaderPaths() const { return m_spvShaderHandles; }
-        const std::map<Pipeline::ShaderSlot, ShaderHandle>& Pipeline::GetCSOShaderPaths() const { return m_csoShaderHandles; }
+        const std::map<Pipeline::ShaderSlot, std::string>& Pipeline::GetSPVShaderPaths() const { return m_spvShaderPaths; }
+        const std::map<Pipeline::ShaderSlot, std::string>& Pipeline::GetCSOShaderPaths() const { return m_csoShaderPaths; }
+
+        const std::map<Pipeline::ShaderSlot, ShaderHandle>& Pipeline::GetSPVShaderHandles() const { return m_spvShaderHandles; }
+        const std::map<Pipeline::ShaderSlot, ShaderHandle>& Pipeline::GetCSOShaderHandles() const { return m_csoShaderHandles; }
     }
 
 }
