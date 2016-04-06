@@ -6,7 +6,7 @@ namespace Hatchit
     {
         using namespace Core;
 
-        Material::Material(std::string filename) : Resource(std::move(filename)) {}
+        Material::Material(std::string filename) : FileResource<Material>(std::move(filename)) {}
 
         bool Material::VInitFromFile(const std::string& filename)
         {

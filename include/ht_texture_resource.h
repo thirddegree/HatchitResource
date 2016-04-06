@@ -5,7 +5,7 @@ namespace Hatchit
 {
     namespace Resource
     {
-        class HT_API Texture : public Resource<Texture>
+        class HT_API Texture : public FileResource<Texture>
         {
         public:
             Texture(std::string name);
@@ -33,6 +33,6 @@ namespace Hatchit
             const BYTE* m_data;
         };
 
-        using TextureHandle = Handle<Texture>;
+        using TextureHandle = Core::Handle<const Texture>;
     }
 }

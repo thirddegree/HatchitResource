@@ -19,7 +19,7 @@ namespace Hatchit
     {
         using namespace Core;
 
-        RenderPass::RenderPass(std::string name) : Resource(std::move(name)) {}
+        RenderPass::RenderPass(std::string name) : FileResource<RenderPass>(std::move(name)) {}
 
         bool RenderPass::VInitFromFile(const std::string& filename)
         {
