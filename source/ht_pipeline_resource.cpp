@@ -21,7 +21,7 @@ namespace Hatchit {
         //Required for JsonExtractString etc.
         using namespace Core;
 
-        Pipeline::Pipeline(std::string name) : Resource(std::move(name)) {}
+        Pipeline::Pipeline(std::string name) : FileResource<Pipeline>(std::move(name)) {}
 
         bool Pipeline::VInitFromFile(const std::string& filename)
         {
@@ -52,12 +52,12 @@ namespace Hatchit {
                 JsonExtractString(spvShaders, "Tess_Eval", tessEvalPath);
                 JsonExtractString(spvShaders, "Compute", computePath);
 
-                ShaderHandle vertexHandle       = Shader::GetResourceHandle(vertexPath);
-                ShaderHandle fragmentHandle     = Shader::GetResourceHandle(fragmentPath);
-                ShaderHandle geometryHandle     = Shader::GetResourceHandle(geometryPath);
-                ShaderHandle tessControlHandle  = Shader::GetResourceHandle(tessControlPath);
-                ShaderHandle tessEvalHandle     = Shader::GetResourceHandle(tessEvalPath);
-                ShaderHandle computeHandle      = Shader::GetResourceHandle(computePath);
+                ShaderHandle vertexHandle       = Shader::GetHandle(vertexPath);
+                ShaderHandle fragmentHandle     = Shader::GetHandle(fragmentPath);
+                ShaderHandle geometryHandle     = Shader::GetHandle(geometryPath);
+                ShaderHandle tessControlHandle  = Shader::GetHandle(tessControlPath);
+                ShaderHandle tessEvalHandle     = Shader::GetHandle(tessEvalPath);
+                ShaderHandle computeHandle      = Shader::GetHandle(computePath);
 
                 //Load SPV Shaders by handle
                 if(vertexHandle.IsValid())
@@ -82,12 +82,12 @@ namespace Hatchit {
                 JsonExtractString(csoShaders, "Tess_Eval",      tessEvalPath);
                 JsonExtractString(csoShaders, "Compute",        computePath);
 
-                vertexHandle        = Shader::GetResourceHandle(vertexPath);
-                fragmentHandle      = Shader::GetResourceHandle(fragmentPath);
-                geometryHandle      = Shader::GetResourceHandle(geometryPath);
-                tessControlHandle   = Shader::GetResourceHandle(tessControlPath);
-                tessEvalHandle      = Shader::GetResourceHandle(tessEvalPath);
-                computeHandle       = Shader::GetResourceHandle(computePath);
+                vertexHandle        = Shader::GetHandle(vertexPath);
+                fragmentHandle      = Shader::GetHandle(fragmentPath);
+                geometryHandle      = Shader::GetHandle(geometryPath);
+                tessControlHandle   = Shader::GetHandle(tessControlPath);
+                tessEvalHandle      = Shader::GetHandle(tessEvalPath);
+                computeHandle       = Shader::GetHandle(computePath);
 
                 if (vertexHandle.IsValid())
                     m_csoShaderHandles[ShaderSlot::VERTEX] = vertexHandle;

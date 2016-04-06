@@ -23,7 +23,7 @@ namespace Hatchit {
 
     namespace Resource {
     
-        class HT_API Shader : public Resource<Shader>
+        class HT_API Shader : public FileResource<Shader>
         {
         public:
             Shader(std::string name);
@@ -39,7 +39,7 @@ namespace Hatchit {
             size_t m_bytecodeSize;
         };
 
-        using ShaderHandle = Handle<Shader>;
+        using ShaderHandle = Core::Handle<const Shader>;
 
     }
 

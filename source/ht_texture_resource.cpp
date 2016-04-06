@@ -6,7 +6,7 @@ namespace Hatchit
 {
     namespace Resource
     {
-        Texture::Texture(std::string name) : Resource(std::move(name)) {}
+        Texture::Texture(std::string name) : FileResource<Texture>(std::move(name)) {}
 
         bool Texture::VInitFromFile(const std::string& file)
         {

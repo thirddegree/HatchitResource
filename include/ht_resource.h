@@ -2,6 +2,7 @@
 
 #include <ht_platform.h>
 #include <ht_noncopy.h>
+#include <ht_refcounted.h>
 #include <ht_singleton.h>
 #include <ht_file.h>
 #include <map>
@@ -15,46 +16,15 @@ namespace Hatchit
     namespace Resource
     {
         template<typename ResourceType>
-        class Resource;
-
-        template<typename ResourceType>
-        class HT_API Handle
+        class HT_API FileResource : public Core::RefCounted<ResourceType>
         {
         public:
-            Handle();
-            Handle(const Handle& rhs);
-            Handle(Handle&& rhs);
-            ~Handle();
-            Handle& operator=(const Handle& rhs);
-            Handle& operator=(Handle&& rhs);
+            virtual ~FileResource() { };
 
-            const ResourceType* operator->() const;
-
-            template<typename NewResourceType>
-            Handle<NewResourceType> CastHandle();
-
-            bool IsValid() const;
-        private:
-            friend class Resource<ResourceType>;
-            Handle(ResourceType* resource, uint32_t* refCounter, const std::string* m_mapKey);
-            ResourceType* m_ptr;
-            uint32_t* m_refCount;
-            const std::string* m_mapKey;
-        };
-
-        template<typename ResourceType>
-        class HT_API Resource : public Core::INonCopy
-        {
-        public:
-            virtual ~Resource() { };
-
-            static Handle<ResourceType> GetResourceHandle(const std::string& fileName);
+            static Core::Handle<const ResourceType> GetHandle(const std::string& fileName);
         protected:
-            Resource(std::string fileName);
+            FileResource(std::string fileName);
             virtual bool VInitFromFile(const std::string& file) = 0;
-        private:
-            uint32_t m_refCount;
-            std::string m_fileName;
         };
 
         

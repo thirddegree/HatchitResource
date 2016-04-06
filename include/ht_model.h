@@ -23,12 +23,12 @@ namespace Hatchit {
 
     namespace Resource {
 
-        class HT_API Model : public Resource<Model>
+        class HT_API Model : public FileResource<Model>
         {
         public:
             Model(std::string fileName);
 
-            ~Model();
+            virtual ~Model() = default;
         
 			bool VInitFromFile(const std::string& file) override;
 
@@ -38,6 +38,6 @@ namespace Hatchit {
 
         };
 
-        using ModelHandle = Handle<Model>;
+        using ModelHandle = Core::Handle<const Model>;
     }
 }

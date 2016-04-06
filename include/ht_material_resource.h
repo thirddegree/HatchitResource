@@ -7,7 +7,7 @@ namespace Hatchit
 {
     namespace Resource
     {
-        class HT_API Material : public Resource<Material>
+        class HT_API Material : public FileResource<Material>
         {
         public:
             Material(std::string filename);
@@ -22,6 +22,6 @@ namespace Hatchit
             std::vector<std::string> m_textures;
         };
 
-        using MaterialHandle = Handle<Material>;
+        using MaterialHandle = Core::Handle<const Material>;
     }
 }

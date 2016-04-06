@@ -40,7 +40,7 @@ namespace Hatchit {
 
     namespace Resource {
 
-        class HT_API Pipeline : public Resource<Pipeline>
+        class HT_API Pipeline : public FileResource<Pipeline>
         {
         public:
             enum PolygonMode
@@ -119,7 +119,7 @@ namespace Hatchit {
             std::map<ShaderSlot, ShaderHandle> m_csoShaderHandles;
         };
 
-        using PipelineHandle = Handle<Pipeline>;
+        using PipelineHandle = Core::Handle<const Pipeline>;
     }
 
 }

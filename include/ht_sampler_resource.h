@@ -6,7 +6,7 @@ namespace Hatchit
 {
     namespace Resource
     {
-        class HT_API Sampler : public Resource<Sampler>
+        class HT_API Sampler : public FileResource<Sampler>
         {
         public:
             //Enums
@@ -44,6 +44,6 @@ namespace Hatchit
             ColorSpace m_colorSpace;
         };
 
-        using SamplerHandle = Handle<Sampler>;
+        using SamplerHandle = Core::Handle<const Sampler>;
     }
 }

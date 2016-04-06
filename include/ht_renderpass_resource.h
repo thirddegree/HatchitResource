@@ -20,7 +20,7 @@ namespace Hatchit
 {
     namespace Resource
     {
-        class HT_API RenderPass : public Resource<RenderPass>
+        class HT_API RenderPass : public FileResource<RenderPass>
         {
         public:
             RenderPass(std::string name);
@@ -32,6 +32,6 @@ namespace Hatchit
             std::vector<std::string> m_outputPaths;
         };
 
-        using RenderPassHandle = Handle<RenderPass>;
+        using RenderPassHandle = Core::Handle<const RenderPass>;
     }
 }

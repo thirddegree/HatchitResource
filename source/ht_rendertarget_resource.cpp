@@ -6,7 +6,7 @@ namespace Hatchit {
 
         using namespace Core;
 
-        RenderTarget::RenderTarget(std::string filename) : Resource(std::move(filename)) 
+        RenderTarget::RenderTarget(std::string filename) : FileResource(std::move(filename)) 
         {
         }
 

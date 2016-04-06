@@ -6,7 +6,7 @@ namespace Hatchit {
 
     namespace Resource {
 
-        class HT_API RenderTarget : public Resource<RenderTarget>
+        class HT_API RenderTarget : public FileResource<RenderTarget>
         {
         public:
             RenderTarget(std::string filename);
@@ -20,6 +20,6 @@ namespace Hatchit {
             std::string m_format;
         };
 
-        using RenderTargetHandle = Handle<RenderTarget>;
+        using RenderTargetHandle = Core::Handle<RenderTarget>;
     }
 }

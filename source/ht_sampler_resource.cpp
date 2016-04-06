@@ -4,7 +4,7 @@ namespace Hatchit
 {
     namespace Resource
     {
-        Sampler::Sampler(std::string name) : Resource(std::move(name)) {}
+        Sampler::Sampler(std::string name) : FileResource<Sampler>(std::move(name)) {}
 
         bool Sampler::VInitFromFile(const std::string & file)
         {
