@@ -192,7 +192,7 @@ namespace Hatchit {
         template<>
         inline void HT_API ShaderVariableTemplate<Math::Vector4>::SetData(Math::Vector4 data)
         {
-            memcpy(m_data, data.data, sizeof(float) * 4);
+            memcpy(m_data, data.m_data, sizeof(float) * 4);
         }
 
         template <>
@@ -216,7 +216,7 @@ namespace Hatchit {
         template<>
         inline void HT_API ShaderVariableTemplate<Math::Matrix4>::SetData(Math::Matrix4 data)
         {
-            memcpy(this->m_data, data.data, sizeof(float) * 16);
+            memcpy(this->m_data, data.m_data, sizeof(float) * 16);
         }
 
         template <>
