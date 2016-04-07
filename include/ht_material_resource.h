@@ -10,7 +10,7 @@ namespace Hatchit
         class HT_API Material : public FileResource<Material>
         {
         public:
-            Material(std::string filename);
+            Material(std::string ID, const std::string& fileName);
             virtual ~Material() = default;
 
             virtual bool VInitFromFile(const std::string& filename) override;

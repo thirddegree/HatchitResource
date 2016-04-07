@@ -118,7 +118,7 @@ namespace Hatchit {
             };
             static const int MAX_SHADERS = 6;
 
-            Pipeline(std::string name);
+            Pipeline(std::string ID, const std::string& fileName);
             virtual ~Pipeline() {};
             bool VInitFromFile(const std::string& filename) override;
 

@@ -9,7 +9,7 @@ namespace Hatchit {
         class HT_API RenderTarget : public FileResource<RenderTarget>
         {
         public:
-            RenderTarget(std::string filename);
+            RenderTarget(std::string ID, const std::string& fileName);
             virtual ~RenderTarget() = default;
 
             virtual bool VInitFromFile(const std::string& filename) override;

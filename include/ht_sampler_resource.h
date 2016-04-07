@@ -31,7 +31,7 @@ namespace Hatchit
                 LINEAR
             };
 
-            Sampler(std::string name);
+            Sampler(std::string ID, const std::string& fileName);
             virtual ~Sampler() = default;
 
             // Inherited via Resource

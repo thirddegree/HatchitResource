@@ -21,13 +21,22 @@ namespace Hatchit
         public:
             virtual ~FileResource() { };
 
-            static Core::Handle<const ResourceType> GetHandle(const std::string& fileName);
+            template<typename... Args>
+            static Core::Handle<const ResourceType> GetHandle(const std::string& ID, Args&&... args)
+            {
+                Core::Handle<ResourceType> handle = RefCounted::GetHandle(ID, std::forward<Args>(args)...);
+                if (handle.IsValid() /*&& handle->VInitFromFile(ID)*/)
+                    return handle.StaticCastHandle<const ResourceType>();
+                else
+                    return Core::Handle<const ResourceType>();
+            }
+
+            static Core::Handle<const ResourceType> GetHandleFromFileName(const std::string& fileName);
+
         protected:
-            FileResource(std::string fileName);
+            FileResource(std::string ID);
             virtual bool VInitFromFile(const std::string& file) = 0;
         };
-
-        
     }
 }
 

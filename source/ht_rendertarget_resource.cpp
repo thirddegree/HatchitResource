@@ -6,8 +6,25 @@ namespace Hatchit {
 
         using namespace Core;
 
-        RenderTarget::RenderTarget(std::string filename) : FileResource(std::move(filename)) 
+        RenderTarget::RenderTarget(std::string ID, const std::string& fileName) : FileResource(std::move(ID)) 
         {
+            nlohmann::json json;
+            std::ifstream jsonStream(Path::Value(Path::Directory::RenderTargets) + fileName);
+
+            if (jsonStream.is_open())
+            {
+                jsonStream >> json;
+
+                JsonExtractUint32(json, "Width", m_width);
+                JsonExtractUint32(json, "Height", m_height);
+                JsonExtractString(json, "Format", m_format);
+
+                jsonStream.close();
+            }
+            else
+            {
+                DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderTargets) + fileName);
+            }
         }
 
         bool RenderTarget::VInitFromFile(const std::string& filename)

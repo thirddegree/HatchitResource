@@ -26,7 +26,7 @@ namespace Hatchit {
         class HT_API Shader : public FileResource<Shader>
         {
         public:
-            Shader(std::string name);
+            Shader(std::string ID, const std::string& fileName);
             ~Shader();
 
             bool VInitFromFile(const std::string& filename) override;

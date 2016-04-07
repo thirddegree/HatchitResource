@@ -11,13 +11,9 @@ namespace Hatchit
         FileResource<ResourceType>::FileResource(std::string fileName) : Core::RefCounted<ResourceType>(std::move(fileName)) {};
 
         template<typename ResourceType>
-        Core::Handle<const ResourceType> FileResource<ResourceType>::GetHandle(const std::string& fileName)
+        Core::Handle<const ResourceType> FileResource<ResourceType>::GetHandleFromFileName(const std::string& fileName)
         {
-            Core::Handle<ResourceType> handle = RefCounted::GetHandle(fileName);
-            if (handle.IsValid() && handle->VInitFromFile(fileName))
-                return handle.StaticCastHandle<const ResourceType>();
-            else
-                return Core::Handle<const ResourceType>();
+            return GetHandle(fileName, fileName);
         }
     }
 }

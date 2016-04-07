@@ -21,7 +21,46 @@ namespace Hatchit {
 
     namespace Resource {
 
-        Model::Model(std::string fileName) : FileResource<Model>(std::move(fileName)) {}
+        Model::Model(std::string ID, const std::string& fileName) : FileResource<Model>(std::move(ID)) 
+        {
+            Assimp::Importer _importer;
+
+            const aiScene* scene = _importer.ReadFile(Core::Path::Value(Core::Path::Directory::Models) + fileName,
+                aiProcess_CalcTangentSpace |
+                aiProcess_Triangulate |
+                aiProcess_GenNormals |
+                aiProcess_JoinIdenticalVertices |
+                aiProcess_SortByPType |
+                aiProcess_GenUVCoords |
+                aiProcess_TransformUVCoords |
+                aiProcess_FlipUVs);
+            if (!scene)
+            {
+#ifdef _DEBUG
+                Core::DebugPrintF("ASSIMP READ ERROR: %s\n", _importer.GetErrorString());
+#endif
+                return;
+            }
+
+#ifdef _DEBUG
+            Core::DebugPrintF("Assimp Load [%s]\n", fileName);
+            Core::DebugPrintF("[#Meshes]: \t%d\n", scene->mNumMeshes);
+            Core::DebugPrintF("[#Materials]: \t%d\n", scene->mNumMaterials);
+#endif
+            //Load Mesh Data
+            for (uint32_t i = 0; i < scene->mNumMeshes; i++)
+            {
+                aiMesh* mesh = scene->mMeshes[i];
+
+#ifdef _DEBUG
+                Core::DebugPrintF("[Mesh#%d]:\n", i);
+                Core::DebugPrintF("\t[#Vertices]: \t%d\n", mesh->mNumVertices);
+                Core::DebugPrintF("\t[#Faces]: \t%d\n", mesh->mNumFaces);
+                Core::DebugPrintF("\t[#Bones]: \t%d\n", mesh->mNumBones);
+#endif
+                m_meshes.push_back(new Mesh(mesh));
+            }
+        }
 
         bool Model::VInitFromFile(const std::string& file)
         {

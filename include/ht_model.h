@@ -26,7 +26,7 @@ namespace Hatchit {
         class HT_API Model : public FileResource<Model>
         {
         public:
-            Model(std::string fileName);
+            Model(std::string ID, const std::string& fileName);
 
             virtual ~Model() = default;
         

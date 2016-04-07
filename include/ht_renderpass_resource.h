@@ -23,7 +23,7 @@ namespace Hatchit
         class HT_API RenderPass : public FileResource<RenderPass>
         {
         public:
-            RenderPass(std::string name);
+            RenderPass(std::string ID, const std::string& filePath);
             virtual ~RenderPass() = default;
 
             virtual bool VInitFromFile(const std::string& fileName) override;
