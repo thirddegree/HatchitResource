@@ -30,5 +30,18 @@ namespace Hatchit {
             DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderTargets) + filename);
             return false;
         }
+
+        uint32_t RenderTarget::GetWidth() const 
+        {
+            return m_width;
+        }
+        uint32_t RenderTarget::GetHeight() const
+        {
+            return m_height;
+        }
+        std::string RenderTarget::GetFormat() const
+        {
+            return m_format;
+        }
     }
 }
