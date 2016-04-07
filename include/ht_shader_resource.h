@@ -35,7 +35,7 @@ namespace Hatchit {
             size_t GetBytecodeSize() const;
 
         private:
-            BYTE* m_bytecode;
+            BYTE*  m_bytecode;
             size_t m_bytecodeSize;
         };
 

@@ -87,6 +87,26 @@ namespace Hatchit {
                 bool        perSampleShading;   //Shades per sample if true, per fragment if false
             };
 
+            struct InputElement
+            {
+                enum class Format
+                {
+                    R32G32B32_FLOAT,
+                    R32G32B32A32_FLOAT,
+                    UNKNOWN
+                };
+
+                std::string semanticName;
+                uint32_t    semanticIndex;
+                Format      format;
+                uint32_t    slot;
+            };
+
+            struct InputLayout
+            {
+                std::vector<InputElement> elements;
+            };
+
             enum ShaderSlot
             {
                 VERTEX = 0,
@@ -94,15 +114,17 @@ namespace Hatchit {
                 GEOMETRY,
                 TESS_CONTROL,
                 TESS_EVAL,
-                COMPUTE
+                COMPUTE,
             };
+            static const int MAX_SHADERS = 6;
 
             Pipeline(std::string name);
             virtual ~Pipeline() {};
             bool VInitFromFile(const std::string& filename) override;
 
-            const RasterizerState& GetRasterizationState() const;
+            const RasterizerState&  GetRasterizationState() const;
             const MultisampleState& GetMultisampleState() const;
+            const InputLayout&      GetInputLayout() const;
 
             const std::map<std::string, ShaderVariable*>& GetShaderVariables() const;
 
@@ -115,6 +137,7 @@ namespace Hatchit {
         private:
             RasterizerState     m_rasterizationState;
             MultisampleState    m_multisampleState;
+            InputLayout         m_inputLayout;
 
             std::map<std::string, ShaderVariable*>   m_shaderVariables;
 
@@ -123,6 +146,8 @@ namespace Hatchit {
 
             std::map<ShaderSlot, ShaderHandle> m_spvShaderHandles;
             std::map<ShaderSlot, ShaderHandle> m_csoShaderHandles;
+
+            InputElement::Format ParseElementFormatFromString(const std::string& format);
         };
 
         using PipelineHandle = Core::Handle<const Pipeline>;

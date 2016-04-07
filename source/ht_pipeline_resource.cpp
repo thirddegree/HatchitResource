@@ -252,6 +252,24 @@ namespace Hatchit {
                     }
                 }
 
+                /*Extract the InputLayout*/
+                nlohmann::json inputLayout = json["InputLayout"];
+                for (int i = 0; i < inputLayout.size(); i++)
+                {
+                    InputElement element;
+
+                    JsonExtractString(inputLayout[i], "SemanticName", element.semanticName);
+                    JsonExtractUint32(inputLayout[i], "SemanticIndex", element.semanticIndex);
+
+                    std::string format;
+                    JsonExtractString(inputLayout[i], "Format", format);
+                    element.format = ParseElementFormatFromString(format);
+
+                    JsonExtractUint32(inputLayout[i], "Slot", element.slot);
+
+                    m_inputLayout.elements.push_back(element);
+                }
+
                 jsonStream.close();
                 return true;
             }
@@ -260,16 +278,53 @@ namespace Hatchit {
             return false;
         }
 
-        const Pipeline::RasterizerState& Pipeline::GetRasterizationState() const { return m_rasterizationState; }
-        const Pipeline::MultisampleState& Pipeline::GetMultisampleState() const { return m_multisampleState; }
+        const Pipeline::RasterizerState&  Pipeline::GetRasterizationState() const
+        { 
+            return m_rasterizationState;
+        }
 
-        const std::map<std::string, ShaderVariable*>& Pipeline::GetShaderVariables() const { return m_shaderVariables; }
+        const Pipeline::MultisampleState& Pipeline::GetMultisampleState() const 
+        { 
+            return m_multisampleState; 
+        }
 
-        const std::map<Pipeline::ShaderSlot, std::string>& Pipeline::GetSPVShaderPaths() const { return m_spvShaderPaths; }
-        const std::map<Pipeline::ShaderSlot, std::string>& Pipeline::GetCSOShaderPaths() const { return m_csoShaderPaths; }
+        const Pipeline::InputLayout& Pipeline::GetInputLayout() const
+        {
+            return m_inputLayout;
+        }
 
-        const std::map<Pipeline::ShaderSlot, ShaderHandle>& Pipeline::GetSPVShaderHandles() const { return m_spvShaderHandles; }
-        const std::map<Pipeline::ShaderSlot, ShaderHandle>& Pipeline::GetCSOShaderHandles() const { return m_csoShaderHandles; }
+        const std::map<std::string, ShaderVariable*>& Pipeline::GetShaderVariables() const 
+        { 
+            return m_shaderVariables;
+        }
+
+        const std::map<Pipeline::ShaderSlot, std::string>& Pipeline::GetSPVShaderPaths() const
+        { 
+            return m_spvShaderPaths; 
+        }
+        const std::map<Pipeline::ShaderSlot, std::string>& Pipeline::GetCSOShaderPaths() const
+        {
+            return m_csoShaderPaths;
+        }
+
+        const std::map<Pipeline::ShaderSlot, ShaderHandle>& Pipeline::GetSPVShaderHandles() const
+        { 
+            return m_spvShaderHandles;
+        }
+        const std::map<Pipeline::ShaderSlot, ShaderHandle>& Pipeline::GetCSOShaderHandles() const
+        {
+            return m_csoShaderHandles; 
+        }
+
+        Pipeline::InputElement::Format Pipeline::ParseElementFormatFromString(const std::string & format)
+        {
+            if (format == "R32G32B32_FLOAT")
+                return InputElement::Format::R32G32B32_FLOAT;
+            if (format == "R32G32B32A32_FLOAT")
+                return InputElement::Format::R32G32B32A32_FLOAT;
+            
+            return InputElement::Format::UNKNOWN;
+        }
     }
 
 }
