@@ -50,12 +50,18 @@ namespace Hatchit
 			else
 				m_filterMode = Sampler::FilterMode::BILINEAR;
 
-			if (wrapModeString == "REPEAT")
-				m_wrapMode = Sampler::WrapMode::REPEAT;
+			if (wrapModeString == "WRAP")
+				m_wrapMode = Sampler::WrapMode::WRAP;
 			else if (wrapModeString == "CLAMP")
 				m_wrapMode = Sampler::WrapMode::CLAMP;
+			else if (wrapModeString == "BORDER")
+				m_wrapMode = Sampler::WrapMode::BORDER;
+			else if (wrapModeString == "MIRROR")
+				m_wrapMode = Sampler::WrapMode::MIRROR;
+			else if (wrapModeString == "MIRROR_ONCE")
+				m_wrapMode = Sampler::WrapMode::MIRROR_ONCE;
 			else
-				m_wrapMode = Sampler::WrapMode::REPEAT;
+				m_wrapMode = Sampler::WrapMode::WRAP;
 
 			if (colorSpaceString == "LINEAR")
 				m_colorSpace = Sampler::ColorSpace::LINEAR;
