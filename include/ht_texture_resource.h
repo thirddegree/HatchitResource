@@ -22,10 +22,10 @@ namespace Hatchit
         class HT_API Texture : public FileResource<Texture>
         {
         public:
-            Texture(std::string name);
+            Texture(std::string ID, const std::string& fileName);
             virtual ~Texture() = default;
 
-            bool VInitFromFile(const std::string& file) override;
+            bool VInitFromFile(const std::string& file);
 
             uint32_t GetWidth() const;
             uint32_t GetHeight() const;

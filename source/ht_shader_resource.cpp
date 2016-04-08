@@ -19,10 +19,32 @@ namespace Hatchit {
 
     namespace Resource {
 
-        Shader::Shader(std::string name) : FileResource<Shader>(std::move(name)) 
+        Shader::Shader(std::string ID, const std::string& fileName) : FileResource<Shader>(std::move(ID)), m_bytecode(nullptr), m_bytecodeSize(0)
         {
-            m_bytecode = nullptr;
-            m_bytecodeSize = 0;
+            if (fileName.empty())
+                return;
+
+            Core::File file;
+            try
+            {
+                file.Open(Core::Path::Value(Core::Path::Directory::Shaders) + fileName, Core::FileMode::ReadBinary);
+            }
+            catch (std::exception)
+            {
+                HT_DEBUG_PRINTF("Failed to open Shader file: %s\n", fileName);
+                return;
+            }
+
+            m_bytecodeSize = file.SizeBytes();
+            assert(m_bytecodeSize != 0);
+            if (m_bytecodeSize == 0)
+                return;
+
+            m_bytecode = new BYTE[m_bytecodeSize]; //Can't create new void* but we can create BYTEs
+
+            file.Read(m_bytecode, m_bytecodeSize);
+
+            return;
         }
         Shader::~Shader() 
         {

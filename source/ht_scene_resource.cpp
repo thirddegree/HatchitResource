@@ -19,9 +19,34 @@
 
 #include <stdexcept>
 
-namespace Hatchit {
-    namespace Resource {
-        Scene::Scene(std::string name) : FileResource<Scene>(std::move(name)){}
+namespace Hatchit
+{
+    namespace Resource
+    {
+        Scene::Scene(std::string ID, const std::string& fileName) : FileResource<Scene>(std::move(ID))
+        {
+            try
+            {
+                Core::File f;
+                std::string file_contents;
+
+                f.Open(Core::Path::Value(Core::Path::Directory::Scenes) + fileName, Core::FileMode::ReadText);
+
+                file_contents.resize(f.SizeBytes());
+                f.Read(reinterpret_cast<BYTE*>(&file_contents[0]), file_contents.size());
+
+                m_sceneDescription = nlohmann::json::parse(file_contents);
+            }
+            catch (Core::FileException e)
+            {
+                HT_DEBUG_PRINTF("There was a problem accessing JSON file %s!\nError: %s\n", fileName, e.what());
+                return;
+            }
+            catch (std::invalid_argument e)
+            {
+                HT_DEBUG_PRINTF("There was a problem parsing JSON file %s!\nError: %s\n", fileName, e.what());
+            }
+        }
 
         bool Scene::VInitFromFile(const std::string& file)
         {

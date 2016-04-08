@@ -26,11 +26,11 @@ namespace Hatchit {
         class HT_API Model : public FileResource<Model>
         {
         public:
-            Model(std::string fileName);
+            Model(std::string ID, const std::string& fileName);
 
             virtual ~Model() = default;
         
-			bool VInitFromFile(const std::string& file) override;
+			bool VInitFromFile(const std::string& file);
 
             const std::vector<Mesh*>& GetMeshes() const;
         private:
