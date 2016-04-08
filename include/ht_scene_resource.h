@@ -30,7 +30,7 @@ namespace Hatchit {
             Scene(Scene&& rhs) = default;
             Scene& operator=(Scene&& rhs) = default;
 
-            virtual bool VInitFromFile(const std::string& file) override;
+            bool VInitFromFile(const std::string& file);
 
             const nlohmann::json& GetSceneDescription(void) const;
         private:

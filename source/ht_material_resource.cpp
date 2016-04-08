@@ -89,6 +89,11 @@ namespace Hatchit
                     }
                 }
 
+                //Extract texture paths
+                nlohmann::json textures = json["Textures"];
+                for (size_t i = 0; i < textures.size(); i++)
+                    m_texturePaths.push_back(textures[i]);
+
                 jsonStream.close();
             }
             else

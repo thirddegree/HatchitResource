@@ -30,6 +30,9 @@ namespace Hatchit {
             {
                 jsonStream >> json;
 
+                //Extract render pass path
+                JsonExtractString(json, "RenderPass", m_renderPassPath);
+
                 //Extract shaders
                 nlohmann::json shaderPaths = json["Shaders"];
                 nlohmann::json spvShaders = shaderPaths["spv"];
