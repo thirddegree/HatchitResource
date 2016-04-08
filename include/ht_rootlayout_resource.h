@@ -107,7 +107,7 @@ namespace Hatchit
 				Data			data;
 			};
 
-			RootLayout(std::string name);
+			RootLayout(std::string ID, const std::string& fileName);
 
 			virtual ~RootLayout() = default;
 
@@ -116,7 +116,7 @@ namespace Hatchit
 			RootDescriptorFlags				GetDescriptorFlags() const;
 			const std::vector<Parameter>&	GetParameters() const;
 
-			virtual bool VInitFromFile(const std::string& fileName) override;
+			virtual bool VInitFromFile(const std::string& fileName);
 
 		private:
 			uint32_t				m_parameterCount;

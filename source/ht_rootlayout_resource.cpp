@@ -21,10 +21,65 @@ namespace Hatchit
 	{
 		using namespace Core;
 
-		RootLayout::RootLayout(std::string name)
-			: FileResource<RootLayout>(std::move(name))
+		RootLayout::RootLayout(std::string ID, const std::string& fileName)
+			: FileResource<RootLayout>(std::move(ID))
 		{
+			nlohmann::json json;
 
+			std::ifstream jsonStream(Path::Value(Path::Directory::Assets) + fileName);
+
+			if (jsonStream.is_open())
+			{
+				jsonStream >> json;
+
+				JsonExtractUint32(json, "ParameterCount", m_parameterCount);
+
+				nlohmann::json parameters = json["Parameters"];
+				for (int i = 0; i < m_parameterCount; i++)
+				{
+					std::string type;
+					JsonExtractString(parameters[i], "Type", type);
+
+					Parameter p;
+					p.type = ParameterTypeFromString(type);
+					switch (p.type)
+					{
+						//Initialize parameter as table
+					case RootLayout::Parameter::Type::TABLE:
+					{
+						DescriptorTable table;
+						JsonExtractUint32(parameters[i], "RangeCount", table.rangeCount);
+						nlohmann::json ranges = parameters[i]["Ranges"];
+						for (int j = 0; j < ranges.size(); j++)
+						{
+							//Load table ranges
+							std::string rangeType;
+							JsonExtractString(ranges[j], "Type", rangeType);
+
+							Range range;
+							range.type = RangeTypeFromString(rangeType);
+							JsonExtractUint32(ranges[j], "DescriptorCount", range.numDescriptors);
+							JsonExtractUint32(ranges[j], "BaseRegister", range.baseRegister);
+							JsonExtractUint32(ranges[j], "RegisterSpace", range.registerSpace);
+
+							table.ranges.push_back(range);
+						}
+
+						p.data.table = table;
+					} break;
+
+					default:
+						break;
+					}
+
+					std::string visibility;
+					JsonExtractString(parameters[i], "Visibility", visibility);
+					p.visibility = ParameterVisibilityFromString(visibility);
+
+					m_parameters.push_back(p);
+				}
+			}
+				
 		}
 
 		bool RootLayout::VInitFromFile(const std::string& fileName)
