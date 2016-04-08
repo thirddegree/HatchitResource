@@ -24,125 +24,61 @@ namespace Hatchit
     {
 		using namespace Core;
 
-        Sampler::Sampler(std::string ID, const std::string& fileName) : FileResource<Sampler>(std::move(ID))
+        MutableSampler::MutableSampler(std::string ID, const std::string& fileName)
+            : FileResource<MutableSampler>(std::move(ID))
         {
             nlohmann::json json;
             std::ifstream jsonStream(Path::Value(Path::Directory::Samplers) + fileName);
-
-            std::string filterModeString;
-            std::string wrapModeString;
-            std::string colorSpaceString;
 
             if (jsonStream.is_open())
             {
                 jsonStream >> json;
 
-                JsonExtractString(json, "FilterMode", filterModeString);
-                JsonExtractString(json, "WrapMode", wrapModeString);
-                JsonExtractString(json, "ColorSpace", colorSpaceString);
+                //Parse Filter
+                auto filter = json["Filter"];
+                std::string minFilter;
+                std::string magFilter;
+                JsonExtractString(filter, "Mag", magFilter);
+                JsonExtractString(filter, "Min", minFilter);
+                m_filter.mag = SamplerFilterModeFromString(magFilter);
+                m_filter.min = SamplerFilterModeFromString(minFilter);
+
+                //Parse Address
+                auto address = json["Address"];
+                std::string uMode;
+                std::string vMode;
+                std::string wMode;
+                JsonExtractString(address, "U", uMode);
+                JsonExtractString(address, "V", vMode);
+                JsonExtractString(address, "W", wMode);
+                m_address.u = SamplerAddressModeFromString(uMode);
+                m_address.v = SamplerAddressModeFromString(vMode);
+                m_address.w = SamplerAddressModeFromString(wMode);
+
+
+                JsonExtractFloat(json, "MipLODBias", m_mipLODBias);
+                JsonExtractFloat(json, "MinLOD", m_minLOD);
+                JsonExtractFloat(json, "MaxLOD", m_maxLOD);
+                JsonExtractUint32(json, "MaxAnisotropy", m_maxAnisotropy);
+
+                std::string compareOp;
+                JsonExtractString(json, "CompareOp", compareOp);
+                m_compareOp = SamplerCompareOpFromString(compareOp);
+
+                std::string borderColor;
+                JsonExtractString(json, "BorderColor", borderColor);
+                m_borderColor = SamplerBorderColorFromString(borderColor);
+
+                std::string colorSpace;
+                JsonExtractString(json, "ColorSpace", colorSpace);
+                m_colorSpace = SamplerColorSpaceFromString(colorSpace);
 
                 jsonStream.close();
             }
-            else
-            {
-                return;
-            }
-
-            //Make everything upper case
-            std::transform(filterModeString.begin(), filterModeString.end(), filterModeString.begin(), ::toupper);
-            std::transform(wrapModeString.begin(), wrapModeString.end(), wrapModeString.begin(), ::toupper);
-            std::transform(colorSpaceString.begin(), colorSpaceString.end(), colorSpaceString.begin(), ::toupper);
-
-            if (filterModeString == "BILINEAR")
-                m_filterMode = Sampler::FilterMode::BILINEAR;
-            else if (filterModeString == "NEAREST")
-                m_filterMode = Sampler::FilterMode::NEAREST;
-            else
-                m_filterMode = Sampler::FilterMode::BILINEAR;
-
-            if (wrapModeString == "WRAP")
-                m_wrapMode = Sampler::WrapMode::WRAP;
-            else if (wrapModeString == "CLAMP")
-                m_wrapMode = Sampler::WrapMode::CLAMP;
-            else if (wrapModeString == "BORDER")
-                m_wrapMode = Sampler::WrapMode::BORDER;
-            else if (wrapModeString == "MIRROR")
-                m_wrapMode = Sampler::WrapMode::MIRROR;
-            else if (wrapModeString == "MIRROR_ONCE")
-                m_wrapMode = Sampler::WrapMode::MIRROR_ONCE;
-            else
-                m_wrapMode = Sampler::WrapMode::WRAP;
-
-            if (colorSpaceString == "LINEAR")
-                m_colorSpace = Sampler::ColorSpace::LINEAR;
-            else if (colorSpaceString == "GAMMA")
-                m_colorSpace = Sampler::ColorSpace::GAMMA;
-            else
-                m_colorSpace = Sampler::ColorSpace::LINEAR;
+           
 		}
 
-        bool Sampler::VInitFromFile(const std::string & filename)
-        {
-			nlohmann::json json;
-			std::ifstream jsonStream(Path::Value(Path::Directory::Samplers) + filename);
-
-			std::string filterModeString;
-			std::string wrapModeString;
-			std::string colorSpaceString;
-
-			if (jsonStream.is_open())
-			{
-				jsonStream >> json;
-
-				JsonExtractString(json, "FilterMode", filterModeString);
-				JsonExtractString(json, "WrapMode", wrapModeString);
-				JsonExtractString(json, "ColorSpace", colorSpaceString);
-
-				jsonStream.close();
-			}
-			else
-			{
-				return false;
-			}
-
-			//Make everything upper case
-			std::transform(filterModeString.begin(), filterModeString.end(), filterModeString.begin(), ::toupper);
-			std::transform(wrapModeString.begin(), wrapModeString.end(), wrapModeString.begin(), ::toupper);
-			std::transform(colorSpaceString.begin(), colorSpaceString.end(), colorSpaceString.begin(), ::toupper);
-
-			if (filterModeString == "BILINEAR")
-				m_filterMode = Sampler::FilterMode::BILINEAR;
-			else if (filterModeString == "NEAREST")
-				m_filterMode = Sampler::FilterMode::NEAREST;
-			else
-				m_filterMode = Sampler::FilterMode::BILINEAR;
-
-			if (wrapModeString == "WRAP")
-				m_wrapMode = Sampler::WrapMode::WRAP;
-			else if (wrapModeString == "CLAMP")
-				m_wrapMode = Sampler::WrapMode::CLAMP;
-			else if (wrapModeString == "BORDER")
-				m_wrapMode = Sampler::WrapMode::BORDER;
-			else if (wrapModeString == "MIRROR")
-				m_wrapMode = Sampler::WrapMode::MIRROR;
-			else if (wrapModeString == "MIRROR_ONCE")
-				m_wrapMode = Sampler::WrapMode::MIRROR_ONCE;
-			else
-				m_wrapMode = Sampler::WrapMode::WRAP;
-
-			if (colorSpaceString == "LINEAR")
-				m_colorSpace = Sampler::ColorSpace::LINEAR;
-			else if (colorSpaceString == "GAMMA")
-				m_colorSpace = Sampler::ColorSpace::GAMMA;
-			else
-				m_colorSpace = Sampler::ColorSpace::LINEAR;
-
-            return true;
-        }
-
-        Sampler::FilterMode Sampler::GetFilterMode() const { return m_filterMode; }
-        Sampler::WrapMode Sampler::GetWrapMode() const { return m_wrapMode; }
-        Sampler::ColorSpace Sampler::GetColorSpace() const { return m_colorSpace; }
+        
     }
 }
 
