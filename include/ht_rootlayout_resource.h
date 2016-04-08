@@ -25,6 +25,17 @@ namespace Hatchit
 		{
 		public:
 
+            enum class ShaderVisibility
+            {
+                UNKNOWN,
+                ALL,
+                VERTEX,
+                TESS_CONTROL,
+                TESS_EVAL,
+                GEOMETRY,
+                FRAGMENT
+            };
+
 			enum Flags
 			{
 				LAYOUT_FLAG_NONE = 0,
@@ -73,6 +84,79 @@ namespace Hatchit
 				uint32_t registerSpace;
 			};
 
+            struct Sampler
+            {
+                struct Immutable
+                {
+                    uint32_t            shaderRegister;
+                    uint32_t            registerSpace;
+                    ShaderVisibility    visibility;
+                };
+
+                enum AddressMode
+                {
+                    WRAP,
+                    CLAMP,
+                    BORDER,
+                    MIRROR,
+                    MIRROR_ONCE
+                };
+
+                enum CompareOperation
+                {
+                    COMPARE_OP_NEVER = 0,
+                    COMPARE_OP_LESS,
+                    COMPARE_OP_EQUAL,
+                    COMPARE_OP_LESS_EQUAL,
+                    COMPARE_OP_GREATER,
+                    COMPARE_OP_NOT_EQUAL,
+                    COMPARE_OP_GREATER_EQUAL,
+                    COMPARE_OP_ALWAYS
+                };
+
+                enum FilterMode
+                {
+                    NEAREST,
+                    BILINEAR
+                };
+                
+                enum BorderColor
+                {
+                    COLOR_TRANSPARENT_BLACK,
+                    COLOR_OPAQUE_BLACK,
+                    COLOR_OPAQUE_WHITE
+                };
+
+                enum ColorSpace
+                {
+                    GAMMA,
+                    LINEAR
+                };
+
+                struct Address
+                {
+                    AddressMode u;
+                    AddressMode v;
+                    AddressMode w;
+                };
+
+                struct Filter
+                {
+                    FilterMode min;
+                    FilterMode mag;
+                };
+
+                Address             address;
+                Filter              filter;
+                float               mipLODBias;
+                float               minLOD;
+                float               maxLOD;
+                uint32_t            maxAnisotropy;
+                CompareOperation    compareOp;
+                BorderColor         borderColor;
+                Immutable           immutable;
+            };
+
 			struct Parameter
 			{
 				struct Data
@@ -92,20 +176,11 @@ namespace Hatchit
 					UNORDERED_ACCESS
 				};
 
-				enum class Visibility
-				{
-					UNKNOWN,
-					ALL,
-					VERTEX,
-					TESS_CONTROL,
-					TESS_EVAL,
-					GEOMETRY,
-					FRAGMENT
-				};
+				
 
-				Type			type;
-				Visibility		visibility;
-				Data			data;
+				Type			        type;
+				ShaderVisibility		visibility;
+				Data			        data;
 			};
 
 			RootLayout(std::string ID, const std::string& fileName);
@@ -116,19 +191,25 @@ namespace Hatchit
 			uint32_t						GetParameterCount() const;
 			Core::BitField<Flags>			GetDescriptorFlags() const;
 			const std::vector<Parameter>&	GetParameters() const;
+            const std::vector<Sampler>&     GetSamplers() const;
 
-			virtual bool VInitFromFile(const std::string& fileName);
 
 		private:
 			uint32_t				m_parameterCount;
 			std::vector<Parameter>	m_parameters;
+            std::vector<Sampler>    m_samplers;
 			Core::BitField<Flags>   m_flags;
 
 
-			Flags					FlagFromString(std::string s);
-			Parameter::Visibility	ParameterVisibilityFromString(std::string s);
-			Parameter::Type			ParameterTypeFromString(std::string s);
-			Range::Type				RangeTypeFromString(std::string s);
+			Flags					    FlagFromString(std::string s);
+            Sampler::FilterMode         SamplerFilterModeFromString(std::string s);
+            Sampler::AddressMode        SamplerAddressModeFromString(std::string s);
+            Sampler::ColorSpace         SamplerColorSpaceFromString(std::string s);
+            Sampler::CompareOperation   SamplerCompareOpFromString(std::string s);
+            Sampler::BorderColor        SamplerBorderColorFromString(std::string s);
+			ShaderVisibility	        ParameterVisibilityFromString(std::string s);
+			Parameter::Type			    ParameterTypeFromString(std::string s);
+			Range::Type				    RangeTypeFromString(std::string s);
 		};
 
 		using RootLayoutHandle = Core::Handle<const RootLayout>;
