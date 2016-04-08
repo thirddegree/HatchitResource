@@ -1,6 +1,10 @@
 /**
 **    Hatchit Engine
+<<<<<<< Updated upstream
 **    Copyright(c) 2015 Third-Degree
+=======
+**    Copyright(c) 2015-2016 ThirdDegree
+>>>>>>> Stashed changes
 **
 **    GNU Lesser General Public License
 **    This file may be used under the terms of the GNU Lesser
