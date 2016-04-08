@@ -45,11 +45,11 @@ namespace Hatchit
                 LINEAR
             };
 
-            Sampler(std::string name);
+            Sampler(std::string ID, const std::string& fileName);
             virtual ~Sampler() = default;
 
             // Inherited via Resource
-            virtual bool VInitFromFile(const std::string & file) override;
+            virtual bool VInitFromFile(const std::string & file);
 
             FilterMode GetFilterMode() const;
             WrapMode GetWrapMode() const;
