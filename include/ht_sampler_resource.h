@@ -12,11 +12,11 @@ namespace Hatchit
             //Enums
             enum WrapMode
             {
-				WRAP,
+                WRAP,
                 CLAMP,
-				BORDER,
-				MIRROR,
-				MIRROR_ONCE
+                BORDER,
+                MIRROR,
+                MIRROR_ONCE
             };
 
             enum FilterMode

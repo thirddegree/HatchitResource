@@ -122,6 +122,8 @@ namespace Hatchit {
             virtual ~Pipeline() {};
             bool VInitFromFile(const std::string& filename) override;
 
+            const std::string& GetRenderPassPath() const;
+
             const RasterizerState&  GetRasterizationState() const;
             const MultisampleState& GetMultisampleState() const;
             const InputLayout&      GetInputLayout() const;
@@ -135,6 +137,8 @@ namespace Hatchit {
             const std::map<ShaderSlot, ShaderHandle>& GetCSOShaderHandles() const;
 
         private:
+            std::string m_renderPassPath;
+
             RasterizerState     m_rasterizationState;
             MultisampleState    m_multisampleState;
             InputLayout         m_inputLayout;

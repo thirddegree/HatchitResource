@@ -32,6 +32,9 @@ namespace Hatchit {
             {
                 jsonStream >> json;
 
+                //Extract render pass path
+                JsonExtractString(json, "RenderPass", m_renderPassPath);
+
                 //Extract shaders
                 nlohmann::json shaderPaths = json["Shaders"];
                 nlohmann::json spvShaders = shaderPaths["spv"];
@@ -276,6 +279,11 @@ namespace Hatchit {
 
             DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Pipelines) + filename);
             return false;
+        }
+
+        const std::string& Pipeline::GetRenderPassPath() const 
+        {
+            return m_renderPassPath;
         }
 
         const Pipeline::RasterizerState&  Pipeline::GetRasterizationState() const

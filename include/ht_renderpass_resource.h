@@ -27,6 +27,10 @@ namespace Hatchit
             virtual ~RenderPass() = default;
 
             virtual bool VInitFromFile(const std::string& fileName) override;
+
+            std::vector<std::string> GetInputPaths() const;
+            std::vector<std::string> GetOutputPaths() const;
+
         private:
             std::vector<std::string> m_inputPaths;
             std::vector<std::string> m_outputPaths;

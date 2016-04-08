@@ -22,7 +22,6 @@ namespace Hatchit
 
             const BYTE* GetData() const;
 
-
         private:
             uint32_t m_width;
             uint32_t m_height;

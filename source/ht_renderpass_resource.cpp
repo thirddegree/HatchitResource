@@ -51,5 +51,8 @@ namespace Hatchit
             DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderPasses) + filename);
             return false;
         }
+
+        std::vector<std::string> RenderPass::GetInputPaths() const { return m_inputPaths; }
+        std::vector<std::string> RenderPass::GetOutputPaths() const { return m_outputPaths; }
     }
 }
