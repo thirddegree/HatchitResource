@@ -15,6 +15,7 @@
 #pragma once
 
 #include <ht_resource.h>
+#include <ht_bitfield.h>
 
 namespace Hatchit
 {
@@ -24,16 +25,16 @@ namespace Hatchit
         {
         public:
 
-            enum RootDescriptorFlags
+            enum Flags
             {
-                DESCRIPTOR_FLAG_NONE = 0,
-                DESCRIPTOR_ALLOW_INPUT_ASSEMLBER_INPUT_LAYOUT,
-                DESCRIPTOR_DENY_VERTEX_SHADER_ROOT_ACCESS,
-                DESCRIPTOR_DENY_TESSELATION_CONTROL_SHADER_ROOT_ACCESS,
-                DESCRIPTOR_DENY_TESSELATION_EVAL_SHADER_ROOT_ACCESS,
-                DESCRIPTOR_DENY_GEOMETRY_SHADER_ROOT_ACCESS,
-                DESCRIPTOR_DENY_FRAGMENT_SHADER_ROOT_ACCESS0,
-                DESCRIPTOR_ALLOW_STREAM_OUTPUT
+                LAYOUT_FLAG_NONE = 0,
+                LAYOUT_ALLOW_INPUT_ASSEMLBER_INPUT_LAYOUT = 1 << 1,
+                LAYOUT_DENY_VERTEX_SHADER_ROOT_ACCESS = 1 << 2,
+                LAYOUT_DENY_TESS_CONTROL_SHADER_ROOT_ACCESS = 1 << 3,
+                LAYOUT_DENY_TESS_EVAL_SHADER_ROOT_ACCESS = 1 << 4,
+                LAYOUT_DENY_GEOMETRY_SHADER_ROOT_ACCESS = 1 << 5,
+                LAYOUT_DENY_FRAGMENT_SHADER_ROOT_ACCESS = 1 << 6,
+                LAYOUT_ALLOW_STREAM_OUTPUT = 1 << 7
             };
 
             struct Range
@@ -112,19 +113,20 @@ namespace Hatchit
             virtual ~RootLayout() = default;
 
 
-            uint32_t                        GetParameterCount() const;
-            RootDescriptorFlags             GetDescriptorFlags() const;
-            const std::vector<Parameter>&   GetParameters() const;
+            uint32_t						GetParameterCount() const;
+            Core::BitField<Flags>			GetDescriptorFlags() const;
+            const std::vector<Parameter>&	GetParameters() const;
 
             virtual bool VInitFromFile(const std::string& fileName);
 
         private:
-            uint32_t                m_parameterCount;
-            std::vector<Parameter>  m_parameters;
-            RootDescriptorFlags     m_flags;
+            uint32_t				m_parameterCount;
+            std::vector<Parameter>	m_parameters;
+            Core::BitField<Flags>   m_flags;
 
 
-            Parameter::Visibility   ParameterVisibilityFromString(std::string s);
+            Flags					FlagFromString(std::string s);
+            Parameter::Visibility	ParameterVisibilityFromString(std::string s);
             Parameter::Type			ParameterTypeFromString(std::string s);
             Range::Type				RangeTypeFromString(std::string s);
         };

@@ -34,6 +34,12 @@ namespace Hatchit
 
 				JsonExtractUint32(json, "ParameterCount", m_parameterCount);
 
+				nlohmann::json flags = json["Flags"];
+				for (auto flag : flags)
+				{
+					m_flags |= FlagFromString(flag);
+				}
+
 				nlohmann::json parameters = json["Parameters"];
 				for (int i = 0; i < m_parameterCount; i++)
 				{
@@ -93,6 +99,8 @@ namespace Hatchit
 				jsonStream >> json;
 
 				JsonExtractUint32(json, "ParameterCount", m_parameterCount);
+
+				
 				
 				nlohmann::json parameters = json["Parameters"];
 				for (int i = 0; i < m_parameterCount; i++)
@@ -102,6 +110,7 @@ namespace Hatchit
 
 					Parameter p;
 					p.type = ParameterTypeFromString(type);
+					
 					switch (p.type)
 					{
 						//Initialize parameter as table
@@ -150,7 +159,7 @@ namespace Hatchit
 			return m_parameterCount;
 		}
 		
-		RootLayout::RootDescriptorFlags RootLayout::GetDescriptorFlags() const
+		Core::BitField<RootLayout::Flags> RootLayout::GetDescriptorFlags() const
 		{
 			return m_flags;
 		}
@@ -216,6 +225,30 @@ namespace Hatchit
 				visibility = RootLayout::Parameter::Visibility::UNKNOWN;
 
 			return visibility;
+		}
+
+		RootLayout::Flags RootLayout::FlagFromString(std::string s)
+		{
+			Flags f = LAYOUT_FLAG_NONE;
+
+			if (s == "LAYOUT_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT")
+				f = LAYOUT_ALLOW_INPUT_ASSEMLBER_INPUT_LAYOUT;
+			else if (s == "LAYOUT_DENY_VERTEX_SHADER_ROOT_ACCESS")
+				f = LAYOUT_DENY_VERTEX_SHADER_ROOT_ACCESS;
+			else if (s == "LAYOUT_DENY_TESS_CONTROL_SHADER_ROOT_ACCESS")
+				f = LAYOUT_DENY_TESS_CONTROL_SHADER_ROOT_ACCESS;
+			else if (s == "LAYOUT_DENY_TESS_EVAL_SHADER_ROOT_ACCESS")
+				f = LAYOUT_DENY_TESS_EVAL_SHADER_ROOT_ACCESS;
+			else if (s == "LAYOUT_DENY_GEOMETRY_SHADER_ROOT_ACCESS")
+				f = LAYOUT_DENY_GEOMETRY_SHADER_ROOT_ACCESS;
+			else if (s == "LAYOUT_DENY_FRAGMENT_SHADER_ROOT_ACCESS")
+				f = LAYOUT_DENY_FRAGMENT_SHADER_ROOT_ACCESS;
+			else if (s == "LAYOUT_ALLOW_STREAM_OUTPUT")
+				f = LAYOUT_ALLOW_STREAM_OUTPUT;
+			else
+				f = LAYOUT_FLAG_NONE;
+
+			return f;
 		}
 	}
 }
