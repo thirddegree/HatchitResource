@@ -21,7 +21,9 @@ namespace Hatchit {
         //Required for JsonExtractString etc.
         using namespace Core;
 
-        Pipeline::Pipeline(std::string ID, const std::string& fileName) : FileResource<Pipeline>(std::move(ID)) 
+        Pipeline::Pipeline(std::string ID) : FileResource<Pipeline>(std::move(ID)) {}
+
+        bool Pipeline::Initialize(const std::string& fileName)
         {
             nlohmann::json json;
             std::ifstream jsonStream(Path::Value(Path::Directory::Pipelines) + fileName);
@@ -272,10 +274,12 @@ namespace Hatchit {
                 }
 
                 jsonStream.close();
+                return true;
             }
             else
             {
                 DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Pipelines) + fileName);
+                return false;
             }
         }
 

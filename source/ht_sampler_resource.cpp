@@ -24,7 +24,9 @@ namespace Hatchit
     {
 		using namespace Core;
 
-        Sampler::Sampler(std::string ID, const std::string& fileName) : FileResource<Sampler>(std::move(ID))
+        Sampler::Sampler(std::string ID) : FileResource<Sampler>(std::move(ID)) {}
+
+        bool Sampler::Initialize(const std::string& fileName)
         {
             nlohmann::json json;
             std::ifstream jsonStream(Path::Value(Path::Directory::Samplers) + fileName);
@@ -45,7 +47,7 @@ namespace Hatchit
             }
             else
             {
-                return;
+                return false;
             }
 
             //Make everything upper case
@@ -79,6 +81,8 @@ namespace Hatchit
                 m_colorSpace = Sampler::ColorSpace::GAMMA;
             else
                 m_colorSpace = Sampler::ColorSpace::LINEAR;
+
+            return true;
 		}
 
         bool Sampler::VInitFromFile(const std::string & filename)

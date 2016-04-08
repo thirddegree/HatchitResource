@@ -20,7 +20,9 @@ namespace Hatchit
     {
         using namespace Core;
 
-        Material::Material(std::string ID, const std::string& fileName) : FileResource<Material>(std::move(ID))
+        Material::Material(std::string ID) : FileResource<Material>(std::move(ID)) {}
+
+        bool Material::Initialize(const std::string& fileName)
         {
             nlohmann::json json;
             std::ifstream jsonStream(Path::Value(Path::Directory::Materials) + fileName);
@@ -95,10 +97,12 @@ namespace Hatchit
                     m_texturePaths.push_back(textures[i]);
 
                 jsonStream.close();
+                return true;
             }
             else
             {
                 DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Materials) + fileName);
+                return false;
             }
         }
 

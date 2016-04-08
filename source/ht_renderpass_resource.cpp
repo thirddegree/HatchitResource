@@ -19,7 +19,9 @@ namespace Hatchit
     {
         using namespace Core;
 
-        RenderPass::RenderPass(std::string ID, const std::string& fileName) : FileResource<RenderPass>(std::move(ID))
+        RenderPass::RenderPass(std::string ID) : FileResource<RenderPass>(std::move(ID)) {}
+
+        bool RenderPass::Initialize(const std::string& fileName)
         {
             nlohmann::json json;
             std::ifstream jsonStream(Path::Value(Path::Directory::RenderPasses) + fileName);
@@ -43,10 +45,12 @@ namespace Hatchit
                 }
 
                 jsonStream.close();
+                return true;
             }
             else
             {
                 DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderPasses) + fileName);
+                return false;
             }
         }
 

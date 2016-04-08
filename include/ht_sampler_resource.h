@@ -45,8 +45,12 @@ namespace Hatchit
                 LINEAR
             };
 
-            Sampler(std::string ID, const std::string& fileName);
+            Sampler(std::string ID);
+
             virtual ~Sampler() = default;
+
+            //Required function for all RefCounted classes
+            bool Initialize(const std::string& fileName);
 
             // Inherited via Resource
             virtual bool VInitFromFile(const std::string & file);

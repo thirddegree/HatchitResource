@@ -23,7 +23,9 @@ namespace Hatchit
 {
     namespace Resource
     {
-        Scene::Scene(std::string ID, const std::string& fileName) : FileResource<Scene>(std::move(ID))
+        Scene::Scene(std::string ID) : FileResource<Scene>(std::move(ID)) {}
+
+        bool Scene::Initialize(const std::string& fileName)
         {
             try
             {
@@ -40,12 +42,14 @@ namespace Hatchit
             catch (Core::FileException e)
             {
                 HT_DEBUG_PRINTF("There was a problem accessing JSON file %s!\nError: %s\n", fileName, e.what());
-                return;
+                return false;
             }
             catch (std::invalid_argument e)
             {
                 HT_DEBUG_PRINTF("There was a problem parsing JSON file %s!\nError: %s\n", fileName, e.what());
+                return false;
             }
+            return true;
         }
 
         bool Scene::VInitFromFile(const std::string& file)
