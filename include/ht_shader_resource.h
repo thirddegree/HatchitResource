@@ -26,8 +26,11 @@ namespace Hatchit {
         class HT_API Shader : public FileResource<Shader>
         {
         public:
-            Shader(std::string ID, const std::string& fileName);
+            Shader(std::string ID);
             ~Shader();
+
+            //Required function for all RefCounted classes
+            bool Initialize(const std::string& fileName);
 
             bool VInitFromFile(const std::string& filename);
 

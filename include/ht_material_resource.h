@@ -31,8 +31,11 @@ namespace Hatchit
         class HT_API Material : public FileResource<Material>
         {
         public:
-            Material(std::string ID, const std::string& fileName);
+            Material(std::string ID);
             virtual ~Material() = default;
+
+            //Required function for all RefCounted classes
+            bool Initialize(const std::string& fileName);
 
             const std::string& GetPipelinePath() const;
             const std::string& GetRenderPassPath() const;

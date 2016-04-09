@@ -22,8 +22,10 @@ namespace Hatchit
     {
         using namespace Core;
 
-        RootLayout::RootLayout(std::string ID, const std::string& fileName)
-            : FileResource<RootLayout>(std::move(ID))
+		RootLayout::RootLayout(std::string ID)
+            : FileResource<RootLayout>(std::move(ID)) {}
+
+        bool RootLayout::Initialize(const std::string& fileName)
         {
             nlohmann::json json;
 
@@ -67,12 +69,12 @@ namespace Hatchit
                     _sampler.m_address.v = Sampler::SamplerAddressModeFromString(vMode);
                     _sampler.m_address.w = Sampler::SamplerAddressModeFromString(wMode);
 
-                    
+
                     JsonExtractFloat(sampler, "MipLODBias", _sampler.m_mipLODBias);
                     JsonExtractFloat(sampler, "MinLOD", _sampler.m_minLOD);
                     JsonExtractFloat(sampler, "MaxLOD", _sampler.m_maxLOD);
                     JsonExtractUint32(sampler, "MaxAnisotropy", _sampler.m_maxAnisotropy);
-                    
+
                     std::string compareOp;
                     JsonExtractString(sampler, "CompareOp", compareOp);
                     _sampler.m_compareOp = Sampler::SamplerCompareOpFromString(compareOp);
@@ -81,7 +83,7 @@ namespace Hatchit
                     JsonExtractString(sampler, "BorderColor", borderColor);
                     _sampler.m_borderColor = Sampler::SamplerBorderColorFromString(borderColor);
 
-                    
+
                     /*Attempt to find Immutable struct*/
                     if (sampler.find("Immutable") != sampler.end())
                     {
@@ -90,12 +92,12 @@ namespace Hatchit
 
                         JsonExtractUint32(immutable, "Register", _sampler.m_immutable.shaderRegister);
                         JsonExtractUint32(immutable, "Space", _sampler.m_immutable.registerSpace);
-                        
+
                         std::string visibility;
                         JsonExtractString(immutable, "Visibility", visibility);
                         _sampler.m_immutable.visibility = Sampler::SamplerVisibilityFromString(visibility);
                     }
-                        
+
                     m_samplers.push_back(_sampler);
                 }
 
@@ -144,7 +146,13 @@ namespace Hatchit
                     m_parameters.push_back(p);
                 }
             }
+            else
+            {
+                HT_DEBUG_PRINTF("RootLayout::Initialize(): Error reading json file at %s", fileName);
+                return false;
+            }
                 
+            return true;
         }
         
         uint32_t RootLayout::GetParameterCount() const

@@ -24,8 +24,9 @@ namespace Hatchit
     {
 		using namespace Core;
 
-        MutableSampler::MutableSampler(std::string ID, const std::string& fileName)
-            : FileResource<MutableSampler>(std::move(ID))
+        MutableSampler::MutableSampler(std::string ID) : FileResource<MutableSampler>(std::move(ID)) {}
+
+        bool MutableSampler::Initialize(const std::string& fileName)
         {
             nlohmann::json json;
             std::ifstream jsonStream(Path::Value(Path::Directory::Samplers) + fileName);
@@ -79,8 +80,12 @@ namespace Hatchit
 
                 jsonStream.close();
             }
-           
-		}
+            else
+            {
+                return false;
+            }
+           return true;
+        }
 
         
     }

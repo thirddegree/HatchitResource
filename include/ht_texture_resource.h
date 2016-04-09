@@ -27,8 +27,11 @@ namespace Hatchit
         class HT_API Texture : public FileResource<Texture>
         {
         public:
-            Texture(std::string ID, const std::string& fileName);
+            Texture(std::string ID);
             virtual ~Texture() = default;
+
+            //Required function for all RefCounted classes
+            bool Initialize(const std::string& fileName);
 
             bool VInitFromFile(const std::string& file);
 

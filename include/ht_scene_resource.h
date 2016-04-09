@@ -25,10 +25,13 @@ namespace Hatchit {
         class HT_API Scene : public FileResource<Scene>
         {
         public:
-            Scene(std::string ID, const std::string& fileName);
+            Scene(std::string ID);
             virtual ~Scene(void) = default;
             Scene(Scene&& rhs) = default;
             Scene& operator=(Scene&& rhs) = default;
+
+            //Required function for all RefCounted classes
+            bool Initialize(const std::string& file);
 
             bool VInitFromFile(const std::string& file);
 

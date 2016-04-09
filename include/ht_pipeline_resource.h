@@ -118,8 +118,11 @@ namespace Hatchit {
             };
             static const int MAX_SHADERS = 6;
 
-            Pipeline(std::string ID, const std::string& fileName);
+            Pipeline(std::string ID);
             virtual ~Pipeline() {};
+
+            //Required function for all RefCounted classes
+            bool Initialize(const std::string& fileName);
             bool VInitFromFile(const std::string& filename);
 
             const std::string& GetRenderPassPath() const;
