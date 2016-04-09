@@ -21,7 +21,7 @@ namespace Hatchit
 {
 	namespace Resource
 	{
-		class HT_API RootLayout : public FileResource<RootLayout>
+		class HT_API RootLayout final : public FileResource<RootLayout>
 		{
 		public:
 
@@ -183,9 +183,11 @@ namespace Hatchit
 				Data			        data;
 			};
 
-			RootLayout(std::string ID, const std::string& fileName);
+			RootLayout(std::string ID);
 
 			virtual ~RootLayout() = default;
+
+            bool Initialize(const std::string& fileName);
 
 
 			uint32_t						GetParameterCount() const;

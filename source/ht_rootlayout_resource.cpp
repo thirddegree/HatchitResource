@@ -22,24 +22,26 @@ namespace Hatchit
 	{
 		using namespace Core;
 
-		RootLayout::RootLayout(std::string ID, const std::string& fileName)
-			: FileResource<RootLayout>(std::move(ID))
-		{
-			nlohmann::json json;
+		RootLayout::RootLayout(std::string ID)
+            : FileResource<RootLayout>(std::move(ID)) {}
 
-			std::ifstream jsonStream(Path::Value(Path::Directory::Assets) + fileName);
+        bool RootLayout::Initialize(const std::string& fileName)
+        {
+            nlohmann::json json;
 
-			if (jsonStream.is_open())
-			{
-				jsonStream >> json;
+            std::ifstream jsonStream(Path::Value(Path::Directory::Assets) + fileName);
 
-				JsonExtractUint32(json, "ParameterCount", m_parameterCount);
+            if (jsonStream.is_open())
+            {
+                jsonStream >> json;
 
-				nlohmann::json flags = json["Flags"];
-				for (auto flag : flags)
-				{
-					m_flags |= FlagFromString(flag);
-				}
+                JsonExtractUint32(json, "ParameterCount", m_parameterCount);
+
+                nlohmann::json flags = json["Flags"];
+                for (auto flag : flags)
+                {
+                    m_flags |= FlagFromString(flag);
+                }
 
                 nlohmann::json samplers = json["Samplers"];
                 for (auto sampler : samplers)
@@ -67,12 +69,12 @@ namespace Hatchit
                     _sampler.address.v = SamplerAddressModeFromString(vMode);
                     _sampler.address.w = SamplerAddressModeFromString(wMode);
 
-                    
+
                     JsonExtractFloat(sampler, "MipLODBias", _sampler.mipLODBias);
                     JsonExtractFloat(sampler, "MinLOD", _sampler.minLOD);
                     JsonExtractFloat(sampler, "MaxLOD", _sampler.maxLOD);
                     JsonExtractUint32(sampler, "MaxAnisotropy", _sampler.maxAnisotropy);
-                    
+
                     std::string compareOp;
                     JsonExtractString(sampler, "CompareOp", compareOp);
                     _sampler.compareOp = SamplerCompareOpFromString(compareOp);
@@ -81,7 +83,7 @@ namespace Hatchit
                     JsonExtractString(sampler, "BorderColor", borderColor);
                     _sampler.borderColor = SamplerBorderColorFromString(borderColor);
 
-                    
+
                     /*Attempt to find Immutable struct*/
                     if (sampler.find("Immutable") != sampler.end())
                     {
@@ -90,62 +92,68 @@ namespace Hatchit
 
                         JsonExtractUint32(immutable, "Register", _sampler.immutable.shaderRegister);
                         JsonExtractUint32(immutable, "Space", _sampler.immutable.registerSpace);
-                        
+
                         std::string visibility;
                         JsonExtractString(immutable, "Visibility", visibility);
                         _sampler.immutable.visibility = ParameterVisibilityFromString(visibility);
                     }
-                        
+
                     m_samplers.push_back(_sampler);
                 }
 
-				nlohmann::json parameters = json["Parameters"];
-				for (int i = 0; i < m_parameterCount; i++)
-				{
-					std::string type;
-					JsonExtractString(parameters[i], "Type", type);
+                nlohmann::json parameters = json["Parameters"];
+                for (int i = 0; i < m_parameterCount; i++)
+                {
+                    std::string type;
+                    JsonExtractString(parameters[i], "Type", type);
 
-					Parameter p;
-					p.type = ParameterTypeFromString(type);
-					switch (p.type)
-					{
-						//Initialize parameter as table
-					case RootLayout::Parameter::Type::TABLE:
-					{
-						DescriptorTable table;
-						JsonExtractUint32(parameters[i], "RangeCount", table.rangeCount);
-						nlohmann::json ranges = parameters[i]["Ranges"];
-						for (int j = 0; j < ranges.size(); j++)
-						{
-							//Load table ranges
-							std::string rangeType;
-							JsonExtractString(ranges[j], "Type", rangeType);
+                    Parameter p;
+                    p.type = ParameterTypeFromString(type);
+                    switch (p.type)
+                    {
+                        //Initialize parameter as table
+                    case RootLayout::Parameter::Type::TABLE:
+                    {
+                        DescriptorTable table;
+                        JsonExtractUint32(parameters[i], "RangeCount", table.rangeCount);
+                        nlohmann::json ranges = parameters[i]["Ranges"];
+                        for (int j = 0; j < ranges.size(); j++)
+                        {
+                            //Load table ranges
+                            std::string rangeType;
+                            JsonExtractString(ranges[j], "Type", rangeType);
 
-							Range range;
-							range.type = RangeTypeFromString(rangeType);
-							JsonExtractUint32(ranges[j], "DescriptorCount", range.numDescriptors);
-							JsonExtractUint32(ranges[j], "BaseRegister", range.baseRegister);
-							JsonExtractUint32(ranges[j], "RegisterSpace", range.registerSpace);
+                            Range range;
+                            range.type = RangeTypeFromString(rangeType);
+                            JsonExtractUint32(ranges[j], "DescriptorCount", range.numDescriptors);
+                            JsonExtractUint32(ranges[j], "BaseRegister", range.baseRegister);
+                            JsonExtractUint32(ranges[j], "RegisterSpace", range.registerSpace);
 
-							table.ranges.push_back(range);
-						}
+                            table.ranges.push_back(range);
+                        }
 
-						p.data.table = table;
-					} break;
+                        p.data.table = table;
+                    } break;
 
-					default:
-						break;
-					}
+                    default:
+                        break;
+                    }
 
-					std::string visibility;
-					JsonExtractString(parameters[i], "Visibility", visibility);
-					p.visibility = ParameterVisibilityFromString(visibility);
+                    std::string visibility;
+                    JsonExtractString(parameters[i], "Visibility", visibility);
+                    p.visibility = ParameterVisibilityFromString(visibility);
 
-					m_parameters.push_back(p);
-				}
-			}
-				
-		}
+                    m_parameters.push_back(p);
+                }
+            }
+            else
+            {
+                HT_DEBUG_PRINTF("RootLayout::Initialize(): Error reading json file at %s", fileName);
+                return false;
+            }
+
+            return true;
+        }
 		
 		uint32_t RootLayout::GetParameterCount() const
 		{
