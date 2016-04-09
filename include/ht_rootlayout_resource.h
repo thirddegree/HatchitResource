@@ -124,19 +124,19 @@ namespace Hatchit
             const std::vector<Sampler>&     GetSamplers() const;
 
 
-		private:
-			uint32_t				m_parameterCount;
-			std::vector<Parameter>	m_parameters;
+        private:
+            uint32_t                m_parameterCount;
+            std::vector<Parameter>  m_parameters;
             std::vector<Sampler>    m_samplers;
-			Core::BitField<Flags>   m_flags;
+            Core::BitField<Flags>   m_flags;
 
 
-			Flags					    FlagFromString(std::string s);
-			ShaderVisibility	        ParameterVisibilityFromString(std::string s);
-			Parameter::Type			    ParameterTypeFromString(std::string s);
-			Range::Type				    RangeTypeFromString(std::string s);
-		};
+            Flags                       FlagFromString(std::string s);
+            ShaderVisibility            ParameterVisibilityFromString(std::string s);
+            Parameter::Type             ParameterTypeFromString(std::string s);
+            Range::Type                 RangeTypeFromString(std::string s);
+        };
 
-		using RootLayoutHandle = Core::Handle<const RootLayout>;
-	}
+        using RootLayoutHandle = Core::Handle<const RootLayout>;
+    }
 }
