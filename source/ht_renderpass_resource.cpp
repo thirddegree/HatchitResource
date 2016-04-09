@@ -13,6 +13,8 @@
 **/
 
 #include <ht_renderpass_resource.h>
+#include <ht_debug.h>
+
 namespace Hatchit
 {
     namespace Resource
@@ -46,7 +48,7 @@ namespace Hatchit
             }
             else
             {
-                DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderPasses) + fileName);
+                HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderPasses) + fileName);
             }
         }
 
@@ -77,7 +79,8 @@ namespace Hatchit
                 return true;
             }
 
-            DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderPasses) + fileName);
+            HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderPasses) + fileName);
+
             return false;
         }
 
