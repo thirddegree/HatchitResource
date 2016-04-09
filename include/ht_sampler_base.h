@@ -43,7 +43,7 @@ namespace Hatchit
                 ShaderVisibility    visibility;
             };
 
-            enum AddressMode
+            enum class AddressMode
             {
                 WRAP,
                 CLAMP,
@@ -52,9 +52,9 @@ namespace Hatchit
                 MIRROR_ONCE
             };
 
-            enum CompareOperation
+            enum class CompareOperation
             {
-                COMPARE_OP_NEVER = 0,
+                COMPARE_OP_NEVER,
                 COMPARE_OP_LESS,
                 COMPARE_OP_EQUAL,
                 COMPARE_OP_LESS_EQUAL,
@@ -64,20 +64,26 @@ namespace Hatchit
                 COMPARE_OP_ALWAYS
             };
 
-            enum FilterMode
+            enum class FilterMode
             {
                 NEAREST,
                 BILINEAR
             };
 
-            enum BorderColor
+            enum class MipMode
+            {
+                NEAREST,
+                LINEAR
+            };
+
+            enum class BorderColor
             {
                 COLOR_TRANSPARENT_BLACK,
                 COLOR_OPAQUE_BLACK,
                 COLOR_OPAQUE_WHITE
             };
 
-            enum ColorSpace
+            enum class ColorSpace
             {
                 GAMMA,
                 LINEAR
@@ -107,6 +113,7 @@ namespace Hatchit
             CompareOperation   GetCompareOp() const;
             BorderColor        GetBorderColor() const;
             ColorSpace         GetColorSpace() const;
+            MipMode            GetMipMode() const;
 
         protected:
             Address             m_address;
@@ -117,10 +124,12 @@ namespace Hatchit
             uint32_t            m_maxAnisotropy;
             CompareOperation    m_compareOp;
             BorderColor         m_borderColor;
+            MipMode             m_mipMode;
             Immutable           m_immutable;
             ColorSpace          m_colorSpace;
 
 
+            static Sampler::MipMode            SamplerMipModeFromString(std::string s);
             static Sampler::FilterMode         SamplerFilterModeFromString(std::string s);
             static Sampler::AddressMode        SamplerAddressModeFromString(std::string s);
             static Sampler::ColorSpace         SamplerColorSpaceFromString(std::string s);

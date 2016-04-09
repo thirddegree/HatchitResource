@@ -56,6 +56,10 @@ namespace Hatchit
                 m_address.w = SamplerAddressModeFromString(wMode);
 
 
+                std::string mipMode;
+                JsonExtractString(json, "MipMode", mipMode);
+                m_mipMode = SamplerMipModeFromString(mipMode);
+
                 JsonExtractFloat(json, "MipLODBias", m_mipLODBias);
                 JsonExtractFloat(json, "MinLOD", m_minLOD);
                 JsonExtractFloat(json, "MaxLOD", m_maxLOD);

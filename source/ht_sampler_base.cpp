@@ -54,6 +54,18 @@ namespace Hatchit
             return mode;
         }
 
+        Sampler::MipMode Sampler::SamplerMipModeFromString(std::string s)
+        {
+            Sampler::MipMode mode = Sampler::MipMode::LINEAR;
+
+            if (s == "LINEAR")
+                mode = Sampler::MipMode::LINEAR;
+            else if (s == "NEAREST")
+                mode = Sampler::MipMode::NEAREST;
+
+            return mode;
+        }
+
         Sampler::ColorSpace Sampler::SamplerColorSpaceFromString(std::string s)
         {
             Sampler::ColorSpace space = Sampler::ColorSpace::LINEAR;
@@ -86,38 +98,38 @@ namespace Hatchit
 
         Sampler::BorderColor Sampler::SamplerBorderColorFromString(std::string s)
         {
-            Sampler::BorderColor color = Sampler::COLOR_OPAQUE_BLACK;
+            Sampler::BorderColor color = Sampler::BorderColor::COLOR_OPAQUE_BLACK;
 
             if (s == "COLOR_OPAQUE_BLACK")
-                color = Sampler::COLOR_OPAQUE_BLACK;
+                color = Sampler::BorderColor::COLOR_OPAQUE_BLACK;
             else if (s == "COLOR_OPAQUE_WHITE")
-                color = Sampler::COLOR_OPAQUE_WHITE;
+                color = Sampler::BorderColor::COLOR_OPAQUE_WHITE;
             else if (s == "COLOR_TRANSPARENT_BLACK")
-                color = Sampler::COLOR_TRANSPARENT_BLACK;
+                color = Sampler::BorderColor::COLOR_TRANSPARENT_BLACK;
 
             return color;
         }
 
         Sampler::CompareOperation Sampler::SamplerCompareOpFromString(std::string s)
         {
-            Sampler::CompareOperation op = Sampler::COMPARE_OP_NEVER;
+            Sampler::CompareOperation op = Sampler::CompareOperation::COMPARE_OP_NEVER;
 
             if (s == "COMPARE_OP_NEVER")
-                op = Sampler::COMPARE_OP_NEVER;
+                op = Sampler::CompareOperation::COMPARE_OP_NEVER;
             else if (s == "COMPARE_OP_LESS")
-                op = Sampler::COMPARE_OP_LESS;
+                op = Sampler::CompareOperation::COMPARE_OP_LESS;
             else if (s == "COMPARE_OP_EQUAL")
-                op = Sampler::COMPARE_OP_EQUAL;
+                op = Sampler::CompareOperation::COMPARE_OP_EQUAL;
             else if (s == "COMPARE_OP_LESS_EQUAL")
-                op = Sampler::COMPARE_OP_LESS_EQUAL;
+                op = Sampler::CompareOperation::COMPARE_OP_LESS_EQUAL;
             else if (s == "COMPARE_OP_GREATER")
-                op = Sampler::COMPARE_OP_GREATER;
+                op = Sampler::CompareOperation::COMPARE_OP_GREATER;
             else if (s == "COMPARE_OP_NOT_EQUAL")
-                op = Sampler::COMPARE_OP_NOT_EQUAL;
+                op = Sampler::CompareOperation::COMPARE_OP_NOT_EQUAL;
             else if (s == "COMPARE_OP_GREATER_EQUAL")
-                op = Sampler::COMPARE_OP_GREATER_EQUAL;
+                op = Sampler::CompareOperation::COMPARE_OP_GREATER_EQUAL;
             else if (s == "COMPARE_OP_ALWAYS")
-                op = Sampler::COMPARE_OP_ALWAYS;
+                op = Sampler::CompareOperation::COMPARE_OP_ALWAYS;
 
             return op;
         }
@@ -128,6 +140,11 @@ namespace Hatchit
         const Sampler::Address & Sampler::GetAddress() const
         {
             return m_address;
+        }
+
+        Sampler::MipMode Sampler::GetMipMode() const
+        {
+            return m_mipMode;
         }
 
         float Sampler::GetMipLODBias() const
@@ -147,7 +164,7 @@ namespace Hatchit
 
         uint32_t Sampler::GetMaxAnisotropy() const
         {
-            return uint32_t();
+            return m_maxAnisotropy;
         }
 
         Sampler::CompareOperation Sampler::GetCompareOp() const
