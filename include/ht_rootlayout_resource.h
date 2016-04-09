@@ -16,6 +16,7 @@
 
 #include <ht_resource.h>
 #include <ht_bitfield.h>
+#include <ht_sampler_resource.h>
 
 namespace Hatchit
 {
@@ -84,79 +85,6 @@ namespace Hatchit
 				uint32_t registerSpace;
 			};
 
-            struct Sampler
-            {
-                struct Immutable
-                {
-                    uint32_t            shaderRegister;
-                    uint32_t            registerSpace;
-                    ShaderVisibility    visibility;
-                };
-
-                enum AddressMode
-                {
-                    WRAP,
-                    CLAMP,
-                    BORDER,
-                    MIRROR,
-                    MIRROR_ONCE
-                };
-
-                enum CompareOperation
-                {
-                    COMPARE_OP_NEVER = 0,
-                    COMPARE_OP_LESS,
-                    COMPARE_OP_EQUAL,
-                    COMPARE_OP_LESS_EQUAL,
-                    COMPARE_OP_GREATER,
-                    COMPARE_OP_NOT_EQUAL,
-                    COMPARE_OP_GREATER_EQUAL,
-                    COMPARE_OP_ALWAYS
-                };
-
-                enum FilterMode
-                {
-                    NEAREST,
-                    BILINEAR
-                };
-                
-                enum BorderColor
-                {
-                    COLOR_TRANSPARENT_BLACK,
-                    COLOR_OPAQUE_BLACK,
-                    COLOR_OPAQUE_WHITE
-                };
-
-                enum ColorSpace
-                {
-                    GAMMA,
-                    LINEAR
-                };
-
-                struct Address
-                {
-                    AddressMode u;
-                    AddressMode v;
-                    AddressMode w;
-                };
-
-                struct Filter
-                {
-                    FilterMode min;
-                    FilterMode mag;
-                };
-
-                Address             address;
-                Filter              filter;
-                float               mipLODBias;
-                float               minLOD;
-                float               maxLOD;
-                uint32_t            maxAnisotropy;
-                CompareOperation    compareOp;
-                BorderColor         borderColor;
-                Immutable           immutable;
-            };
-
 			struct Parameter
 			{
 				struct Data
@@ -202,11 +130,6 @@ namespace Hatchit
 
 
 			Flags					    FlagFromString(std::string s);
-            Sampler::FilterMode         SamplerFilterModeFromString(std::string s);
-            Sampler::AddressMode        SamplerAddressModeFromString(std::string s);
-            Sampler::ColorSpace         SamplerColorSpaceFromString(std::string s);
-            Sampler::CompareOperation   SamplerCompareOpFromString(std::string s);
-            Sampler::BorderColor        SamplerBorderColorFromString(std::string s);
 			ShaderVisibility	        ParameterVisibilityFromString(std::string s);
 			Parameter::Type			    ParameterTypeFromString(std::string s);
 			Range::Type				    RangeTypeFromString(std::string s);
