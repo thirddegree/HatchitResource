@@ -13,6 +13,7 @@
 **/
 
 #include <ht_pipeline_resource.h>
+#include <ht_debug.h>
 
 namespace Hatchit {
 
@@ -275,7 +276,7 @@ namespace Hatchit {
             }
             else
             {
-                DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Pipelines) + fileName);
+                HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Pipelines) + fileName);
             }
         }
 
@@ -533,7 +534,8 @@ namespace Hatchit {
                 return true;
             }
 
-            DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Pipelines) + filename);
+            HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Pipelines) + filename);
+
             return false;
         }
 

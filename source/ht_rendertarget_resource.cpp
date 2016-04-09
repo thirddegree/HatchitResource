@@ -13,6 +13,7 @@
 **/
 
 #include <ht_rendertarget_resource.h>
+#include <ht_debug.h>
 
 namespace Hatchit {
 
@@ -37,7 +38,7 @@ namespace Hatchit {
             }
             else
             {
-                DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderTargets) + fileName);
+                HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderTargets) + fileName);
             }
         }
 
@@ -58,7 +59,8 @@ namespace Hatchit {
                 return true;
             }
 
-            DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderTargets) + filename);
+            HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderTargets) + filename);
+
             return false;
         }
 
