@@ -38,28 +38,24 @@ namespace Hatchit {
                 aiProcess_FlipUVs);
             if (!scene)
             {
-#ifdef _DEBUG
-                Core::DebugPrintF("ASSIMP READ ERROR: %s\n", _importer.GetErrorString());
-#endif
+                HT_DEBUG_PRINTF("ASSIMP READ ERROR: %s\n", _importer.GetErrorString());
                 return false;
             }
 
-#ifdef _DEBUG
-            Core::DebugPrintF("Assimp Load [%s]\n", fileName);
-            Core::DebugPrintF("[#Meshes]: \t%d\n", scene->mNumMeshes);
-            Core::DebugPrintF("[#Materials]: \t%d\n", scene->mNumMaterials);
-#endif
+            HT_DEBUG_PRINTF("Assimp Load [%s]\n", fileName);
+            HT_DEBUG_PRINTF("[#Meshes]: \t%d\n", scene->mNumMeshes);
+            HT_DEBUG_PRINTF("[#Materials]: \t%d\n", scene->mNumMaterials);
+
             //Load Mesh Data
             for (uint32_t i = 0; i < scene->mNumMeshes; i++)
             {
                 aiMesh* mesh = scene->mMeshes[i];
 
-#ifdef _DEBUG
-                Core::DebugPrintF("[Mesh#%d]:\n", i);
-                Core::DebugPrintF("\t[#Vertices]: \t%d\n", mesh->mNumVertices);
-                Core::DebugPrintF("\t[#Faces]: \t%d\n", mesh->mNumFaces);
-                Core::DebugPrintF("\t[#Bones]: \t%d\n", mesh->mNumBones);
-#endif
+                HT_DEBUG_PRINTF("[Mesh#%d]:\n", i);
+                HT_DEBUG_PRINTF("\t[#Vertices]: \t%d\n", mesh->mNumVertices);
+                HT_DEBUG_PRINTF("\t[#Faces]: \t%d\n", mesh->mNumFaces);
+                HT_DEBUG_PRINTF("\t[#Bones]: \t%d\n", mesh->mNumBones);
+
                 m_meshes.push_back(new Mesh(mesh));
             }
 
@@ -81,28 +77,24 @@ namespace Hatchit {
                 aiProcess_FlipUVs);
             if(!scene)
             {
-#ifdef _DEBUG
-                Core::DebugPrintF("ASSIMP READ ERROR: %s\n", _importer.GetErrorString());
-#endif
+                HT_DEBUG_PRINTF("ASSIMP READ ERROR: %s\n", _importer.GetErrorString());
                 return false;
             }            
             
-#ifdef _DEBUG
-            Core::DebugPrintF("Assimp Load [%s]\n", file);
-            Core::DebugPrintF("[#Meshes]: \t%d\n", scene->mNumMeshes);
-            Core::DebugPrintF("[#Materials]: \t%d\n", scene->mNumMaterials);
-#endif
+            HT_DEBUG_PRINTF("Assimp Load [%s]\n", file);
+            HT_DEBUG_PRINTF("[#Meshes]: \t%d\n", scene->mNumMeshes);
+            HT_DEBUG_PRINTF("[#Materials]: \t%d\n", scene->mNumMaterials);
+
             //Load Mesh Data
             for (uint32_t i = 0; i < scene->mNumMeshes; i++)
             {
                 aiMesh* mesh = scene->mMeshes[i];
 
-#ifdef _DEBUG
-                Core::DebugPrintF("[Mesh#%d]:\n", i);
-                Core::DebugPrintF("\t[#Vertices]: \t%d\n", mesh->mNumVertices);
-                Core::DebugPrintF("\t[#Faces]: \t%d\n", mesh->mNumFaces);
-                Core::DebugPrintF("\t[#Bones]: \t%d\n", mesh->mNumBones);
-#endif
+                HT_DEBUG_PRINTF("[Mesh#%d]:\n", i);
+                HT_DEBUG_PRINTF("\t[#Vertices]: \t%d\n", mesh->mNumVertices);
+                HT_DEBUG_PRINTF("\t[#Faces]: \t%d\n", mesh->mNumFaces);
+                HT_DEBUG_PRINTF("\t[#Bones]: \t%d\n", mesh->mNumBones);
+
                 m_meshes.push_back(new Mesh(mesh));
             }
 

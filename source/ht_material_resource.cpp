@@ -13,6 +13,7 @@
 **/
 
 #include <ht_material_resource.h>
+#include <ht_debug.h>
 
 namespace Hatchit
 {
@@ -101,7 +102,7 @@ namespace Hatchit
             }
             else
             {
-                DebugPrintF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Materials) + fileName);
+                HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Materials) + fileName);
                 return false;
             }
         }
