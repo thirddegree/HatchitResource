@@ -20,11 +20,11 @@
 
 namespace Hatchit
 {
-	namespace Resource
-	{
-		class HT_API RootLayout : public FileResource<RootLayout>
-		{
-		public:
+    namespace Resource
+    {
+        class HT_API RootLayout : public FileResource<RootLayout>
+        {
+        public:
 
             enum class ShaderVisibility
             {
@@ -37,104 +37,104 @@ namespace Hatchit
                 FRAGMENT
             };
 
-			enum Flags
-			{
-				LAYOUT_FLAG_NONE = 0,
-				LAYOUT_ALLOW_INPUT_ASSEMLBER_INPUT_LAYOUT = 1 << 1,
-				LAYOUT_DENY_VERTEX_SHADER_ROOT_ACCESS = 1 << 2,
-				LAYOUT_DENY_TESS_CONTROL_SHADER_ROOT_ACCESS = 1 << 3,
-				LAYOUT_DENY_TESS_EVAL_SHADER_ROOT_ACCESS = 1 << 4,
-				LAYOUT_DENY_GEOMETRY_SHADER_ROOT_ACCESS = 1 << 5,
-				LAYOUT_DENY_FRAGMENT_SHADER_ROOT_ACCESS = 1 << 6,
-				LAYOUT_ALLOW_STREAM_OUTPUT = 1 << 7
-			};
+            enum Flags
+            {
+                LAYOUT_FLAG_NONE = 0,
+                LAYOUT_ALLOW_INPUT_ASSEMLBER_INPUT_LAYOUT = 1 << 1,
+                LAYOUT_DENY_VERTEX_SHADER_ROOT_ACCESS = 1 << 2,
+                LAYOUT_DENY_TESS_CONTROL_SHADER_ROOT_ACCESS = 1 << 3,
+                LAYOUT_DENY_TESS_EVAL_SHADER_ROOT_ACCESS = 1 << 4,
+                LAYOUT_DENY_GEOMETRY_SHADER_ROOT_ACCESS = 1 << 5,
+                LAYOUT_DENY_FRAGMENT_SHADER_ROOT_ACCESS = 1 << 6,
+                LAYOUT_ALLOW_STREAM_OUTPUT = 1 << 7
+            };
 
-			struct Range
-			{
-				enum class Type
-				{
-					UKNOWN,
-					CONSTANT_BUFFER,
-					SHADER_RESOURCE,
-					UNORDERED_ACCESS,
-					SAMPLER
-				};
+            struct Range
+            {
+                enum class Type
+                {
+                    UKNOWN,
+                    CONSTANT_BUFFER,
+                    SHADER_RESOURCE,
+                    UNORDERED_ACCESS,
+                    SAMPLER
+                };
 
-				Type		type;
-				uint32_t	numDescriptors;
-				uint32_t	baseRegister;
-				uint32_t	registerSpace;
-			};
+                Type        type;
+                uint32_t    numDescriptors;
+                uint32_t    baseRegister;
+                uint32_t    registerSpace;
+            };
 
-			struct DescriptorTable
-			{
-				uint32_t			rangeCount;
-				std::vector<Range>	ranges;
-			};
+            struct DescriptorTable
+            {
+                uint32_t            rangeCount;
+                std::vector<Range>  ranges;
+            };
 
-			struct Constant
-			{
-				uint32_t shaderRegister;
-				uint32_t registerSpace;
-				uint32_t valueCount;
-			};
+            struct Constant
+            {
+                uint32_t shaderRegister;
+                uint32_t registerSpace;
+                uint32_t valueCount;
+            };
 
-			struct Descriptor
-			{
-				uint32_t shaderRegister;
-				uint32_t registerSpace;
-			};
+            struct Descriptor
+            {
+                uint32_t shaderRegister;
+                uint32_t registerSpace;
+            };
 
-			struct Parameter
-			{
-				struct Data
-				{
-					DescriptorTable table;
-					Constant		constant;
-					Descriptor	    descriptor;
-				};
+            struct Parameter
+            {
+                struct Data
+                {
+                    DescriptorTable table;
+                    Constant        constant;
+                    Descriptor      descriptor;
+                };
 
-				enum class Type
-				{
-					UNKNOWN,
-					TABLE,
-					CONSTANT,
-					CONSTANT_BUFFER,
-					SHADER_RESOURCE,
-					UNORDERED_ACCESS
-				};
+                enum class Type
+                {
+                    UNKNOWN,
+                    TABLE,
+                    CONSTANT,
+                    CONSTANT_BUFFER,
+                    SHADER_RESOURCE,
+                    UNORDERED_ACCESS
+                };
 
-				
+                
 
-				Type			        type;
-				ShaderVisibility		visibility;
-				Data			        data;
-			};
+                Type                    type;
+                ShaderVisibility        visibility;
+                Data                    data;
+            };
 
-			RootLayout(std::string ID, const std::string& fileName);
+            RootLayout(std::string ID, const std::string& fileName);
 
-			virtual ~RootLayout() = default;
+            virtual ~RootLayout() = default;
 
 
-			uint32_t						GetParameterCount() const;
-			Core::BitField<Flags>			GetDescriptorFlags() const;
-			const std::vector<Parameter>&	GetParameters() const;
+            uint32_t                        GetParameterCount() const;
+            Core::BitField<Flags>           GetDescriptorFlags() const;
+            const std::vector<Parameter>&   GetParameters() const;
             const std::vector<Sampler>&     GetSamplers() const;
 
 
-		private:
-			uint32_t				m_parameterCount;
-			std::vector<Parameter>	m_parameters;
+        private:
+            uint32_t                m_parameterCount;
+            std::vector<Parameter>  m_parameters;
             std::vector<Sampler>    m_samplers;
-			Core::BitField<Flags>   m_flags;
+            Core::BitField<Flags>   m_flags;
 
 
-			Flags					    FlagFromString(std::string s);
-			ShaderVisibility	        ParameterVisibilityFromString(std::string s);
-			Parameter::Type			    ParameterTypeFromString(std::string s);
-			Range::Type				    RangeTypeFromString(std::string s);
-		};
+            Flags                       FlagFromString(std::string s);
+            ShaderVisibility            ParameterVisibilityFromString(std::string s);
+            Parameter::Type             ParameterTypeFromString(std::string s);
+            Range::Type                 RangeTypeFromString(std::string s);
+        };
 
-		using RootLayoutHandle = Core::Handle<const RootLayout>;
-	}
+        using RootLayoutHandle = Core::Handle<const RootLayout>;
+    }
 }
