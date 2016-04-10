@@ -28,6 +28,7 @@
 #include <ht_path_singleton.h>
 #include <ht_jsonhelper.h>
 #include <fstream>
+#include <utility>
 
 namespace Hatchit
 {
@@ -42,9 +43,9 @@ namespace Hatchit
             template<typename... Args>
             static Core::Handle<const ResourceType> GetHandle(const std::string& ID, Args&&... args)
             {
-                Core::Handle<ResourceType> handle = RefCounted::GetHandle(ID, std::forward<Args>(args)...);
+                Core::Handle<ResourceType> handle = Core::RefCounted<ResourceType>::GetHandle(ID, std::forward<Args>(args)...);
                 if (handle.IsValid() /*&& handle->VInitFromFile(ID)*/)
-                    return handle.StaticCastHandle<const ResourceType>();
+                    return handle.template StaticCastHandle<const ResourceType>();
                 else
                     return Core::Handle<const ResourceType>();
             }
