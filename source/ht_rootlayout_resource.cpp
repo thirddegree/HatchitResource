@@ -13,6 +13,7 @@
 **/
 
 #include <ht_rootlayout_resource.h>
+#include <ht_debug.h>
 #include <algorithm>
 #include <json.hpp>
 
