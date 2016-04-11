@@ -142,6 +142,11 @@ namespace Hatchit
             return m_address;
         }
 
+        const Sampler::Immutable& Sampler::GetImmutable() const
+        {
+            return m_immutable;
+        }
+
         Sampler::MipMode Sampler::GetMipMode() const
         {
             return m_mipMode;

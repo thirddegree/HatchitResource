@@ -106,6 +106,7 @@ namespace Hatchit
 
             const Filter&      GetFilter() const;
             const Address&     GetAddress() const;
+            const Immutable&   GetImmutable() const;
             float              GetMipLODBias() const;
             float              GetMinLOD() const;
             float              GetMaxLOD() const;
