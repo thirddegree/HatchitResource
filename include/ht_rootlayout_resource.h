@@ -21,11 +21,11 @@
 
 namespace Hatchit
 {
-    namespace Resource
-    {
-        class HT_API RootLayout : public FileResource<RootLayout>
-        {
-        public:
+	namespace Resource
+	{
+		class HT_API RootLayout final : public FileResource<RootLayout>
+		{
+		public:
 
             enum class ShaderVisibility
             {
@@ -37,7 +37,6 @@ namespace Hatchit
                 GEOMETRY,
                 FRAGMENT
             };
-
             enum Flags
             {
                 LAYOUT_FLAG_NONE = 0,
@@ -120,7 +119,6 @@ namespace Hatchit
             Core::BitField<Flags>           GetDescriptorFlags() const;
             const std::vector<Parameter>&   GetParameters() const;
             const std::vector<Sampler>&     GetSamplers() const;
-
 
         private:
             uint32_t                m_parameterCount;

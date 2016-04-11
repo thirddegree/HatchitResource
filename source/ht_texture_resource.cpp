@@ -20,7 +20,9 @@ namespace Hatchit
 {
     namespace Resource
     {
-        Texture::Texture(std::string ID, const std::string& fileName) : FileResource<Texture>(std::move(ID))
+        Texture::Texture(std::string ID) : FileResource<Texture>(std::move(ID)) {}
+
+        bool Texture::Initialize(const std::string& fileName)
         {
             Core::File f;
             f.Open(Core::Path::Value(Core::Path::Directory::Textures) + fileName, Core::FileMode::ReadBinary);
@@ -35,6 +37,8 @@ namespace Hatchit
             m_channels = static_cast<uint32_t>(bitmap->GetChannels());
 
             m_data = bitmap->GetData();
+
+            return true;
         }
 
         bool Texture::VInitFromFile(const std::string& file)

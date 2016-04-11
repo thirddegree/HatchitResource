@@ -21,7 +21,9 @@ namespace Hatchit {
 
     namespace Resource {
 
-        Model::Model(std::string ID, const std::string& fileName) : FileResource<Model>(std::move(ID)) 
+        Model::Model(std::string ID) : FileResource<Model>(std::move(ID)) {}
+
+        bool Model::Initialize(const std::string& fileName)
         {
             Assimp::Importer _importer;
 
@@ -37,7 +39,7 @@ namespace Hatchit {
             if (!scene)
             {
                 HT_DEBUG_PRINTF("ASSIMP READ ERROR: %s\n", _importer.GetErrorString());
-                return;
+                return false;
             }
 
             HT_DEBUG_PRINTF("Assimp Load [%s]\n", fileName);
@@ -56,6 +58,8 @@ namespace Hatchit {
 
                 m_meshes.push_back(new Mesh(mesh));
             }
+
+            return true;
         }
 
         bool Model::VInitFromFile(const std::string& file)
