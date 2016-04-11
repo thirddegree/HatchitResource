@@ -133,6 +133,22 @@ namespace Hatchit
                         p.data.table = table;
                     } break;
 
+                                    //Initialize parameter as a Constant
+                    case RootLayout::Parameter::Type::CONSTANT:
+                    {
+                        Constant constant;
+                        
+                        JsonExtractUint32(parameters[i], "ShaderRegister", constant.shaderRegister);
+                        JsonExtractUint32(parameters[i], "RegisterSpace", constant.registerSpace);
+
+                        std::string typeName;
+                        JsonExtractString(parameters[i], "DataType", typeName);
+
+                        constant.type = ShaderVariable::TypeFromString(typeName);
+
+                        p.data.constant = constant;
+                    } break;
+
                     default:
                         break;
                     }

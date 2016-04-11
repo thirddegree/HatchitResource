@@ -17,6 +17,7 @@
 #include <ht_resource.h>
 #include <ht_bitfield.h>
 #include <ht_sampler_resource.h>
+#include <ht_shadervariable.h>
 
 namespace Hatchit
 {
@@ -77,6 +78,7 @@ namespace Hatchit
                 uint32_t shaderRegister;
                 uint32_t registerSpace;
                 uint32_t valueCount;
+                ShaderVariable::Type type;
             };
 
             struct Descriptor
@@ -103,8 +105,6 @@ namespace Hatchit
                     SHADER_RESOURCE,
                     UNORDERED_ACCESS
                 };
-
-                
 
                 Type                    type;
                 ShaderVisibility        visibility;

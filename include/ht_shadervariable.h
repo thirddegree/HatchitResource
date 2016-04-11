@@ -38,6 +38,7 @@ namespace Hatchit {
                     m_data = nullptr;
                 }
             };
+
             enum Type
             {
                 INT,
@@ -46,12 +47,34 @@ namespace Hatchit {
                 FLOAT2,
                 FLOAT3,
                 FLOAT4,
-                MAT3,
                 MAT4
             };
 
             inline Type GetType() { return m_type; }
             inline void* GetData() { return m_data; }
+
+            static inline Type TypeFromString(const std::string& string) 
+            {
+                if (string == "INT")
+                    return Type::INT;
+                else if (string == "FLOAT")
+                    return Type::FLOAT;
+                else if (string == "DOUBLE")
+                    return Type::DOUBLE;
+                else if (string == "FLOAT2")
+                    return Type::FLOAT2;
+                else if (string == "FLOAT3")
+                    return Type::FLOAT3;
+                else if (string == "FLOAT4")
+                    return Type::FLOAT4;
+                else if (string == "MAT4")
+                    return Type::MAT4;
+                else
+                {
+                    HT_DEBUG_PRINTF("WARNING: UNKNOWN SHADER VARIABLE TYPE; RETURNING INT\n");
+                    return Type::INT;
+                }
+            }
 
         protected:
             Type m_type;
