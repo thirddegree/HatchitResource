@@ -148,6 +148,8 @@ namespace Hatchit
                         JsonExtractString(parameters[i], "DataType", typeName);
 
                         constant.type = ShaderVariable::TypeFromString(typeName);
+                        
+                        JsonExtractUint32(parameters[i], "ValueCount", constant.valueCount);
 
                         p.data.constant = constant;
                     } break;
