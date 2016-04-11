@@ -110,7 +110,9 @@ namespace Hatchit
                 Data                    data;
             };
 
-            RootLayout(std::string ID, const std::string& fileName);
+            RootLayout(std::string ID);
+
+            bool Initialize(const std::string& fileName);
 
             virtual ~RootLayout() = default;
 
