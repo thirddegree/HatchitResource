@@ -137,7 +137,7 @@ namespace Hatchit
                     } break;
 
                                     //Initialize parameter as a Constant
-                    case RootLayout::Parameter::Type::CONSTANT:
+                    case RootLayout::Parameter::Type::CONSTANTS:
                     {
                         Constant constant;
                         
@@ -200,8 +200,8 @@ namespace Hatchit
 
             if (s == "TABLE")
                 type = RootLayout::Parameter::Type::TABLE;
-            else if (s == "CONSTANT")
-                type = RootLayout::Parameter::Type::CONSTANT;
+            else if (s == "CONSTANTS")
+                type = RootLayout::Parameter::Type::CONSTANTS;
             else if (s == "CONSTANT_BUFFER")
                 type = RootLayout::Parameter::Type::CONSTANT_BUFFER;
             else if (s == "SHADER_RESOURCE")

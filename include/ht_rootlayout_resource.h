@@ -99,7 +99,7 @@ namespace Hatchit
                 {
                     UNKNOWN,
                     TABLE,
-                    CONSTANT,
+                    CONSTANTS,
                     CONSTANT_BUFFER,
                     SHADER_RESOURCE,
                     UNORDERED_ACCESS
