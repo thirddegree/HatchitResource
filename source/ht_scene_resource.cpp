@@ -16,6 +16,7 @@
 #include <ht_path_singleton.h>
 #include <ht_file.h>
 #include <ht_debug.h>
+#include <ht_file_exception.h>
 
 #include <stdexcept>
 
