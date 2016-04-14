@@ -16,6 +16,7 @@
 #include <ht_path_singleton.h>
 #include <ht_file.h>
 #include <ht_debug.h>
+#include <ht_file_exception.h>
 
 #include <stdexcept>
 
@@ -32,7 +33,7 @@ namespace Hatchit
                 Core::File f;
                 std::string file_contents;
 
-                f.Open(Core::Path::Value(Core::Path::Directory::Scenes) + fileName, Core::FileMode::ReadText);
+                f.Open(Core::Path::Value(Core::Path::Directory::Scenes) + fileName, Core::File::FileMode::ReadText);
 
                 file_contents.resize(f.SizeBytes());
                 f.Read(reinterpret_cast<BYTE*>(&file_contents[0]), file_contents.size());
@@ -59,7 +60,7 @@ namespace Hatchit
                 Core::File f;
                 std::string file_contents;
 
-                f.Open(Core::Path::Value(Core::Path::Directory::Scenes) + file, Core::FileMode::ReadText);
+                f.Open(Core::Path::Value(Core::Path::Directory::Scenes) + file, Core::File::FileMode::ReadText);
 
                 file_contents.resize(f.SizeBytes());
                 f.Read(reinterpret_cast<BYTE*>(&file_contents[0]), file_contents.size());

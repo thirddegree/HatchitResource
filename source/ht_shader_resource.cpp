@@ -29,7 +29,7 @@ namespace Hatchit {
             Core::File file;
             try
             {
-                file.Open(Core::Path::Value(Core::Path::Directory::Shaders) + fileName, Core::FileMode::ReadBinary);
+                file.Open(Core::Path::Value(Core::Path::Directory::Shaders) + fileName, Core::File::FileMode::ReadBinary);
             }
             catch (std::exception)
             {
@@ -61,7 +61,7 @@ namespace Hatchit {
             Core::File file;
             try
             {
-                file.Open(Core::Path::Value(Core::Path::Directory::Shaders) + filename, Core::FileMode::ReadBinary);
+                file.Open(Core::Path::Value(Core::Path::Directory::Shaders) + filename, Core::File::FileMode::ReadBinary);
             }
             catch (std::exception)
             {

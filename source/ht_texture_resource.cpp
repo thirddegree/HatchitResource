@@ -25,7 +25,7 @@ namespace Hatchit
         bool Texture::Initialize(const std::string& fileName)
         {
             Core::File f;
-            f.Open(Core::Path::Value(Core::Path::Directory::Textures) + fileName, Core::FileMode::ReadBinary);
+            f.Open(Core::Path::Value(Core::Path::Directory::Textures) + fileName, Core::File::FileMode::ReadBinary);
 
             Image* bitmap = Image::Load(&f, Image::Channels::AUTO);
 
@@ -44,7 +44,7 @@ namespace Hatchit
         bool Texture::VInitFromFile(const std::string& file)
         {
             Core::File f;
-            f.Open(Core::Path::Value(Core::Path::Directory::Textures) + file, Core::FileMode::ReadBinary);
+            f.Open(Core::Path::Value(Core::Path::Directory::Textures) + file, Core::File::FileMode::ReadBinary);
 
             Image* bitmap = Image::Load(&f, Image::Channels::AUTO);
 
