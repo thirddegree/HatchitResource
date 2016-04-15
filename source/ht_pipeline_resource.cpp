@@ -592,6 +592,8 @@ namespace Hatchit {
                 return InputElement::Format::R32G32B32_FLOAT;
             if (format == "R32G32B32A32_FLOAT")
                 return InputElement::Format::R32G32B32A32_FLOAT;
+            if (format == "R32G32_FLOAT")
+                return InputElement::Format::R32G32_FLOAT;
             
             return InputElement::Format::UNKNOWN;
         }
