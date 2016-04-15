@@ -18,8 +18,8 @@
 namespace Hatchit {
 
     namespace Resource {
-    
-        //Required for JsonExtractString etc.
+
+        //Still need this for HT_DEBUG_PRINTF ...
         using namespace Core;
 
         Pipeline::Pipeline(std::string ID) : FileResource<Pipeline>(std::move(ID)) {}
@@ -27,14 +27,14 @@ namespace Hatchit {
         bool Pipeline::Initialize(const std::string& fileName)
         {
             nlohmann::json json;
-            std::ifstream jsonStream(Path::Value(Path::Directory::Pipelines) + fileName);
+            std::ifstream jsonStream(Core::Path::Value(Core::Path::Directory::Pipelines) + fileName);
 
             if (jsonStream.is_open())
             {
                 jsonStream >> json;
 
                 //Extract render pass path
-                JsonExtractString(json, "RenderPass", m_renderPassPath);
+                Core::JsonExtract<std::string>(json, "RenderPass", m_renderPassPath);
 
                 //Extract shaders
                 nlohmann::json shaderPaths = json["Shaders"];
@@ -49,12 +49,12 @@ namespace Hatchit {
                 std::string computePath;
 
                 //Extract SPV shader paths
-                JsonExtractString(spvShaders, "Vertex", vertexPath);
-                JsonExtractString(spvShaders, "Fragment", fragmentPath);
-                JsonExtractString(spvShaders, "Geometry", geometryPath);
-                JsonExtractString(spvShaders, "Tess_Control", tessControlPath);
-                JsonExtractString(spvShaders, "Tess_Eval", tessEvalPath);
-                JsonExtractString(spvShaders, "Compute", computePath);
+                Core::JsonExtract<std::string>(spvShaders, "Vertex", vertexPath);
+                Core::JsonExtract<std::string>(spvShaders, "Fragment", fragmentPath);
+                Core::JsonExtract<std::string>(spvShaders, "Geometry", geometryPath);
+                Core::JsonExtract<std::string>(spvShaders, "Tess_Control", tessControlPath);
+                Core::JsonExtract<std::string>(spvShaders, "Tess_Eval", tessEvalPath);
+                Core::JsonExtract<std::string>(spvShaders, "Compute", computePath);
 
                 ShaderHandle vertexHandle = Shader::GetHandleFromFileName(vertexPath);
                 ShaderHandle fragmentHandle = Shader::GetHandleFromFileName(fragmentPath);
@@ -97,12 +97,12 @@ namespace Hatchit {
 
                 //Extract CSO shader path
                 //Reuse existing string objects
-                JsonExtractString(csoShaders, "Vertex", vertexPath);
-                JsonExtractString(csoShaders, "Fragment", fragmentPath);
-                JsonExtractString(csoShaders, "Geometry", geometryPath);
-                JsonExtractString(csoShaders, "Tess_Control", tessControlPath);
-                JsonExtractString(csoShaders, "Tess_Eval", tessEvalPath);
-                JsonExtractString(csoShaders, "Compute", computePath);
+                Core::JsonExtract<std::string>(csoShaders, "Vertex", vertexPath);
+                Core::JsonExtract<std::string>(csoShaders, "Fragment", fragmentPath);
+                Core::JsonExtract<std::string>(csoShaders, "Geometry", geometryPath);
+                Core::JsonExtract<std::string>(csoShaders, "Tess_Control", tessControlPath);
+                Core::JsonExtract<std::string>(csoShaders, "Tess_Eval", tessEvalPath);
+                Core::JsonExtract<std::string>(csoShaders, "Compute", computePath);
 
                 vertexHandle = Shader::GetHandleFromFileName(vertexPath);
                 fragmentHandle = Shader::GetHandleFromFileName(fragmentPath);
@@ -147,12 +147,12 @@ namespace Hatchit {
                 std::string polygonMode;
                 std::string cullMode;
 
-                JsonExtractString(json_rasterState, "PolygonMode", polygonMode);
-                JsonExtractString(json_rasterState, "CullMode", cullMode);
-                JsonExtractBool(json_rasterState, "FrontCounterClockwise", m_rasterizationState.frontCounterClockwise);
-                JsonExtractBool(json_rasterState, "DepthClampEnable", m_rasterizationState.depthClampEnable);
-                JsonExtractBool(json_rasterState, "DiscardEnable", m_rasterizationState.discardEnable);
-                JsonExtractFloat(json_rasterState, "LineWidth", m_rasterizationState.lineWidth);
+                Core::JsonExtract<std::string>(json_rasterState, "PolygonMode", polygonMode);
+                Core::JsonExtract<std::string>(json_rasterState, "CullMode", cullMode);
+                Core::JsonExtract<bool>(json_rasterState, "FrontCounterClockwise", m_rasterizationState.frontCounterClockwise);
+                Core::JsonExtract<bool>(json_rasterState, "DepthClampEnable", m_rasterizationState.depthClampEnable);
+                Core::JsonExtract<bool>(json_rasterState, "DiscardEnable", m_rasterizationState.discardEnable);
+                Core::JsonExtract<float>(json_rasterState, "LineWidth", m_rasterizationState.lineWidth);
 
                 if (polygonMode == "LINE" || polygonMode == "Line")
                     m_rasterizationState.polygonMode = PolygonMode::LINE;
@@ -170,9 +170,9 @@ namespace Hatchit {
                 nlohmann::json json_multisampleState = json["MultisampleState"];
                 int64_t sampleCount;
 
-                JsonExtractInt64(json_multisampleState, "SampleCount", sampleCount);
-                JsonExtractFloat(json_multisampleState, "MinSamples", m_multisampleState.minSamples);
-                JsonExtractBool(json_multisampleState, "PerSampleShading", m_multisampleState.perSampleShading);
+                Core::JsonExtract<int64_t>(json_multisampleState, "SampleCount", sampleCount);
+                Core::JsonExtract<float>(json_multisampleState, "MinSamples", m_multisampleState.minSamples);
+                Core::JsonExtract<bool>(json_multisampleState, "PerSampleShading", m_multisampleState.perSampleShading);
 
                 switch (sampleCount)
                 {
@@ -206,25 +206,25 @@ namespace Hatchit {
 
                 for (unsigned i = 0; i < shaderVariables.size(); i++)
                 {
-                    JsonExtractString(shaderVariables[i], "Name", name);
-                    JsonExtractString(shaderVariables[i], "Type", type);
+                    Core::JsonExtract<std::string>(shaderVariables[i], "Name", name);
+                    Core::JsonExtract<std::string>(shaderVariables[i], "Type", type);
 
                     if (type == "INT" || type == "Int")
                     {
                         uint32_t value;
-                        JsonExtractUint32(shaderVariables[i], "Value", value);
+                        Core::JsonExtract<uint32_t>(shaderVariables[i], "Value", value);
                         m_shaderVariables[name] = new IntVariable(value);
                     }
                     else if (type == "FLOAT" || type == "Float")
                     {
                         float value;
-                        JsonExtractFloat(shaderVariables[i], "Value", value);
+                        Core::JsonExtract<float>(shaderVariables[i], "Value", value);
                         m_shaderVariables[name] = new FloatVariable(value);
                     }
                     else if (type == "DOUBLE" || type == "Double")
                     {
                         double value;
-                        JsonExtractDouble(shaderVariables[i], "Value", value);
+                        Core::JsonExtract<double>(shaderVariables[i], "Value", value);
                         m_shaderVariables[name] = new DoubleVariable(value);
                     }
                     else if (type == "FLOAT2" || type == "Float2")
@@ -262,14 +262,14 @@ namespace Hatchit {
                 {
                     InputElement element;
 
-                    JsonExtractString(inputLayout[i], "SemanticName", element.semanticName);
-                    JsonExtractUint32(inputLayout[i], "SemanticIndex", element.semanticIndex);
+                    Core::JsonExtract<std::string>(inputLayout[i], "SemanticName", element.semanticName);
+                    Core::JsonExtract<uint32_t>(inputLayout[i], "SemanticIndex", element.semanticIndex);
 
                     std::string format;
-                    JsonExtractString(inputLayout[i], "Format", format);
+                    Core::JsonExtract<std::string>(inputLayout[i], "Format", format);
                     element.format = ParseElementFormatFromString(format);
 
-                    JsonExtractUint32(inputLayout[i], "Slot", element.slot);
+                    Core::JsonExtract<uint32_t>(inputLayout[i], "Slot", element.slot);
 
                     m_inputLayout.elements.push_back(element);
                 }
@@ -279,7 +279,7 @@ namespace Hatchit {
             }
             else
             {
-                HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Pipelines) + fileName);
+                ::HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Pipelines) + fileName);
                 return false;
             }
         }
@@ -287,14 +287,14 @@ namespace Hatchit {
         bool Pipeline::VInitFromFile(const std::string& filename)
         {
             nlohmann::json json;
-            std::ifstream jsonStream(Path::Value(Path::Directory::Pipelines) + filename);
+            std::ifstream jsonStream(Core::Path::Value(Core::Path::Directory::Pipelines) + filename);
 
             if (jsonStream.is_open())
             {
                 jsonStream >> json;
 
                 //Extract render pass path
-                JsonExtractString(json, "RenderPass", m_renderPassPath);
+                Core::JsonExtract<std::string>(json, "RenderPass", m_renderPassPath);
 
                 //Extract shaders
                 nlohmann::json shaderPaths = json["Shaders"];
@@ -309,12 +309,12 @@ namespace Hatchit {
                 std::string computePath;
 
                 //Extract SPV shader paths
-                JsonExtractString(spvShaders, "Vertex", vertexPath);
-                JsonExtractString(spvShaders, "Fragment", fragmentPath);
-                JsonExtractString(spvShaders, "Geometry", geometryPath);
-                JsonExtractString(spvShaders, "Tess_Control", tessControlPath);
-                JsonExtractString(spvShaders, "Tess_Eval", tessEvalPath);
-                JsonExtractString(spvShaders, "Compute", computePath);
+                Core::JsonExtract<std::string>(spvShaders, "Vertex", vertexPath);
+                Core::JsonExtract<std::string>(spvShaders, "Fragment", fragmentPath);
+                Core::JsonExtract<std::string>(spvShaders, "Geometry", geometryPath);
+                Core::JsonExtract<std::string>(spvShaders, "Tess_Control", tessControlPath);
+                Core::JsonExtract<std::string>(spvShaders, "Tess_Eval", tessEvalPath);
+                Core::JsonExtract<std::string>(spvShaders, "Compute", computePath);
 
                 ShaderHandle vertexHandle = Shader::GetHandleFromFileName(vertexPath);
                 ShaderHandle fragmentHandle = Shader::GetHandleFromFileName(fragmentPath);
@@ -357,12 +357,12 @@ namespace Hatchit {
 
                 //Extract CSO shader path
                 //Reuse existing string objects
-                JsonExtractString(csoShaders, "Vertex", vertexPath);
-                JsonExtractString(csoShaders, "Fragment", fragmentPath);
-                JsonExtractString(csoShaders, "Geometry", geometryPath);
-                JsonExtractString(csoShaders, "Tess_Control", tessControlPath);
-                JsonExtractString(csoShaders, "Tess_Eval", tessEvalPath);
-                JsonExtractString(csoShaders, "Compute", computePath);
+                Core::JsonExtract<std::string>(csoShaders, "Vertex", vertexPath);
+                Core::JsonExtract<std::string>(csoShaders, "Fragment", fragmentPath);
+                Core::JsonExtract<std::string>(csoShaders, "Geometry", geometryPath);
+                Core::JsonExtract<std::string>(csoShaders, "Tess_Control", tessControlPath);
+                Core::JsonExtract<std::string>(csoShaders, "Tess_Eval", tessEvalPath);
+                Core::JsonExtract<std::string>(csoShaders, "Compute", computePath);
 
                 vertexHandle = Shader::GetHandleFromFileName(vertexPath);
                 fragmentHandle = Shader::GetHandleFromFileName(fragmentPath);
@@ -407,12 +407,12 @@ namespace Hatchit {
                 std::string polygonMode;
                 std::string cullMode;
 
-                JsonExtractString(json_rasterState, "PolygonMode", polygonMode);
-                JsonExtractString(json_rasterState, "CullMode", cullMode);
-                JsonExtractBool(json_rasterState, "FrontCounterClockwise", m_rasterizationState.frontCounterClockwise);
-                JsonExtractBool(json_rasterState, "DepthClampEnable", m_rasterizationState.depthClampEnable);
-                JsonExtractBool(json_rasterState, "DiscardEnable", m_rasterizationState.discardEnable);
-                JsonExtractFloat(json_rasterState, "LineWidth", m_rasterizationState.lineWidth);
+                Core::JsonExtract<std::string>(json_rasterState, "PolygonMode", polygonMode);
+                Core::JsonExtract<std::string>(json_rasterState, "CullMode", cullMode);
+                Core::JsonExtract<bool>(json_rasterState, "FrontCounterClockwise", m_rasterizationState.frontCounterClockwise);
+                Core::JsonExtract<bool>(json_rasterState, "DepthClampEnable", m_rasterizationState.depthClampEnable);
+                Core::JsonExtract<bool>(json_rasterState, "DiscardEnable", m_rasterizationState.discardEnable);
+                Core::JsonExtract<float>(json_rasterState, "LineWidth", m_rasterizationState.lineWidth);
 
                 if (polygonMode == "LINE" || polygonMode == "Line")
                     m_rasterizationState.polygonMode = PolygonMode::LINE;
@@ -430,9 +430,9 @@ namespace Hatchit {
                 nlohmann::json json_multisampleState = json["MultisampleState"];
                 int64_t sampleCount;
 
-                JsonExtractInt64(json_multisampleState, "SampleCount", sampleCount);
-                JsonExtractFloat(json_multisampleState, "MinSamples", m_multisampleState.minSamples);
-                JsonExtractBool(json_multisampleState, "PerSampleShading", m_multisampleState.perSampleShading);
+                Core::JsonExtract<int64_t>(json_multisampleState, "SampleCount", sampleCount);
+                Core::JsonExtract<float>(json_multisampleState, "MinSamples", m_multisampleState.minSamples);
+                Core::JsonExtract<bool>(json_multisampleState, "PerSampleShading", m_multisampleState.perSampleShading);
 
                 switch (sampleCount)
                 {
@@ -466,25 +466,25 @@ namespace Hatchit {
 
                 for (unsigned i = 0; i < shaderVariables.size(); i++)
                 {
-                    JsonExtractString(shaderVariables[i], "Name", name);
-                    JsonExtractString(shaderVariables[i], "Type", type);
+                    Core::JsonExtract<std::string>(shaderVariables[i], "Name", name);
+                    Core::JsonExtract<std::string>(shaderVariables[i], "Type", type);
 
                     if (type == "INT" || type == "Int")
                     {
                         uint32_t value;
-                        JsonExtractUint32(shaderVariables[i], "Value", value);
+                        Core::JsonExtract<uint32_t>(shaderVariables[i], "Value", value);
                         m_shaderVariables[name] = new IntVariable(value);
                     }
                     else if (type == "FLOAT" || type == "Float")
                     {
                         float value;
-                        JsonExtractFloat(shaderVariables[i], "Value", value);
+                        Core::JsonExtract<float>(shaderVariables[i], "Value", value);
                         m_shaderVariables[name] = new FloatVariable(value);
                     }
                     else if (type == "DOUBLE" || type == "Double")
                     {
                         double value;
-                        JsonExtractDouble(shaderVariables[i], "Value", value);
+                        Core::JsonExtract<double>(shaderVariables[i], "Value", value);
                         m_shaderVariables[name] = new DoubleVariable(value);
                     }
                     else if (type == "FLOAT2" || type == "Float2")
@@ -522,14 +522,14 @@ namespace Hatchit {
                 {
                     InputElement element;
 
-                    JsonExtractString(inputLayout[i], "SemanticName", element.semanticName);
-                    JsonExtractUint32(inputLayout[i], "SemanticIndex", element.semanticIndex);
+                    Core::JsonExtract<std::string>(inputLayout[i], "SemanticName", element.semanticName);
+                    Core::JsonExtract<uint32_t>(inputLayout[i], "SemanticIndex", element.semanticIndex);
 
                     std::string format;
-                    JsonExtractString(inputLayout[i], "Format", format);
+                    Core::JsonExtract<std::string>(inputLayout[i], "Format", format);
                     element.format = ParseElementFormatFromString(format);
 
-                    JsonExtractUint32(inputLayout[i], "Slot", element.slot);
+                    Core::JsonExtract<uint32_t>(inputLayout[i], "Slot", element.slot);
 
                     m_inputLayout.elements.push_back(element);
                 }

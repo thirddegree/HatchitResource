@@ -19,6 +19,7 @@ namespace Hatchit
 {
     namespace Resource
     {
+        //Still needed for HT_DEBUG_PRINTF
         using namespace Core;
 
         Material::Material(std::string ID) : FileResource<Material>(std::move(ID)) {}
@@ -26,14 +27,14 @@ namespace Hatchit
         bool Material::Initialize(const std::string& fileName)
         {
             nlohmann::json json;
-            std::ifstream jsonStream(Path::Value(Path::Directory::Materials) + fileName);
+            std::ifstream jsonStream(Core::Path::Value(Core::Path::Directory::Materials) + fileName);
 
             if (jsonStream.is_open())
             {
                 jsonStream >> json;
 
-                JsonExtractString(json, "Pipeline", m_pipelinePath);
-                JsonExtractString(json, "RenderPass", m_renderPassPath);
+                Core::JsonExtract<std::string>(json, "Pipeline", m_pipelinePath);
+                Core::JsonExtract<std::string>(json, "RenderPass", m_renderPassPath);
 
                 // Extract ShaderVariables
                 nlohmann::json shaderVariables = json["ShaderVariables"];
@@ -42,25 +43,25 @@ namespace Hatchit
 
                 for (unsigned i = 0; i < shaderVariables.size(); i++)
                 {
-                    JsonExtractString(shaderVariables[i], "Name", name);
-                    JsonExtractString(shaderVariables[i], "Type", type);
+                    Core::JsonExtract<std::string>(shaderVariables[i], "Name", name);
+                    Core::JsonExtract<std::string>(shaderVariables[i], "Type", type);
 
                     if (type == "INT" || type == "Int")
                     {
                         uint32_t value;
-                        JsonExtractUint32(shaderVariables[i], "Value", value);
+                        Core::JsonExtract<uint32_t>(shaderVariables[i], "Value", value);
                         m_shaderVariables[name] = new IntVariable(value);
                     }
                     else if (type == "FLOAT" || type == "Float")
                     {
                         float value;
-                        JsonExtractFloat(shaderVariables[i], "Value", value);
+                        Core::JsonExtract<float>(shaderVariables[i], "Value", value);
                         m_shaderVariables[name] = new FloatVariable(value);
                     }
                     else if (type == "DOUBLE" || type == "Double")
                     {
                         double value;
-                        JsonExtractDouble(shaderVariables[i], "Value", value);
+                        Core::JsonExtract<double>(shaderVariables[i], "Value", value);
                         m_shaderVariables[name] = new DoubleVariable(value);
                     }
                     else if (type == "FLOAT2" || type == "Float2")

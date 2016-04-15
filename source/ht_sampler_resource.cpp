@@ -22,14 +22,14 @@ namespace Hatchit
 {
     namespace Resource
     {
-		using namespace Core;
+		//using namespace Core;
 
         MutableSampler::MutableSampler(std::string ID) : FileResource<MutableSampler>(std::move(ID)) {}
 
         bool MutableSampler::Initialize(const std::string& fileName)
         {
             nlohmann::json json;
-            std::ifstream jsonStream(Path::Value(Path::Directory::Samplers) + fileName);
+            std::ifstream jsonStream(Core::Path::Value(Core::Path::Directory::Samplers) + fileName);
 
             if (jsonStream.is_open())
             {
@@ -39,8 +39,8 @@ namespace Hatchit
                 auto filter = json["Filter"];
                 std::string minFilter;
                 std::string magFilter;
-                JsonExtractString(filter, "Mag", magFilter);
-                JsonExtractString(filter, "Min", minFilter);
+                Core::JsonExtract<std::string>(filter, "Mag", magFilter);
+                Core::JsonExtract<std::string>(filter, "Min", minFilter);
                 m_filter.mag = SamplerFilterModeFromString(magFilter);
                 m_filter.min = SamplerFilterModeFromString(minFilter);
 
@@ -49,33 +49,33 @@ namespace Hatchit
                 std::string uMode;
                 std::string vMode;
                 std::string wMode;
-                JsonExtractString(address, "U", uMode);
-                JsonExtractString(address, "V", vMode);
-                JsonExtractString(address, "W", wMode);
+                Core::JsonExtract<std::string>(address, "U", uMode);
+                Core::JsonExtract<std::string>(address, "V", vMode);
+                Core::JsonExtract<std::string>(address, "W", wMode);
                 m_address.u = SamplerAddressModeFromString(uMode);
                 m_address.v = SamplerAddressModeFromString(vMode);
                 m_address.w = SamplerAddressModeFromString(wMode);
 
 
                 std::string mipMode;
-                JsonExtractString(json, "MipMode", mipMode);
+                Core::JsonExtract<std::string>(json, "MipMode", mipMode);
                 m_mipMode = SamplerMipModeFromString(mipMode);
 
-                JsonExtractFloat(json, "MipLODBias", m_mipLODBias);
-                JsonExtractFloat(json, "MinLOD", m_minLOD);
-                JsonExtractFloat(json, "MaxLOD", m_maxLOD);
-                JsonExtractUint32(json, "MaxAnisotropy", m_maxAnisotropy);
+                Core::JsonExtract<float>(json, "MipLODBias", m_mipLODBias);
+                Core::JsonExtract<float>(json, "MinLOD", m_minLOD);
+                Core::JsonExtract<float>(json, "MaxLOD", m_maxLOD);
+                Core::JsonExtract<uint32_t>(json, "MaxAnisotropy", m_maxAnisotropy);
 
                 std::string compareOp;
-                JsonExtractString(json, "CompareOp", compareOp);
+                Core::JsonExtract<std::string>(json, "CompareOp", compareOp);
                 m_compareOp = SamplerCompareOpFromString(compareOp);
 
                 std::string borderColor;
-                JsonExtractString(json, "BorderColor", borderColor);
+                Core::JsonExtract<std::string>(json, "BorderColor", borderColor);
                 m_borderColor = SamplerBorderColorFromString(borderColor);
 
                 std::string colorSpace;
-                JsonExtractString(json, "ColorSpace", colorSpace);
+                Core::JsonExtract<std::string>(json, "ColorSpace", colorSpace);
                 m_colorSpace = SamplerColorSpaceFromString(colorSpace);
 
                 jsonStream.close();
@@ -86,8 +86,6 @@ namespace Hatchit
             }
            return true;
         }
-
-        
     }
 }
 
