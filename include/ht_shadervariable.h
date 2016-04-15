@@ -76,6 +76,38 @@ namespace Hatchit {
                 }
             }
 
+            static inline size_t SizeFromType(ShaderVariable::Type type)
+            {
+                size_t size = 0;
+
+                switch (type)
+                {
+                case ShaderVariable::Type::INT:
+                    size = sizeof(uint32_t);
+                    break;
+                case ShaderVariable::Type::DOUBLE:
+                    size = sizeof(double);
+                    break;
+                case ShaderVariable::Type::FLOAT:
+                    size = sizeof(float);
+                    break;
+                case ShaderVariable::Type::FLOAT2:
+                    size = sizeof(float) * 2;
+                    break;
+                case ShaderVariable::Type::FLOAT3:
+                    size = sizeof(float) * 3;
+                    break;
+                case ShaderVariable::Type::FLOAT4:
+                    size = sizeof(float) * 4;
+                    break;
+                case ShaderVariable::Type::MAT4:
+                    size = sizeof(float) * 16;
+                    break;
+                }
+                
+                return size;
+            }
+
         protected:
             Type m_type;
             void* m_data = nullptr;
