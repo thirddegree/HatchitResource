@@ -70,6 +70,11 @@ namespace Hatchit
             return m_height;
         }
 
+        uint8_t Texture::GetBPP() const
+        {
+            return m_bpp;
+        }
+
         uint8_t Texture::GetChannels() const
         {
             return m_channels;

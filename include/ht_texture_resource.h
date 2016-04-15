@@ -38,6 +38,8 @@ namespace Hatchit
             uint32_t GetWidth() const;
             uint32_t GetHeight() const;
 
+            uint8_t GetBPP() const;
+
             uint32_t GetMIPLevels() const;
 
             uint8_t GetChannels() const;
