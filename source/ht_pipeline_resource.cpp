@@ -279,7 +279,7 @@ namespace Hatchit {
             }
             else
             {
-                ::HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Pipelines) + fileName);
+                HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::Pipelines) + fileName);
                 return false;
             }
         }
