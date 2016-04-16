@@ -19,6 +19,7 @@ namespace Hatchit
 {
     namespace Resource
     {
+        //Still needed for HT_DEBUG_PRINTF
         using namespace Core;
 
         RenderPass::RenderPass(std::string ID) : FileResource<RenderPass>(std::move(ID)) {}
@@ -26,7 +27,7 @@ namespace Hatchit
         bool RenderPass::Initialize(const std::string& fileName)
         {
             nlohmann::json json;
-            std::ifstream jsonStream(Path::Value(Path::Directory::RenderPasses) + fileName);
+            std::ifstream jsonStream(Core::Path::Value(Core::Path::Directory::RenderPasses) + fileName);
 
             if (jsonStream.is_open())
             {
@@ -59,7 +60,7 @@ namespace Hatchit
         bool RenderPass::VInitFromFile(const std::string& fileName)
         {
             nlohmann::json json;
-            std::ifstream jsonStream(Path::Value(Path::Directory::RenderPasses) + fileName);
+            std::ifstream jsonStream(Core::Path::Value(Core::Path::Directory::RenderPasses) + fileName);
 
             if (jsonStream.is_open())
             {

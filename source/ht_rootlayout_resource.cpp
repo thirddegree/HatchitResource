@@ -21,7 +21,7 @@ namespace Hatchit
 {
     namespace Resource
     {
-        using namespace Core;
+        //using namespace Core;
 
 		RootLayout::RootLayout(std::string ID)
             : FileResource<RootLayout>(std::move(ID)) {}
@@ -30,13 +30,13 @@ namespace Hatchit
         {
             nlohmann::json json;
 
-            std::ifstream jsonStream(Path::Value(Path::Directory::Assets) + fileName);
+            std::ifstream jsonStream(Core::Path::Value(Core::Path::Directory::Assets) + fileName);
 
             if (jsonStream.is_open())
             {
                 jsonStream >> json;
 
-                JsonExtractUint32(json, "ParameterCount", m_parameterCount);
+                Core::JsonExtract<uint32_t>(json, "ParameterCount", m_parameterCount);
 
                 nlohmann::json flags = json["Flags"];
                 for (auto flag : flags)
@@ -53,8 +53,8 @@ namespace Hatchit
                     auto filter = sampler["Filter"];
                     std::string minFilter;
                     std::string magFilter;
-                    JsonExtractString(filter, "Mag", magFilter);
-                    JsonExtractString(filter, "Min", minFilter);
+                    Core::JsonExtract<std::string>(filter, "Mag", magFilter);
+                    Core::JsonExtract<std::string>(filter, "Min", minFilter);
                     _sampler.m_filter.mag = Sampler::SamplerFilterModeFromString(magFilter);
                     _sampler.m_filter.min = Sampler::SamplerFilterModeFromString(minFilter);
 
@@ -63,25 +63,25 @@ namespace Hatchit
                     std::string uMode;
                     std::string vMode;
                     std::string wMode;
-                    JsonExtractString(address, "U", uMode);
-                    JsonExtractString(address, "V", vMode);
-                    JsonExtractString(address, "W", wMode);
+                    Core::JsonExtract<std::string>(address, "U", uMode);
+                    Core::JsonExtract<std::string>(address, "V", vMode);
+                    Core::JsonExtract<std::string>(address, "W", wMode);
                     _sampler.m_address.u = Sampler::SamplerAddressModeFromString(uMode);
                     _sampler.m_address.v = Sampler::SamplerAddressModeFromString(vMode);
                     _sampler.m_address.w = Sampler::SamplerAddressModeFromString(wMode);
 
 
-                    JsonExtractFloat(sampler, "MipLODBias", _sampler.m_mipLODBias);
-                    JsonExtractFloat(sampler, "MinLOD", _sampler.m_minLOD);
-                    JsonExtractFloat(sampler, "MaxLOD", _sampler.m_maxLOD);
-                    JsonExtractUint32(sampler, "MaxAnisotropy", _sampler.m_maxAnisotropy);
+                    Core::JsonExtract<float>(sampler, "MipLODBias", _sampler.m_mipLODBias);
+                    Core::JsonExtract<float>(sampler, "MinLOD", _sampler.m_minLOD);
+                    Core::JsonExtract<float>(sampler, "MaxLOD", _sampler.m_maxLOD);
+                    Core::JsonExtract<uint32_t>(sampler, "MaxAnisotropy", _sampler.m_maxAnisotropy);
 
                     std::string compareOp;
-                    JsonExtractString(sampler, "CompareOp", compareOp);
+                    Core::JsonExtract<std::string>(sampler, "CompareOp", compareOp);
                     _sampler.m_compareOp = Sampler::SamplerCompareOpFromString(compareOp);
 
                     std::string borderColor;
-                    JsonExtractString(sampler, "BorderColor", borderColor);
+                    Core::JsonExtract<std::string>(sampler, "BorderColor", borderColor);
                     _sampler.m_borderColor = Sampler::SamplerBorderColorFromString(borderColor);
 
 
@@ -91,11 +91,11 @@ namespace Hatchit
                         //If found, we should load immutable information
                         auto immutable = sampler["Immutable"];
 
-                        JsonExtractUint32(immutable, "Register", _sampler.m_immutable.shaderRegister);
-                        JsonExtractUint32(immutable, "Space", _sampler.m_immutable.registerSpace);
+                        Core::JsonExtract<uint32_t>(immutable, "Register", _sampler.m_immutable.shaderRegister);
+                        Core::JsonExtract<uint32_t>(immutable, "Space", _sampler.m_immutable.registerSpace);
 
                         std::string visibility;
-                        JsonExtractString(immutable, "Visibility", visibility);
+                        Core::JsonExtract<std::string>(immutable, "Visibility", visibility);
                         _sampler.m_immutable.visibility = Sampler::SamplerVisibilityFromString(visibility);
                     }
 
@@ -106,7 +106,7 @@ namespace Hatchit
                 for (uint32_t i = 0; i < m_parameterCount; i++)
                 {
                     std::string type;
-                    JsonExtractString(parameters[i], "Type", type);
+                    Core::JsonExtract<std::string>(parameters[i], "Type", type);
 
                     Parameter p;
                     p.type = ParameterTypeFromString(type);
@@ -116,19 +116,19 @@ namespace Hatchit
                     case RootLayout::Parameter::Type::TABLE:
                     {
                         DescriptorTable table;
-                        JsonExtractUint32(parameters[i], "RangeCount", table.rangeCount);
+                        Core::JsonExtract<uint32_t>(parameters[i], "RangeCount", table.rangeCount);
                         nlohmann::json ranges = parameters[i]["Ranges"];
                         for (int j = 0; j < ranges.size(); j++)
                         {
                             //Load table ranges
                             std::string rangeType;
-                            JsonExtractString(ranges[j], "Type", rangeType);
+                            Core::JsonExtract<std::string>(ranges[j], "Type", rangeType);
 
                             Range range;
                             range.type = RangeTypeFromString(rangeType);
-                            JsonExtractUint32(ranges[j], "DescriptorCount", range.numDescriptors);
-                            JsonExtractUint32(ranges[j], "BaseRegister", range.baseRegister);
-                            JsonExtractUint32(ranges[j], "RegisterSpace", range.registerSpace);
+                            Core::JsonExtract<uint32_t>(ranges[j], "DescriptorCount", range.numDescriptors);
+                            Core::JsonExtract<uint32_t>(ranges[j], "BaseRegister", range.baseRegister);
+                            Core::JsonExtract<uint32_t>(ranges[j], "RegisterSpace", range.registerSpace);
 
                             table.ranges.push_back(range);
                         }
@@ -141,15 +141,15 @@ namespace Hatchit
                     {
                         Constant constant;
                         
-                        JsonExtractUint32(parameters[i], "ShaderRegister", constant.shaderRegister);
-                        JsonExtractUint32(parameters[i], "RegisterSpace", constant.registerSpace);
+                        Core::JsonExtract<uint32_t>(parameters[i], "ShaderRegister", constant.shaderRegister);
+                        Core::JsonExtract<uint32_t>(parameters[i], "RegisterSpace", constant.registerSpace);
 
                         std::string typeName;
-                        JsonExtractString(parameters[i], "DataType", typeName);
+                        Core::JsonExtract<std::string>(parameters[i], "DataType", typeName);
 
                         constant.type = ShaderVariable::TypeFromString(typeName);
                         
-                        JsonExtractUint32(parameters[i], "ValueCount", constant.valueCount);
+                        Core::JsonExtract<uint32_t>(parameters[i], "ValueCount", constant.valueCount);
 
                         p.data.constant = constant;
                     } break;
@@ -159,7 +159,7 @@ namespace Hatchit
                     }
 
                     std::string visibility;
-                    JsonExtractString(parameters[i], "Visibility", visibility);
+                    Core::JsonExtract<std::string>(parameters[i], "Visibility", visibility);
                     p.visibility = ParameterVisibilityFromString(visibility);
 
                     m_parameters.push_back(p);

@@ -19,6 +19,7 @@ namespace Hatchit {
 
     namespace Resource {
 
+        //Still required for HT_DEBUG_PRINTF
         using namespace Core;
 
         RenderTarget::RenderTarget(std::string ID) : FileResource(std::move(ID)) {}
@@ -26,15 +27,15 @@ namespace Hatchit {
         bool RenderTarget::Initialize(const std::string& fileName)
         {
             nlohmann::json json;
-            std::ifstream jsonStream(Path::Value(Path::Directory::RenderTargets) + fileName);
+            std::ifstream jsonStream(Core::Path::Value(Core::Path::Directory::RenderTargets) + fileName);
 
             if (jsonStream.is_open())
             {
                 jsonStream >> json;
 
-                JsonExtractUint32(json, "Width", m_width);
-                JsonExtractUint32(json, "Height", m_height);
-                JsonExtractString(json, "Format", m_format);
+                Core::JsonExtract<uint32_t>(json, "Width", m_width);
+                Core::JsonExtract<uint32_t>(json, "Height", m_height);
+                Core::JsonExtract<std::string>(json, "Format", m_format);
 
                 jsonStream.close();
                 return true;
@@ -49,15 +50,15 @@ namespace Hatchit {
         bool RenderTarget::VInitFromFile(const std::string& filename)
         {
             nlohmann::json json;
-            std::ifstream jsonStream(Path::Value(Path::Directory::RenderTargets) + filename);
+            std::ifstream jsonStream(Core::Path::Value(Core::Path::Directory::RenderTargets) + filename);
 
             if (jsonStream.is_open())
             {
                 jsonStream >> json;
 
-                JsonExtractUint32(json, "Width", m_width);
-                JsonExtractUint32(json, "Height", m_height);
-                JsonExtractString(json, "Format", m_format);
+                Core::JsonExtract<uint32_t>(json, "Width", m_width);
+                Core::JsonExtract<uint32_t>(json, "Height", m_height);
+                Core::JsonExtract<std::string>(json, "Format", m_format);
 
                 jsonStream.close();
                 return true;
