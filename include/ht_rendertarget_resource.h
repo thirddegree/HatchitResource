@@ -1,10 +1,6 @@
 /**
 **    Hatchit Engine
-<<<<<<< Updated upstream
-**    Copyright(c) 2015 Third-Degree
-=======
 **    Copyright(c) 2015-2016 ThirdDegree
->>>>>>> Stashed changes
 **
 **    GNU Lesser General Public License
 **    This file may be used under the terms of the GNU Lesser
@@ -33,16 +29,16 @@ namespace Hatchit {
             //Required function for all RefCounted classes
             bool Initialize(const std::string& fileName);
 
-            virtual bool VInitFromFile(const std::string& filename);
-
             uint32_t GetWidth() const;
             uint32_t GetHeight() const;
             std::string GetFormat() const;
+            std::vector<float> GetClearColor() const;
 
         private:
             uint32_t m_width;
             uint32_t m_height;
             std::string m_format;
+            std::vector<float> m_clearColor;
         };
 
         using RenderTargetHandle = Core::Handle<const RenderTarget>;

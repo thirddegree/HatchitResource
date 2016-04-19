@@ -37,6 +37,13 @@ namespace Hatchit {
                 Core::JsonExtract<uint32_t>(json, "Height", m_height);
                 Core::JsonExtract<std::string>(json, "Format", m_format);
 
+                nlohmann::json clearColor = json["ClearColor"];
+                if (!clearColor.is_null())
+                {
+                    for (uint32_t i = 0; i < 4; i++)
+                        m_clearColor.push_back(clearColor[i]);
+                }
+
                 jsonStream.close();
                 return true;
             }
@@ -45,28 +52,6 @@ namespace Hatchit {
                 HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderTargets) + fileName);
                 return false;
             }
-        }
-
-        bool RenderTarget::VInitFromFile(const std::string& filename)
-        {
-            nlohmann::json json;
-            std::ifstream jsonStream(Core::Path::Value(Core::Path::Directory::RenderTargets) + filename);
-
-            if (jsonStream.is_open())
-            {
-                jsonStream >> json;
-
-                Core::JsonExtract<uint32_t>(json, "Width", m_width);
-                Core::JsonExtract<uint32_t>(json, "Height", m_height);
-                Core::JsonExtract<std::string>(json, "Format", m_format);
-
-                jsonStream.close();
-                return true;
-            }
-
-            HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderTargets) + filename);
-
-            return false;
         }
 
         uint32_t RenderTarget::GetWidth() const 
@@ -80,6 +65,10 @@ namespace Hatchit {
         std::string RenderTarget::GetFormat() const
         {
             return m_format;
+        }
+        std::vector<float> RenderTarget::GetClearColor() const
+        {
+            return m_clearColor;
         }
     }
 }
