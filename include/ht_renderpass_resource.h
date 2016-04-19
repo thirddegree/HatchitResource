@@ -23,7 +23,7 @@ namespace Hatchit
         class HT_API RenderPass : public FileResource<RenderPass>
         {
         public:
-            RenderPass(std::string ID);
+            RenderPass(Core::Guid ID);
             virtual ~RenderPass() = default;
 
             //Required function for all RefCounted classes

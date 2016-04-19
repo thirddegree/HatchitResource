@@ -24,7 +24,7 @@ namespace Hatchit
         class HT_API MutableSampler : public FileResource<MutableSampler>, public Sampler
         {
         public:
-            MutableSampler(std::string ID);
+            MutableSampler(Core::Guid ID);
             virtual ~MutableSampler() = default;
 
             //Required function for all RefCounted classes

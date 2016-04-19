@@ -20,7 +20,7 @@ namespace Hatchit
 {
     namespace Resource
     {
-        Texture::Texture(std::string ID) : FileResource<Texture>(std::move(ID)) {}
+        Texture::Texture(Core::Guid ID) : FileResource<Texture>(std::move(ID)) {}
 
         bool Texture::Initialize(const std::string& fileName)
         {

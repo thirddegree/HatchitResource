@@ -23,7 +23,7 @@ namespace Hatchit
     {
         //using namespace Core;
 
-		RootLayout::RootLayout(std::string ID)
+		RootLayout::RootLayout(Core::Guid ID)
             : FileResource<RootLayout>(std::move(ID)) {}
 
         bool RootLayout::Initialize(const std::string& fileName)
