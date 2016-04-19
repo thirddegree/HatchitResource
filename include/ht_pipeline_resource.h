@@ -43,6 +43,14 @@ namespace Hatchit {
         class HT_API Pipeline : public FileResource<Pipeline>
         {
         public:
+            struct Attribute 
+            {
+                std::string semanticName;
+                uint32_t semanticIndex;
+                ShaderVariable::Type type;
+                uint32_t slot;
+            };
+
             enum PolygonMode
             {
                 SOLID,
@@ -87,27 +95,6 @@ namespace Hatchit {
                 bool        perSampleShading;   //Shades per sample if true, per fragment if false
             };
 
-            struct InputElement
-            {
-                enum class Format
-                {
-                    R32G32B32_FLOAT,
-                    R32G32B32A32_FLOAT,
-                    R32G32_FLOAT,
-                    UNKNOWN
-                };
-
-                std::string semanticName;
-                uint32_t    semanticIndex;
-                Format      format;
-                uint32_t    slot;
-            };
-
-            struct InputLayout
-            {
-                std::vector<InputElement> elements;
-            };
-
             enum ShaderSlot
             {
                 VERTEX = 0,
@@ -124,13 +111,13 @@ namespace Hatchit {
 
             //Required function for all RefCounted classes
             bool Initialize(const std::string& fileName);
-            bool VInitFromFile(const std::string& filename);
 
             const std::string& GetRenderPassPath() const;
 
-            const RasterizerState&  GetRasterizationState() const;
-            const MultisampleState& GetMultisampleState() const;
-            const InputLayout&      GetInputLayout() const;
+            const RasterizerState&          GetRasterizationState() const;
+            const MultisampleState&         GetMultisampleState() const;
+            const std::vector<Attribute>&   GetVertexLayout() const;
+            const std::vector<Attribute>&   GetInstanceLayout() const;
 
             const std::map<std::string, ShaderVariable*>& GetShaderVariables() const;
 
@@ -145,7 +132,8 @@ namespace Hatchit {
 
             RasterizerState     m_rasterizationState;
             MultisampleState    m_multisampleState;
-            InputLayout         m_inputLayout;
+            std::vector<Attribute> m_vertexLayout;
+            std::vector<Attribute> m_instanceLayout;
 
             std::map<std::string, ShaderVariable*>   m_shaderVariables;
 
@@ -154,8 +142,6 @@ namespace Hatchit {
 
             std::map<ShaderSlot, ShaderHandle> m_spvShaderHandles;
             std::map<ShaderSlot, ShaderHandle> m_csoShaderHandles;
-
-            InputElement::Format ParseElementFormatFromString(const std::string& format);
         };
 
         using PipelineHandle = Core::Handle<const Pipeline>;
