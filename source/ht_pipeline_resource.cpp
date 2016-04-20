@@ -22,7 +22,7 @@ namespace Hatchit {
         //Still need this for HT_DEBUG_PRINTF ...
         using namespace Core;
 
-        Pipeline::Pipeline(std::string ID) : FileResource<Pipeline>(std::move(ID)) {}
+        Pipeline::Pipeline(Core::Guid ID) : FileResource<Pipeline>(std::move(ID)) {}
 
         bool Pipeline::Initialize(const std::string& fileName)
         {

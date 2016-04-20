@@ -23,7 +23,7 @@ namespace Hatchit {
         class HT_API RenderTarget : public FileResource<RenderTarget>
         {
         public:
-            RenderTarget(std::string ID);
+            RenderTarget(Core::Guid ID);
             virtual ~RenderTarget() = default;
 
             //Required function for all RefCounted classes

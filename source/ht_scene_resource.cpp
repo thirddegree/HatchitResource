@@ -24,7 +24,7 @@ namespace Hatchit
 {
     namespace Resource
     {
-        Scene::Scene(std::string ID) : FileResource<Scene>(std::move(ID)) {}
+        Scene::Scene(Core::Guid ID) : FileResource<Scene>(std::move(ID)) {}
 
         bool Scene::Initialize(const std::string& fileName)
         {

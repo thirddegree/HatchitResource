@@ -25,7 +25,7 @@ namespace Hatchit {
         class HT_API Scene : public FileResource<Scene>
         {
         public:
-            Scene(std::string ID);
+            Scene(Core::Guid ID);
             virtual ~Scene(void) = default;
             Scene(Scene&& rhs) = default;
             Scene& operator=(Scene&& rhs) = default;

@@ -22,7 +22,7 @@ namespace Hatchit
         //Still needed for HT_DEBUG_PRINTF
         using namespace Core;
 
-        Material::Material(std::string ID) : FileResource<Material>(std::move(ID)) {}
+        Material::Material(Core::Guid ID) : FileResource<Material>(std::move(ID)) {}
 
         bool Material::Initialize(const std::string& fileName)
         {
