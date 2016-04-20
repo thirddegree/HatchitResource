@@ -31,8 +31,6 @@ namespace Hatchit {
 
             //Required function for all RefCounted classes
             bool Initialize(const std::string& fileName);
-        
-			bool VInitFromFile(const std::string& file);
 
             const std::vector<Mesh*>& GetMeshes() const;
         private:

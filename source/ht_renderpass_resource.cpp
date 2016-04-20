@@ -32,14 +32,21 @@ namespace Hatchit
             if (jsonStream.is_open())
             {
                 jsonStream >> json;
-                nlohmann::json json_inputPaths = json["Input"];
+                nlohmann::json json_inputTargets = json["Input"];
                 nlohmann::json json_outputPaths = json["Output"];
-                m_inputPaths = std::vector<std::string>(json_inputPaths.size());
                 m_outputPaths = std::vector<std::string>(json_outputPaths.size());
 
-                for (int i = 0; i < json_inputPaths.size(); i++)
+                for (int i = 0; i < json_inputTargets.size(); i++)
                 {
-                    m_inputPaths[i] = json_inputPaths[i].get<std::string>();
+                    nlohmann::json json_inputTarget = json_inputTargets[i];
+                    
+                    InputTarget inputTarget;
+
+                    JsonExtract<std::string>(json_inputTarget, "Path", inputTarget.path);
+                    JsonExtract<uint32_t>(json_inputTarget, "Set", inputTarget.set);
+                    JsonExtract<uint32_t>(json_inputTarget, "Binding", inputTarget.binding);
+
+                    m_inputTargets.push_back(inputTarget);
                 }
 
                 for (int i = 0; i < json_outputPaths.size(); i++)
@@ -57,39 +64,7 @@ namespace Hatchit
             }
         }
 
-        bool RenderPass::VInitFromFile(const std::string& fileName)
-        {
-            nlohmann::json json;
-            std::ifstream jsonStream(Core::Path::Value(Core::Path::Directory::RenderPasses) + fileName);
-
-            if (jsonStream.is_open())
-            {
-                jsonStream >> json;
-                nlohmann::json json_inputPaths = json["Input"];
-                nlohmann::json json_outputPaths = json["Output"];
-                m_inputPaths = std::vector<std::string>(json_inputPaths.size());
-                m_outputPaths = std::vector<std::string>(json_outputPaths.size());
-
-                for (int i = 0; i < json_inputPaths.size(); i++)
-                {
-                    m_inputPaths[i] = json_inputPaths[i].get<std::string>();
-                }
-
-                for (int i = 0; i < json_outputPaths.size(); i++)
-                {
-                    m_outputPaths[i] = json_outputPaths[i].get<std::string>();
-                }
-
-                jsonStream.close();
-                return true;
-            }
-
-            HT_DEBUG_PRINTF("ERROR: Could not generate stream to JSON file -> %s", Path::Value(Path::Directory::RenderPasses) + fileName);
-
-            return false;
-        }
-
-        std::vector<std::string> RenderPass::GetInputPaths() const { return m_inputPaths; }
+        std::vector<RenderPass::InputTarget> RenderPass::GetInputTargets() const { return m_inputTargets; }
         std::vector<std::string> RenderPass::GetOutputPaths() const { return m_outputPaths; }
     }
 }

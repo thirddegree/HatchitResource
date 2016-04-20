@@ -23,19 +23,24 @@ namespace Hatchit
         class HT_API RenderPass : public FileResource<RenderPass>
         {
         public:
+            struct InputTarget 
+            {
+                std::string path;
+                uint32_t set;
+                uint32_t binding;
+            };
+
             RenderPass(std::string ID);
             virtual ~RenderPass() = default;
 
             //Required function for all RefCounted classes
             bool Initialize(const std::string& fileName);
 
-            virtual bool VInitFromFile(const std::string& fileName);
-
-            std::vector<std::string> GetInputPaths() const;
+            std::vector<InputTarget> GetInputTargets() const;
             std::vector<std::string> GetOutputPaths() const;
 
         private:
-            std::vector<std::string> m_inputPaths;
+            std::vector<InputTarget> m_inputTargets;
             std::vector<std::string> m_outputPaths;
         };
 
