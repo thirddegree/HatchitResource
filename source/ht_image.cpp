@@ -64,7 +64,7 @@ namespace Hatchit {
 
         static int FileReadCallback(void* file, char* data, int size)
         {
-            return static_cast<Core::File*>(file)->Read(reinterpret_cast<BYTE*>(data), size);
+            return static_cast<Core::File*>(file)->Read(reinterpret_cast<BYTE*>(data), static_cast<size_t>(size));
         }
 
         static void FileSkipCallback(void* file, int n)
