@@ -22,7 +22,7 @@ namespace Hatchit
         //Still needed for HT_DEBUG_PRINTF
         using namespace Core;
 
-        RenderPass::RenderPass(std::string ID) : FileResource<RenderPass>(std::move(ID)) {}
+        RenderPass::RenderPass(Core::Guid ID) : FileResource<RenderPass>(std::move(ID)) {}
 
         bool RenderPass::Initialize(const std::string& fileName)
         {

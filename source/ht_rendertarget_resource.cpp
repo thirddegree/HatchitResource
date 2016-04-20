@@ -22,7 +22,7 @@ namespace Hatchit {
         //Still required for HT_DEBUG_PRINTF
         using namespace Core;
 
-        RenderTarget::RenderTarget(std::string ID) : FileResource(std::move(ID)) {}
+        RenderTarget::RenderTarget(Core::Guid ID) : FileResource(std::move(ID)) {}
 
         bool RenderTarget::Initialize(const std::string& fileName)
         {

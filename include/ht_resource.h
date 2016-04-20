@@ -53,7 +53,7 @@ namespace Hatchit
             static Core::Handle<const ResourceType> GetHandleFromFileName(const std::string& fileName);
 
         protected:
-            FileResource(std::string ID);
+            FileResource(Core::Guid ID);
         };
     }
 }

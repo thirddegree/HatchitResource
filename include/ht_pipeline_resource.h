@@ -28,7 +28,6 @@
 #include <ht_debug.h>
 #include <ht_platform.h>
 #include <ht_resource.h>
-#include <ht_guid.h>
 #include <ht_jsonhelper.h>
 #include <ht_shadervariable.h>
 #include <ht_math.h>
@@ -106,7 +105,7 @@ namespace Hatchit {
             };
             static const int MAX_SHADERS = 6;
 
-            Pipeline(std::string ID);
+            Pipeline(Core::Guid ID);
             virtual ~Pipeline() {};
 
             //Required function for all RefCounted classes

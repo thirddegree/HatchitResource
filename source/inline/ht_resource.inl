@@ -22,7 +22,7 @@ namespace Hatchit
     namespace Resource
     {
         template<typename ResourceType>
-        FileResource<ResourceType>::FileResource(std::string fileName) : Core::RefCounted<ResourceType>(std::move(fileName)) {};
+        FileResource<ResourceType>::FileResource(Core::Guid ID) : Core::RefCounted<ResourceType>(std::move(ID)) {};
 
         template<typename ResourceType>
         Core::Handle<const ResourceType> FileResource<ResourceType>::GetHandleFromFileName(const std::string& fileName)
