@@ -26,7 +26,7 @@ namespace Hatchit {
         class HT_API Model : public FileResource<Model>
         {
         public:
-            Model(std::string ID);
+            Model(Core::Guid ID);
             virtual ~Model() = default;
 
             //Required function for all RefCounted classes

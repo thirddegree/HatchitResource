@@ -21,7 +21,7 @@ namespace Hatchit {
 
     namespace Resource {
 
-        Model::Model(std::string ID) : FileResource<Model>(std::move(ID)) {}
+        Model::Model(Core::Guid ID) : FileResource<Model>(std::move(ID)) {}
 
         bool Model::Initialize(const std::string& fileName)
         {

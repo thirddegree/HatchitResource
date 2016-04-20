@@ -30,7 +30,7 @@ namespace Hatchit
                 uint32_t binding;
             };
 
-            RenderPass(std::string ID);
+            RenderPass(Core::Guid ID);
             virtual ~RenderPass() = default;
 
             //Required function for all RefCounted classes

@@ -24,7 +24,7 @@ namespace Hatchit
     {
 		//using namespace Core;
 
-        MutableSampler::MutableSampler(std::string ID) : FileResource<MutableSampler>(std::move(ID)) {}
+        MutableSampler::MutableSampler(Core::Guid ID) : FileResource<MutableSampler>(std::move(ID)) {}
 
         bool MutableSampler::Initialize(const std::string& fileName)
         {

@@ -19,7 +19,7 @@ namespace Hatchit {
 
     namespace Resource {
 
-        Shader::Shader(std::string ID) : FileResource<Shader>(std::move(ID)), m_bytecode(nullptr), m_bytecodeSize(0) {}
+        Shader::Shader(Core::Guid ID) : FileResource<Shader>(std::move(ID)), m_bytecode(nullptr), m_bytecodeSize(0) {}
 
         bool Shader::Initialize(const std::string& fileName)
         {

@@ -110,7 +110,7 @@ namespace Hatchit
                 Data                    data;
             };
 
-            RootLayout(std::string ID);
+            RootLayout(Core::Guid ID);
 
             bool Initialize(const std::string& fileName);
 

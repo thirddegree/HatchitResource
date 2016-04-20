@@ -27,7 +27,7 @@ namespace Hatchit
         class HT_API Material : public FileResource<Material>
         {
         public:
-            Material(std::string ID);
+            Material(Core::Guid ID);
             virtual ~Material() = default;
 
             //Required function for all RefCounted classes

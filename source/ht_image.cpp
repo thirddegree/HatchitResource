@@ -57,6 +57,21 @@ namespace Hatchit {
             return m_data;
         }
 
+        static int FileEOFCallback(void* file)
+        {
+            return static_cast<Core::File*>(file)->Handle()->eof();
+        }
+
+        static int FileReadCallback(void* file, char* data, int size)
+        {
+            return static_cast<Core::File*>(file)->Read(reinterpret_cast<BYTE*>(data), size);
+        }
+
+        static void FileSkipCallback(void* file, int n)
+        {
+            static_cast<Core::File*>(file)->Seek(n, Core::File::FileSeek::Current);
+        }
+
         ////////////////////////////////////////////////
         // Bitmap static functions
         ////////////////////////////////////////////////
@@ -92,7 +107,12 @@ namespace Hatchit {
                 break;
             }
 
-            bitmap->m_data = stbi_load_from_file(file->Handle(),
+            stbi_io_callbacks callbacks;
+            callbacks.eof = FileEOFCallback;
+            callbacks.read = FileReadCallback;
+            callbacks.skip = FileSkipCallback;
+
+            bitmap->m_data = stbi_load_from_callbacks(&callbacks, file,
                 &bitmap->m_width, &bitmap->m_height, &bitmap->m_channels,
                 req_channels);
             if (channels == Channels::AUTO)
