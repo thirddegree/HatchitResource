@@ -63,6 +63,12 @@ namespace Hatchit {
                 BACK
             };
 
+            struct DepthStencilState 
+            {
+                bool testDepth;             //True to run depth test, false to ignore depth test
+                bool writeDepth;            //True to write depth buffer, false to ignore writing depth buffer
+            };
+
             //Describes options for the render state
             //Some options are not available such as front face winding order
             struct RasterizerState
@@ -113,6 +119,7 @@ namespace Hatchit {
 
             const std::string& GetRenderPassPath() const;
 
+            const DepthStencilState&        GetDepthStencilState() const;
             const RasterizerState&          GetRasterizationState() const;
             const MultisampleState&         GetMultisampleState() const;
             const std::vector<Attribute>&   GetVertexLayout() const;
@@ -129,6 +136,7 @@ namespace Hatchit {
         private:
             std::string m_renderPassPath;
 
+            DepthStencilState   m_depthStencilState;
             RasterizerState     m_rasterizationState;
             MultisampleState    m_multisampleState;
             std::vector<Attribute> m_vertexLayout;

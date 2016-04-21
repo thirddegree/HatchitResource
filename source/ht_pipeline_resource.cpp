@@ -178,6 +178,11 @@ namespace Hatchit {
                     m_instanceLayout.push_back(attribute);
                 }
 
+                // Extract Depth Stencil state
+                nlohmann::json json_depthState = json["DepthStencilState"];
+                Core::JsonExtract<bool>(json_depthState, "TestDepth", m_depthStencilState.testDepth);
+                Core::JsonExtract<bool>(json_depthState, "WriteDepth", m_depthStencilState.writeDepth);
+
                 // Extract Rasterizer state
                 nlohmann::json json_rasterState = json["RasterState"];
                 std::string polygonMode;
@@ -189,6 +194,7 @@ namespace Hatchit {
                 Core::JsonExtract<bool>(json_rasterState, "DepthClampEnable", m_rasterizationState.depthClampEnable);
                 Core::JsonExtract<bool>(json_rasterState, "DiscardEnable", m_rasterizationState.discardEnable);
                 Core::JsonExtract<float>(json_rasterState, "LineWidth", m_rasterizationState.lineWidth);
+
 
                 if (polygonMode == "LINE" || polygonMode == "Line")
                     m_rasterizationState.polygonMode = PolygonMode::LINE;
@@ -307,7 +313,12 @@ namespace Hatchit {
             return m_renderPassPath;
         }
 
-        const Pipeline::RasterizerState&  Pipeline::GetRasterizationState() const
+        const Pipeline::DepthStencilState& Pipeline::GetDepthStencilState() const
+        {
+            return m_depthStencilState;
+        }
+
+        const Pipeline::RasterizerState& Pipeline::GetRasterizationState() const
         { 
             return m_rasterizationState;
         }

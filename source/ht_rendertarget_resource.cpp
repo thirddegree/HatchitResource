@@ -22,7 +22,11 @@ namespace Hatchit {
         //Still required for HT_DEBUG_PRINTF
         using namespace Core;
 
-        RenderTarget::RenderTarget(Core::Guid ID) : FileResource(std::move(ID)) {}
+        RenderTarget::RenderTarget(Core::Guid ID) : FileResource(std::move(ID)) 
+        {
+            m_colorBlendOp = RenderTarget::BlendOp::NONE;
+            m_alphaBlendOp = RenderTarget::BlendOp::NONE;
+        }
 
         bool RenderTarget::Initialize(const std::string& fileName)
         {
@@ -42,6 +46,20 @@ namespace Hatchit {
                 {
                     for (uint32_t i = 0; i < 4; i++)
                         m_clearColor.push_back(clearColor[i]);
+                }
+
+                //Parse blend ops
+                nlohmann::json blendOps = json["Blending"];
+                if (!blendOps.is_null())
+                {
+                    std::string colorBlendString;
+                    std::string alphaBlendString;
+
+                    Core::JsonExtract<std::string>(blendOps, "ColorBlendOp", colorBlendString);
+                    Core::JsonExtract<std::string>(blendOps, "AlphaBlendOp", alphaBlendString);
+
+                    m_colorBlendOp = getBlendOpFromString(colorBlendString);
+                    m_alphaBlendOp = getBlendOpFromString(alphaBlendString);
                 }
 
                 jsonStream.close();
@@ -69,6 +87,30 @@ namespace Hatchit {
         std::vector<float> RenderTarget::GetClearColor() const
         {
             return m_clearColor;
+        }
+        RenderTarget::BlendOp RenderTarget::GetColorBlendOp() const
+        {
+            return m_colorBlendOp;
+        }
+        RenderTarget::BlendOp RenderTarget::GetAlphaBlendOp() const
+        {
+            return m_alphaBlendOp;
+        }
+
+        RenderTarget::BlendOp RenderTarget::getBlendOpFromString(const std::string& blendOpString)
+        {
+            if (blendOpString == "ADD")
+                return RenderTarget::BlendOp::ADD;
+            else if (blendOpString == "SUB")
+                return RenderTarget::BlendOp::SUB;
+            else if (blendOpString == "REV_SUB")
+                return RenderTarget::BlendOp::REV_SUB;
+            else if (blendOpString == "MIN")
+                return RenderTarget::BlendOp::MIN;
+            else if (blendOpString == "MAX")
+                return RenderTarget::BlendOp::MAX;
+            else
+                return RenderTarget::BlendOp::NONE;
         }
     }
 }

@@ -23,6 +23,16 @@ namespace Hatchit {
         class HT_API RenderTarget : public FileResource<RenderTarget>
         {
         public:
+            enum class BlendOp
+            {
+                ADD,
+                SUB,
+                REV_SUB,
+                MIN,
+                MAX,
+                NONE
+            };
+
             RenderTarget(Core::Guid ID);
             virtual ~RenderTarget() = default;
 
@@ -33,12 +43,18 @@ namespace Hatchit {
             uint32_t GetHeight() const;
             std::string GetFormat() const;
             std::vector<float> GetClearColor() const;
+            BlendOp GetColorBlendOp() const;
+            BlendOp GetAlphaBlendOp() const;
 
         private:
             uint32_t m_width;
             uint32_t m_height;
             std::string m_format;
             std::vector<float> m_clearColor;
+            BlendOp m_colorBlendOp;
+            BlendOp m_alphaBlendOp;
+
+            BlendOp getBlendOpFromString(const std::string& blendOpString);
         };
 
         using RenderTargetHandle = Core::Handle<const RenderTarget>;
