@@ -34,13 +34,13 @@ namespace Hatchit
             bool Initialize(const std::string& fileName);
 
             const std::string& GetPipelinePath() const;
-            const std::string& GetRenderPassPath() const;
+            const std::vector<std::string>& GetRenderPassPaths() const;
             std::map<std::string, ShaderVariable*> GetShaderVariables() const;
             std::vector<std::string> GetTexturePaths() const;
 
         private:
             std::string m_pipelinePath;
-            std::string m_renderPassPath;
+            std::vector<std::string> m_renderPassPaths;
             std::map<std::string, ShaderVariable*> m_shaderVariables;
             std::vector<std::string> m_texturePaths;
         };

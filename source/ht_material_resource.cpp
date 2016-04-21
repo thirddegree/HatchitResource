@@ -34,14 +34,22 @@ namespace Hatchit
                 jsonStream >> json;
 
                 Core::JsonExtract<std::string>(json, "Pipeline", m_pipelinePath);
-                Core::JsonExtract<std::string>(json, "RenderPass", m_renderPassPath);
+                
+                //Extract render pass paths
+                nlohmann::json renderPasses = json["RenderPasses"];
+
+                for (uint32_t i = 0; i < renderPasses.size(); i++)
+                {
+                    std::string renderPassPath = renderPasses[i];
+                    m_renderPassPaths.push_back(renderPassPath);
+                }
 
                 // Extract ShaderVariables
                 nlohmann::json shaderVariables = json["ShaderVariables"];
                 std::string name;
                 std::string type;
 
-                for (unsigned i = 0; i < shaderVariables.size(); i++)
+                for (uint32_t i = 0; i < shaderVariables.size(); i++)
                 {
                     Core::JsonExtract<std::string>(shaderVariables[i], "Name", name);
                     Core::JsonExtract<std::string>(shaderVariables[i], "Type", type);
@@ -109,7 +117,7 @@ namespace Hatchit
         }
 
         const std::string& Material::GetPipelinePath() const { return m_pipelinePath; }
-        const std::string& Material::GetRenderPassPath() const { return m_renderPassPath; }
+        const std::vector<std::string>& Material::GetRenderPassPaths() const { return m_renderPassPaths; }
         std::map<std::string, ShaderVariable*> Material::GetShaderVariables() const { return m_shaderVariables; }
         std::vector<std::string> Material::GetTexturePaths() const { return m_texturePaths; }
     }
