@@ -17,10 +17,12 @@
 #include <ht_platform.h>
 #include <ht_string.h>
 #include <ht_math.h>
+#include <ht_debug.h>
 
 #ifdef HT_SYS_LINUX
 #include <cstring>
 #endif
+#include <string>
 
 namespace Hatchit {
 
@@ -53,26 +55,26 @@ namespace Hatchit {
             inline Type GetType() { return m_type; }
             inline void* GetData() { return m_data; }
 
-            static inline Type TypeFromString(const std::string& string) 
+            static inline ShaderVariable::Type TypeFromString(const std::string& str) 
             {
-                if (string == "INT")
-                    return Type::INT;
-                else if (string == "FLOAT")
-                    return Type::FLOAT;
-                else if (string == "DOUBLE")
-                    return Type::DOUBLE;
-                else if (string == "FLOAT2")
-                    return Type::FLOAT2;
-                else if (string == "FLOAT3")
-                    return Type::FLOAT3;
-                else if (string == "FLOAT4")
-                    return Type::FLOAT4;
-                else if (string == "MAT4")
-                    return Type::MAT4;
+                if (str == "INT")
+                    return ShaderVariable::Type::INT;
+                else if (str == "FLOAT")
+                    return ShaderVariable::Type::FLOAT;
+                else if (str == "DOUBLE")
+                    return ShaderVariable::Type::DOUBLE;
+                else if (str == "FLOAT2")
+                    return ShaderVariable::Type::FLOAT2;
+                else if (str == "FLOAT3")
+                    return ShaderVariable::Type::FLOAT3;
+                else if (str == "FLOAT4")
+                    return ShaderVariable::Type::FLOAT4;
+                else if (str == "MAT4")
+                    return ShaderVariable::Type::MAT4;
                 else
                 {
                     HT_DEBUG_PRINTF("WARNING: UNKNOWN SHADER VARIABLE TYPE; RETURNING INT\n");
-                    return Type::INT;
+                    return ShaderVariable::Type::INT;
                 }
             }
 
