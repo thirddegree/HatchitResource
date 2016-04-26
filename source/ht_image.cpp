@@ -57,14 +57,15 @@ namespace Hatchit {
             return m_data;
         }
 
+        //These are int due to requirements by STB. It would be great if STB used stdint...
         static int FileEOFCallback(void* file)
         {
-            return static_cast<Core::File*>(file)->Handle()->eof();
+            return static_cast<int>(static_cast<Core::File*>(file)->Handle()->eof());
         }
 
         static int FileReadCallback(void* file, char* data, int size)
         {
-            return static_cast<Core::File*>(file)->Read(reinterpret_cast<BYTE*>(data), static_cast<size_t>(size));
+            return static_cast<int>(static_cast<Core::File*>(file)->Read(reinterpret_cast<BYTE*>(data), static_cast<size_t>(size)));
         }
 
         static void FileSkipCallback(void* file, int n)
