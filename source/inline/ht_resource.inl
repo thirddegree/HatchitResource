@@ -12,38 +12,22 @@
 **
 **/
 
+#pragma once
+
 #include <ht_resource.h>
+#include <cassert>
 
-namespace Hatchit {
+namespace Hatchit
+{
+    namespace Resource
+    {
+        template<typename ResourceType>
+        FileResource<ResourceType>::FileResource(Core::Guid ID) : Core::RefCounted<ResourceType>(std::move(ID)) {};
 
-    namespace Resource {
-
-        Resource::Resource()
+        template<typename ResourceType>
+        Core::Handle<const ResourceType> FileResource<ResourceType>::GetHandleFromFileName(const std::string& fileName)
         {
-            m_refcount = 1;
+            return GetHandle(fileName, fileName);
         }
-
-        Resource::~Resource()
-        {
-
-        }
-
-        void Resource::IncrementRef()
-        {
-            m_refcount++;
-        }
-
-        void Resource::DecrementRef()
-        {
-            if(m_refcount > 0)
-                m_refcount--;
-        }
-
-        uint32_t Resource::RefCount()
-        {
-            return m_refcount;
-        }
-
     }
-
 }

@@ -12,34 +12,49 @@
 **
 **/
 
-/**
-    Based on Simple OpenGL Image Library
-        ** Original author Jonathan Dummer
-
-    Uses Sean Barret's Tool Box image loader as a base:
-    http://www.nothings.org/
-
-  
-    Image Formats:
-    - BMP		load & save
-    - TGA		load & save
-    - DDS		load & save
-    - PNG		load & save
-    - JPG		load
-    - PSD		load
-    - HDR		load
-    - PIC		load
-
-    Thanks to:
-    * Sean Barret - for stb_image
-**/
-
 #pragma once
+
+#include <ht_platform.h>
+#include <ht_types.h>
+#include <ht_file.h>
 
 namespace Hatchit {
 
-    namespace Image {
+    namespace Resource {
+
+        class HT_API Image
+        {
+        public:
+            Image();
+
+            ~Image();
+
+            const int32_t GetWidth()   const;
+            const int32_t GetHeight()  const;
+            const int32_t GetChannels() const;
+            const int32_t GetBPP() const;
+            const BYTE*   GetData()    const;
 
 
+            enum class Channels
+            {
+                AUTO,
+                L,
+                LA,
+                RGB,
+                RGBA
+            };
+
+            static Image* Load(Core::File* file, Channels channels);
+
+
+        private:
+            int32_t m_width;
+            int32_t m_height;
+            int32_t m_channels;
+            int32_t m_bpp;
+            BYTE*   m_data;
+        };
     }
+
 }
