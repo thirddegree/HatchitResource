@@ -70,6 +70,9 @@ namespace Hatchit
                     _sampler.m_address.v = Sampler::SamplerAddressModeFromString(vMode);
                     _sampler.m_address.w = Sampler::SamplerAddressModeFromString(wMode);
 
+                    std::string mipMode;
+                    Core::JsonExtract<std::string>(sampler, "MipMode", mipMode);
+                    _sampler.m_mipMode = Sampler::SamplerMipModeFromString(mipMode);
 
                     Core::JsonExtract<float>(sampler, "MipLODBias", _sampler.m_mipLODBias);
                     Core::JsonExtract<float>(sampler, "MinLOD", _sampler.m_minLOD);
