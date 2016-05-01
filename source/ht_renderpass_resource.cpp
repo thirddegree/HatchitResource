@@ -34,6 +34,9 @@ namespace Hatchit
                 jsonStream >> json;
                 nlohmann::json json_inputTargets = json["Input"];
                 nlohmann::json json_outputPaths = json["Output"];
+
+                Core::JsonExtract<std::string>(json, "RootLayout", m_rootLayoutPath);
+
                 m_outputPaths = std::vector<std::string>(json_outputPaths.size());
 
                 for (int i = 0; i < json_inputTargets.size(); i++)
@@ -64,6 +67,7 @@ namespace Hatchit
             }
         }
 
+        std::string RenderPass::GetRootLayoutPath() const { return m_rootLayoutPath; }
         std::vector<RenderPass::InputTarget> RenderPass::GetInputTargets() const { return m_inputTargets; }
         std::vector<std::string> RenderPass::GetOutputPaths() const { return m_outputPaths; }
     }
