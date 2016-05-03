@@ -21,11 +21,11 @@
 
 namespace Hatchit
 {
-	namespace Resource
-	{
-		class HT_API RootLayout final : public FileResource<RootLayout>
-		{
-		public:
+    namespace Resource
+    {
+        class HT_API RootLayout final : public FileResource<RootLayout>
+        {
+        public:
 
             enum class ShaderVisibility
             {
