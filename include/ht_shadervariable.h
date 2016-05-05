@@ -28,8 +28,6 @@ namespace Hatchit {
 
     namespace Resource {
 
-        class IShader;
-
         class HT_API ShaderVariable 
         {
         public:
