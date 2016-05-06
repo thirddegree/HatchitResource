@@ -302,5 +302,12 @@ namespace Hatchit {
         typedef ShaderVariableTemplate<Math::Vector3>   Float3Variable;
         typedef ShaderVariableTemplate<Math::Vector4>   Float4Variable;
         typedef ShaderVariableTemplate<Math::Matrix4>   Matrix4Variable;
+
+
+
+        class HT_API ShaderVariableCollection
+        {
+
+        };
     }
 }

@@ -66,48 +66,48 @@ namespace Hatchit
                         std::string name;
                         std::string type;
 
-                        Core::JsonExtract<std::string>(shaderVariable, "Name", name);
-                        Core::JsonExtract<std::string>(shaderVariable, "Type", type);
+                        Core::JsonExtract<std::string>(var, "Name", name);
+                        Core::JsonExtract<std::string>(var, "Type", type);
 
                         if (type == "INT" || type == "Int")
                         {
                             uint32_t value;
-                            Core::JsonExtract<uint32_t>(shaderVariables[i], "Value", value);
+                            Core::JsonExtract<uint32_t>(var, "Value", value);
                             variableMap[name] = new IntVariable(value);
                         }
                         else if (type == "FLOAT" || type == "Float")
                         {
                             float value;
-                            Core::JsonExtract<float>(shaderVariables[i], "Value", value);
+                            Core::JsonExtract<float>(var, "Value", value);
                             variableMap[name] = new FloatVariable(value);
                         }
                         else if (type == "DOUBLE" || type == "Double")
                         {
                             double value;
-                            Core::JsonExtract<double>(shaderVariables[i], "Value", value);
+                            Core::JsonExtract<double>(var, "Value", value);
                             variableMap[name] = new DoubleVariable(value);
                         }
                         else if (type == "FLOAT2" || type == "Float2")
                         {
-                            nlohmann::json jsonVec = shaderVariables[i]["Value"];
+                            nlohmann::json jsonVec = var["Value"];
                             Math::Vector2 vec = Math::Vector2(jsonVec[0], jsonVec[1]);
                             variableMap[name] = new Float2Variable(vec);
                         }
                         else if (type == "FLOAT3" || type == "Float3")
                         {
-                            nlohmann::json jsonVec = shaderVariables[i]["Value"];
+                            nlohmann::json jsonVec = var["Value"];
                             Math::Vector3 vec = Math::Vector3(jsonVec[0], jsonVec[1], jsonVec[2]);
                             variableMap[name] = new Float3Variable(vec);
                         }
                         else if (type == "FLOAT4" || type == "Float4")
                         {
-                            nlohmann::json jsonVec = shaderVariables[i]["Value"];
+                            nlohmann::json jsonVec = var["Value"];
                             Math::Vector4 vec = Math::Vector4(jsonVec[0], jsonVec[1], jsonVec[2], jsonVec[3]);
                             variableMap[name] = new Float4Variable(vec);
                         }
                         else if (type == "MATRIX4" || type == "Matrix4")
                         {
-                            nlohmann::json jsonMat = shaderVariables[i]["Value"];
+                            nlohmann::json jsonMat = var["Value"];
                             Math::Matrix4 mat = Math::Matrix4(jsonMat[0], jsonMat[1], jsonMat[2], jsonMat[3],
                                 jsonMat[4], jsonMat[5], jsonMat[6], jsonMat[7],
                                 jsonMat[8], jsonMat[9], jsonMat[10], jsonMat[11],
@@ -115,6 +115,8 @@ namespace Hatchit
                             variableMap[name] = new Matrix4Variable(mat);
                         }
                     }
+                    //add the binding to the collection
+                    m_shaderVariables.push_back(shaderVariableBinding);
                 }
 
                 //Extract texture paths
