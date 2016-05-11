@@ -52,7 +52,7 @@ namespace Hatchit
                     nlohmann::json shaderVariable = shaderVariables[i];
 
                     ShaderVariableBinding shaderVariableBinding;
-                    std::map<std::string, ShaderVariable*>& variableMap = shaderVariableBinding.shaderVariables;
+                    std::vector<ShaderVariable*>& variableMap = shaderVariableBinding.shaderVariables;
 
                     nlohmann::json vars = shaderVariable["Vars"];
 
@@ -63,47 +63,47 @@ namespace Hatchit
                     //Get variable map
                     for (auto var : vars)
                     {
-                        std::string name;
+                        //std::string name;
                         std::string type;
 
-                        Core::JsonExtract<std::string>(var, "Name", name);
+                        //Core::JsonExtract<std::string>(var, "Name", name);
                         Core::JsonExtract<std::string>(var, "Type", type);
 
                         if (type == "INT" || type == "Int")
                         {
                             uint32_t value;
                             Core::JsonExtract<uint32_t>(var, "Value", value);
-                            variableMap[name] = new IntVariable(value);
+                            variableMap.push_back(new IntVariable(value));
                         }
                         else if (type == "FLOAT" || type == "Float")
                         {
                             float value;
                             Core::JsonExtract<float>(var, "Value", value);
-                            variableMap[name] = new FloatVariable(value);
+                            variableMap.push_back(new FloatVariable(value));
                         }
                         else if (type == "DOUBLE" || type == "Double")
                         {
                             double value;
                             Core::JsonExtract<double>(var, "Value", value);
-                            variableMap[name] = new DoubleVariable(value);
+                            variableMap.push_back(new DoubleVariable(value));
                         }
                         else if (type == "FLOAT2" || type == "Float2")
                         {
                             nlohmann::json jsonVec = var["Value"];
                             Math::Vector2 vec = Math::Vector2(jsonVec[0], jsonVec[1]);
-                            variableMap[name] = new Float2Variable(vec);
+                            variableMap.push_back(new Float2Variable(vec));
                         }
                         else if (type == "FLOAT3" || type == "Float3")
                         {
                             nlohmann::json jsonVec = var["Value"];
                             Math::Vector3 vec = Math::Vector3(jsonVec[0], jsonVec[1], jsonVec[2]);
-                            variableMap[name] = new Float3Variable(vec);
+                            variableMap.push_back(new Float3Variable(vec));
                         }
                         else if (type == "FLOAT4" || type == "Float4")
                         {
                             nlohmann::json jsonVec = var["Value"];
                             Math::Vector4 vec = Math::Vector4(jsonVec[0], jsonVec[1], jsonVec[2], jsonVec[3]);
-                            variableMap[name] = new Float4Variable(vec);
+                            variableMap.push_back(new Float4Variable(vec));
                         }
                         else if (type == "MATRIX4" || type == "Matrix4")
                         {
@@ -112,7 +112,7 @@ namespace Hatchit
                                 jsonMat[4], jsonMat[5], jsonMat[6], jsonMat[7],
                                 jsonMat[8], jsonMat[9], jsonMat[10], jsonMat[11],
                                 jsonMat[12], jsonMat[13], jsonMat[14], jsonMat[15]);
-                            variableMap[name] = new Matrix4Variable(mat);
+                            variableMap.push_back(new Matrix4Variable(mat));
                         }
                     }
                     //add the binding to the collection

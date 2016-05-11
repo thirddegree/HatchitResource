@@ -36,7 +36,7 @@ namespace Hatchit
 
             struct ShaderVariableBinding
             {
-                std::map<std::string, ShaderVariable*> shaderVariables;
+                std::vector<ShaderVariable*> shaderVariables;
                 uint32_t set;
                 uint32_t binding;
             };

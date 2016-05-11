@@ -20,6 +20,7 @@
 #include <ht_singleton.h>
 #include <ht_file.h>
 #include <map>
+#include <unordered_map>
 #include <type_traits>
 #include <ht_path_singleton.h>
 #include <ht_jsonhelper.h>
