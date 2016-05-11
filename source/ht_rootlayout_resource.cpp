@@ -124,7 +124,7 @@ namespace Hatchit
                         DescriptorTable table;
                         Core::JsonExtract<uint32_t>(parameter, "RangeCount", table.rangeCount);
                         nlohmann::json ranges = parameter["Ranges"];
-                        for (int j = 0; j < ranges.size(); j++)
+                        for (size_t j = 0; j < ranges.size(); j++)
                         {
                             //Load table ranges
                             std::string rangeType;

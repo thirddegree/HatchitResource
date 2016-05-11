@@ -110,7 +110,7 @@ namespace Hatchit {
 
         protected:
             Type m_type;
-            void* m_data = nullptr;
+            BYTE* m_data = nullptr;
         };
 
         template<typename T>

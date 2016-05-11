@@ -53,7 +53,7 @@ namespace Hatchit
             {
                 enum class Type
                 {
-                    UKNOWN,
+                    UNKNOWN,
                     CONSTANT_BUFFER,
                     SHADER_RESOURCE,
                     UNORDERED_ACCESS,

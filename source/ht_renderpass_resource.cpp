@@ -39,7 +39,7 @@ namespace Hatchit
 
                 m_outputPaths = std::vector<std::string>(json_outputPaths.size());
 
-                for (int i = 0; i < json_inputTargets.size(); i++)
+                for (size_t i = 0; i < json_inputTargets.size(); i++)
                 {
                     nlohmann::json json_inputTarget = json_inputTargets[i];
                     
@@ -52,7 +52,7 @@ namespace Hatchit
                     m_inputTargets.push_back(inputTarget);
                 }
 
-                for (int i = 0; i < json_outputPaths.size(); i++)
+                for (size_t i = 0; i < json_outputPaths.size(); i++)
                 {
                     m_outputPaths[i] = json_outputPaths[i].get<std::string>();
                 }

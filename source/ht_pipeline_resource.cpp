@@ -144,7 +144,7 @@ namespace Hatchit {
 
                 // Extract the vertex attributes
                 nlohmann::json vertexLayout = json["VertexLayout"];
-                for (int i = 0; i < vertexLayout.size(); i++)
+                for (size_t i = 0; i < vertexLayout.size(); i++)
                 {
                     Attribute attribute;
 
@@ -162,7 +162,7 @@ namespace Hatchit {
 
                 // Extract the instance attributes
                 nlohmann::json instanceLayout = json["InstanceLayout"];
-                for (int i = 0; i < instanceLayout.size(); i++)
+                for (size_t i = 0; i < instanceLayout.size(); i++)
                 {
                     Attribute attribute;
 
