@@ -243,49 +243,50 @@ namespace Hatchit {
 
                 // Extract ShaderVariables
                 nlohmann::json shaderVariables = json["ShaderVariables"];
-                std::string name;
+                //std::string name;
                 std::string type;
 
-                for (unsigned i = 0; i < shaderVariables.size(); i++)
+                for (size_t i = 0; i < shaderVariables.size(); i++)
                 {
-                    Core::JsonExtract<std::string>(shaderVariables[i], "Name", name);
+                    //they have names but we don't really care what they are, we just create them in the order they appear in the file
+                    //Core::JsonExtract<std::string>(shaderVariables[i], "Name", name);
                     Core::JsonExtract<std::string>(shaderVariables[i], "Type", type);
 
                     if (type == "INT" || type == "Int")
                     {
                         uint32_t value;
                         Core::JsonExtract<uint32_t>(shaderVariables[i], "Value", value);
-                        m_shaderVariables[name] = new IntVariable(value);
+                        m_shaderVariables.push_back(new IntVariable(value));
                     }
                     else if (type == "FLOAT" || type == "Float")
                     {
                         float value;
                         Core::JsonExtract<float>(shaderVariables[i], "Value", value);
-                        m_shaderVariables[name] = new FloatVariable(value);
+                        m_shaderVariables.push_back(new FloatVariable(value));
                     }
                     else if (type == "DOUBLE" || type == "Double")
                     {
                         double value;
                         Core::JsonExtract<double>(shaderVariables[i], "Value", value);
-                        m_shaderVariables[name] = new DoubleVariable(value);
+                        m_shaderVariables.push_back(new DoubleVariable(value));
                     }
                     else if (type == "FLOAT2" || type == "Float2")
                     {
                         nlohmann::json jsonVec = shaderVariables[i]["Value"];
                         Math::Vector2 vec = Math::Vector2(jsonVec[0], jsonVec[1]);
-                        m_shaderVariables[name] = new Float2Variable(vec);
+                        m_shaderVariables.push_back(new Float2Variable(vec));
                     }
                     else if (type == "FLOAT3" || type == "Float3")
                     {
                         nlohmann::json jsonVec = shaderVariables[i]["Value"];
                         Math::Vector3 vec = Math::Vector3(jsonVec[0], jsonVec[1], jsonVec[2]);
-                        m_shaderVariables[name] = new Float3Variable(vec);
+                        m_shaderVariables.push_back(new Float3Variable(vec));
                     }
                     else if (type == "FLOAT4" || type == "Float4")
                     {
                         nlohmann::json jsonVec = shaderVariables[i]["Value"];
                         Math::Vector4 vec = Math::Vector4(jsonVec[0], jsonVec[1], jsonVec[2], jsonVec[3]);
-                        m_shaderVariables[name] = new Float4Variable(vec);
+                        m_shaderVariables.push_back(new Float4Variable(vec));
                     }
                     else if (type == "MATRIX4" || type == "Matrix4")
                     {
@@ -294,7 +295,7 @@ namespace Hatchit {
                             jsonMat[4], jsonMat[5], jsonMat[6], jsonMat[7],
                             jsonMat[8], jsonMat[9], jsonMat[10], jsonMat[11],
                             jsonMat[12], jsonMat[13], jsonMat[14], jsonMat[15]);
-                        m_shaderVariables[name] = new Matrix4Variable(mat);
+                        m_shaderVariables.push_back(new Matrix4Variable(mat));
                     }
                 }
 
@@ -338,7 +339,7 @@ namespace Hatchit {
             return m_instanceLayout;
         }
 
-        const std::map<std::string, ShaderVariable*>& Pipeline::GetShaderVariables() const 
+        const std::vector<ShaderVariable*>& Pipeline::GetShaderVariables() const 
         { 
             return m_shaderVariables;
         }
