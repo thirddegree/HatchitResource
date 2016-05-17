@@ -27,9 +27,9 @@ namespace Hatchit
 
 		bool Audio::Initialize(const std::string& fileName)
 		{
-			m_fileName = fileName;
+			m_fileName = Core::Path::Value(Core::Path::Directory::Audio) + fileName;
 			int errorCode;
-			stb_vorbis* oggFile = stb_vorbis_open_filename(fileName.c_str(), &errorCode, nullptr);
+			stb_vorbis* oggFile = stb_vorbis_open_filename(m_fileName.c_str(), &errorCode, nullptr);
             if (!oggFile)
             {
                 //Do stuff with error here
@@ -38,7 +38,7 @@ namespace Hatchit
 			stb_vorbis_info info = stb_vorbis_get_info(oggFile);
 			m_numChannels = info.channels;
 			m_sampleRate = info.sample_rate;
-			m_sampleDepth = info.max_frame_size;
+            m_sampleDepth = info.max_frame_size;
 			m_soundLength = stb_vorbis_stream_length_in_seconds(oggFile);
 
             return true;
