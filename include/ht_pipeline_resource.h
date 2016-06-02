@@ -1,6 +1,6 @@
 /**
 **    Hatchit Engine
-**    Copyright(c) 2015 ThirdDegree
+**    Copyright(c) 2015-2016ThirdDegree
 **
 **    GNU Lesser General Public License
 **    This file may be used under the terms of the GNU Lesser
@@ -125,7 +125,7 @@ namespace Hatchit {
             const std::vector<Attribute>&   GetVertexLayout() const;
             const std::vector<Attribute>&   GetInstanceLayout() const;
 
-            const std::map<std::string, ShaderVariable*>& GetShaderVariables() const;
+            const std::vector<ShaderVariable*>& GetShaderVariables() const;
 
             const std::map<ShaderSlot, std::string>& GetSPVShaderPaths() const;
             const std::map<ShaderSlot, std::string>& GetCSOShaderPaths() const;
@@ -142,13 +142,13 @@ namespace Hatchit {
             std::vector<Attribute> m_vertexLayout;
             std::vector<Attribute> m_instanceLayout;
 
-            std::map<std::string, ShaderVariable*>   m_shaderVariables;
+            std::vector<ShaderVariable*>        m_shaderVariables;
 
-            std::map<ShaderSlot, std::string> m_spvShaderPaths;
-            std::map<ShaderSlot, std::string> m_csoShaderPaths;
+            std::map<ShaderSlot, std::string>   m_spvShaderPaths;
+            std::map<ShaderSlot, std::string>   m_csoShaderPaths;
 
-            std::map<ShaderSlot, ShaderHandle> m_spvShaderHandles;
-            std::map<ShaderSlot, ShaderHandle> m_csoShaderHandles;
+            std::map<ShaderSlot, ShaderHandle>  m_spvShaderHandles;
+            std::map<ShaderSlot, ShaderHandle>  m_csoShaderHandles;
         };
 
         using PipelineHandle = Core::Handle<const Pipeline>;

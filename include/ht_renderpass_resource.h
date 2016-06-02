@@ -1,6 +1,6 @@
 /**
 **    Hatchit Engine
-**    Copyright(c) 2015 Third-Degree
+**    Copyright(c) 2015-2016 Third-Degree
 **
 **    GNU Lesser General Public License
 **    This file may be used under the terms of the GNU Lesser
@@ -36,10 +36,12 @@ namespace Hatchit
             //Required function for all RefCounted classes
             bool Initialize(const std::string& fileName);
 
+            std::string GetRootLayoutPath() const;
             std::vector<InputTarget> GetInputTargets() const;
             std::vector<std::string> GetOutputPaths() const;
 
         private:
+            std::string m_rootLayoutPath;
             std::vector<InputTarget> m_inputTargets;
             std::vector<std::string> m_outputPaths;
         };

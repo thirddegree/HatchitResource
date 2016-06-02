@@ -1,10 +1,6 @@
 /**
 **    Hatchit Engine
-<<<<<<< Updated upstream
-**    Copyright(c) 2015 Third-Degree
-=======
 **    Copyright(c) 2015-2016 ThirdDegree
->>>>>>> Stashed changes
 **
 **    GNU Lesser General Public License
 **    This file may be used under the terms of the GNU Lesser
@@ -24,6 +20,7 @@
 #include <ht_singleton.h>
 #include <ht_file.h>
 #include <map>
+#include <unordered_map>
 #include <type_traits>
 #include <ht_path_singleton.h>
 #include <ht_jsonhelper.h>

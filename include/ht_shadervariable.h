@@ -1,6 +1,6 @@
 /**
 **    Hatchit Engine
-**    Copyright(c) 2015 Third-Degree
+**    Copyright(c) 2015-2016 Third-Degree
 **
 **    GNU Lesser General Public License
 **    This file may be used under the terms of the GNU Lesser
@@ -27,8 +27,6 @@
 namespace Hatchit {
 
     namespace Resource {
-
-        class IShader;
 
         class HT_API ShaderVariable 
         {
@@ -112,7 +110,7 @@ namespace Hatchit {
 
         protected:
             Type m_type;
-            void* m_data = nullptr;
+            BYTE* m_data = nullptr;
         };
 
         template<typename T>
@@ -302,5 +300,12 @@ namespace Hatchit {
         typedef ShaderVariableTemplate<Math::Vector3>   Float3Variable;
         typedef ShaderVariableTemplate<Math::Vector4>   Float4Variable;
         typedef ShaderVariableTemplate<Math::Matrix4>   Matrix4Variable;
+
+
+
+        class HT_API ShaderVariableCollection
+        {
+
+        };
     }
 }

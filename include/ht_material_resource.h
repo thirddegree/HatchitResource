@@ -27,6 +27,20 @@ namespace Hatchit
         class HT_API Material : public FileResource<Material>
         {
         public:
+            struct TexturePath
+            {
+                std::string path;
+                uint32_t set;
+                uint32_t binding;
+            };
+
+            struct ShaderVariableBinding
+            {
+                std::vector<ShaderVariable*> shaderVariables;
+                uint32_t set;
+                uint32_t binding;
+            };
+            
             Material(Core::Guid ID);
             virtual ~Material() = default;
 
@@ -35,14 +49,14 @@ namespace Hatchit
 
             const std::string& GetPipelinePath() const;
             const std::vector<std::string>& GetRenderPassPaths() const;
-            std::map<std::string, ShaderVariable*> GetShaderVariables() const;
-            std::vector<std::string> GetTexturePaths() const;
+            std::vector<ShaderVariableBinding> GetShaderVariables() const;
+            std::vector<TexturePath> GetTexturePaths() const;
 
         private:
             std::string m_pipelinePath;
             std::vector<std::string> m_renderPassPaths;
-            std::map<std::string, ShaderVariable*> m_shaderVariables;
-            std::vector<std::string> m_texturePaths;
+            std::vector<ShaderVariableBinding> m_shaderVariables;
+            std::vector<TexturePath> m_texturePaths;
         };
 
         using MaterialHandle = Core::Handle<const Material>;

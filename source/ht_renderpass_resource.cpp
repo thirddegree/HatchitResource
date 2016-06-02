@@ -1,6 +1,6 @@
 /**
 **    Hatchit Engine
-**    Copyright(c) 2015 Third-Degree
+**    Copyright(c) 2015-2016 Third-Degree
 **
 **    GNU Lesser General Public License
 **    This file may be used under the terms of the GNU Lesser
@@ -34,9 +34,12 @@ namespace Hatchit
                 jsonStream >> json;
                 nlohmann::json json_inputTargets = json["Input"];
                 nlohmann::json json_outputPaths = json["Output"];
+
+                Core::JsonExtract<std::string>(json, "RootLayout", m_rootLayoutPath);
+
                 m_outputPaths = std::vector<std::string>(json_outputPaths.size());
 
-                for (int i = 0; i < json_inputTargets.size(); i++)
+                for (size_t i = 0; i < json_inputTargets.size(); i++)
                 {
                     nlohmann::json json_inputTarget = json_inputTargets[i];
                     
@@ -49,7 +52,7 @@ namespace Hatchit
                     m_inputTargets.push_back(inputTarget);
                 }
 
-                for (int i = 0; i < json_outputPaths.size(); i++)
+                for (size_t i = 0; i < json_outputPaths.size(); i++)
                 {
                     m_outputPaths[i] = json_outputPaths[i].get<std::string>();
                 }
@@ -64,6 +67,7 @@ namespace Hatchit
             }
         }
 
+        std::string RenderPass::GetRootLayoutPath() const { return m_rootLayoutPath; }
         std::vector<RenderPass::InputTarget> RenderPass::GetInputTargets() const { return m_inputTargets; }
         std::vector<std::string> RenderPass::GetOutputPaths() const { return m_outputPaths; }
     }

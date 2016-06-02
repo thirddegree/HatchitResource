@@ -70,6 +70,9 @@ namespace Hatchit
                     _sampler.m_address.v = Sampler::SamplerAddressModeFromString(vMode);
                     _sampler.m_address.w = Sampler::SamplerAddressModeFromString(wMode);
 
+                    std::string mipMode;
+                    Core::JsonExtract<std::string>(sampler, "MipMode", mipMode);
+                    _sampler.m_mipMode = Sampler::SamplerMipModeFromString(mipMode);
 
                     Core::JsonExtract<float>(sampler, "MipLODBias", _sampler.m_mipLODBias);
                     Core::JsonExtract<float>(sampler, "MinLOD", _sampler.m_minLOD);
@@ -105,8 +108,11 @@ namespace Hatchit
                 nlohmann::json parameters = json["Parameters"];
                 for (uint32_t i = 0; i < m_parameterCount; i++)
                 {
+                    nlohmann::json parameter = parameters[i];
+
                     std::string type;
-                    Core::JsonExtract<std::string>(parameters[i], "Type", type);
+                    
+                    Core::JsonExtract<std::string>(parameter, "Type", type);
 
                     Parameter p;
                     p.type = ParameterTypeFromString(type);
@@ -116,9 +122,9 @@ namespace Hatchit
                     case RootLayout::Parameter::Type::TABLE:
                     {
                         DescriptorTable table;
-                        Core::JsonExtract<uint32_t>(parameters[i], "RangeCount", table.rangeCount);
-                        nlohmann::json ranges = parameters[i]["Ranges"];
-                        for (int j = 0; j < ranges.size(); j++)
+                        Core::JsonExtract<uint32_t>(parameter, "RangeCount", table.rangeCount);
+                        nlohmann::json ranges = parameter["Ranges"];
+                        for (size_t j = 0; j < ranges.size(); j++)
                         {
                             //Load table ranges
                             std::string rangeType;
@@ -141,15 +147,15 @@ namespace Hatchit
                     {
                         Constant constant;
                         
-                        Core::JsonExtract<uint32_t>(parameters[i], "ShaderRegister", constant.shaderRegister);
-                        Core::JsonExtract<uint32_t>(parameters[i], "RegisterSpace", constant.registerSpace);
+                        Core::JsonExtract<uint32_t>(parameter, "ShaderRegister", constant.shaderRegister);
+                        Core::JsonExtract<uint32_t>(parameter, "RegisterSpace", constant.registerSpace);
 
                         std::string typeName;
-                        Core::JsonExtract<std::string>(parameters[i], "DataType", typeName);
+                        Core::JsonExtract<std::string>(parameter, "DataType", typeName);
 
                         constant.type = ShaderVariable::TypeFromString(typeName);
                         
-                        Core::JsonExtract<uint32_t>(parameters[i], "ValueCount", constant.valueCount);
+                        Core::JsonExtract<uint32_t>(parameter, "ValueCount", constant.valueCount);
 
                         p.data.constant = constant;
                     } break;
@@ -159,7 +165,7 @@ namespace Hatchit
                     }
 
                     std::string visibility;
-                    Core::JsonExtract<std::string>(parameters[i], "Visibility", visibility);
+                    Core::JsonExtract<std::string>(parameter, "Visibility", visibility);
                     p.visibility = ParameterVisibilityFromString(visibility);
 
                     m_parameters.push_back(p);
