@@ -1,8 +1,5 @@
 # HatchitResource
 
-[![Documentation](https://codedocs.xyz/thirddegree/HatchitResource.svg)](https://codedocs.xyz/thirddegree/HatchitResource/)
-[![Join the chat at https://gitter.im/thirddegree/HatchitDiscussion](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/thirddegree/HatchitDiscussion)
-
 The resource library powering [Hatchit](https://github.com/thirddegree/Hatchit)
 
 ---
