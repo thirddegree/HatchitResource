@@ -73,10 +73,10 @@ namespace Hatchit
                 *   the creation will fail the existence test, and the previously
                 *   loaded resource with that [id] will be returned.
                 *
-                *   It is assumed that the user with create an Initialize function
+                *   It is assumed that the user will define an Initialize function
                 *   that will have variable arguments used for initialization
                 *   of the actual resource. This allows us to generically
-                *   create these resources from this one factory function.
+                *   create these resources from just this one factory function.
                 *
                 *   IMPORTANT:
                 *       There will also most likely need to be a thread-safe
