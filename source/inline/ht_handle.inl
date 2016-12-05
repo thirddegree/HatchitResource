@@ -21,42 +21,46 @@ namespace Hatchit
 {
     namespace Resource
     {
-        template <typename Type>
-        inline Handle<Type>::Handle()
-            : m_data(), m_count()
+        template <typename T>
+        inline Handle<T>::Handle()
+            : m_data(), m_count(), m_id()
         {
 
         }
 
-        template <typename Type>
-        inline Handle<Type>::Handle(const Handle<Type>& rhs)
+        template <typename T>
+        inline Handle<T>::Handle(const Handle<T>& rhs)
             : m_data(rhs.m_data),
-              m_count(rhs.m_count)
+              m_count(rhs.m_count),
+              m_id(rhs.m_id)
         {
             if (m_count)
                 ++(*m_count);
         }
 
-        template <typename Type>
-        inline Handle<Type>::Handle(const Handle<Type>&& rhs)
+        template <typename T>
+        inline Handle<T>::Handle(Handle<T>&& rhs)
             : m_data(std::move(rhs.m_data)),
-              m_count(std::move(rhs.m_count))
+              m_count(std::move(rhs.m_count)),
+              m_id(std::move(rhs.m_id))
         {
             rhs.m_data = nullptr;
             rhs.m_count = nullptr;
+            rhs.m_id = nullptr;
         }
 
-        template <typename Type>
-        inline Handle<Type>::Handle(Type* data, uint32_t* count)
+        template <typename T>
+        inline Handle<T>::Handle(T* data, uint32_t* count, const uint64_t* id)
             : m_data(std::move(data)),
-              m_count(std::move(m_count))
+              m_count(std::move(m_count)),
+              m_id(std::move(id))
         {
             if (m_count)
                 ++(*m_count);
         }
 
-        template <typename Type>
-        inline Handle<Type>::~Handle()
+        template <typename T>
+        inline Handle<T>::~Handle()
         {
             if (m_count && !--(*m_count))
             {
@@ -68,8 +72,8 @@ namespace Hatchit
             }
         }
 
-        template <typename Type>
-        inline Handle<Type>& Handle<Type>::operator=(const Handle<Type>& rhs)
+        template <typename T>
+        inline Handle<T>& Handle<T>::operator=(const Handle<T>& rhs)
         {
             if (rhs.m_count)
                 ++(*rhs.m_count);
@@ -85,12 +89,13 @@ namespace Hatchit
 
             m_data = rhs.m_data;
             m_count = rhs.m_count;
+            m_id = rhs.m_id;
 
             return *this;
         }
 
-        template <typename Type>
-        inline Handle<Type>& Handle<Type>::operator=(Handle<Type>&& rhs)
+        template <typename T>
+        inline Handle<T>& Handle<T>::operator=(Handle<T>&& rhs)
         {
             if (m_count && --(*m_count))
             {
@@ -103,51 +108,77 @@ namespace Hatchit
 
             m_data = std::move(rhs.m_data);
             m_count = std::move(rhs.m_count);
+            m_id = std::move(rhs.m_id);
 
             rhs.m_data = nullptr;
             rhs.m_count = nullptr;
+            rhs.m_id = nullptr;
 
             return *this;
         }
 
-        template <typename Type>
-        inline Type* Handle<Type>::operator->() const
+        template <typename T>
+        inline T* Handle<T>::operator->() const
         {
             return m_data;
         }
         
-        template <typename Type>
-        inline bool Handle<Type>::operator>(const Handle<Type>& rhs) const
+        template <typename T>
+        inline bool Handle<T>::operator>(const Handle<T>& rhs) const
         {
             return m_data > rhs.m_data;
         }
 
-        template <typename Type>
-        inline bool Handle<Type>::operator<(const Handle<Type>& rhs) const
+        template <typename T>
+        inline bool Handle<T>::operator<(const Handle<T>& rhs) const
         {
             return m_data < rhs.m_data;
         }
 
-        template <typename Type>
-        inline bool Handle<Type>::operator==(const Handle<Type>& rhs) const
+        template <typename T>
+        inline bool Handle<T>::operator==(const Handle<T>& rhs) const
         {
             return m_data == rhs.m_data;
         }
 
-        template <typename Type>
-        inline bool Handle<Type>::operator!=(const Handle<Type>& rhs) const
+        template <typename T>
+        inline bool Handle<T>::operator!=(const Handle<T>& rhs) const
         {
             return m_data != rhs.m_data;
         }
 
-        template <typename Type>
-        inline bool Handle<Type>::IsValid() const
+        template<typename T>
+        template <typename TNew>
+        inline Handle<TNew> Handle<T>::StaticCast() const
+        {
+            TNew* _new = static_cast<TNew*>(m_data);
+
+            return Handle<TNew>(_new, m_count, m_id);
+        }
+
+        template <typename T>
+        template <typename TNew>
+        inline Handle<TNew> Handle<T>::DynamicCast() const
+        {
+            TNew* _new = dynamic_cast<TNew*>(m_data);
+            if (_new)
+            {
+                return Handle<TNew>(_new, m_count, m_id);
+            }
+            else
+            {
+                return Handle<TNew>();
+            }
+        }
+
+        template <typename T>
+        inline bool Handle<T>::IsValid() const
         {
             return m_data != nullptr;
         }
 
-        template <typename Type>
-        inline void Handle<Type>::Release()
+        template <typename T>
+        inline void Handle<T>::Release()
         {
             /**
             * Need to release resource.
@@ -157,6 +188,7 @@ namespace Hatchit
 
             m_data = nullptr;
             m_count = nullptr;
+            m_id = nullptr;
         }
     }
 }

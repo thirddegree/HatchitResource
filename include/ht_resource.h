@@ -22,10 +22,10 @@ namespace Hatchit
 {
     namespace Resource
     {
-        template<typename Type>
+        template<typename T>
         class Resource;
 
-        template <typename Type>
+        template <typename T>
         class HT_API Handle
         {
         public:
@@ -37,28 +37,35 @@ namespace Hatchit
             Handle& operator=(const Handle& rhs);
             Handle& operator=(Handle&& rhs);
 
-            Type* operator->() const;
+            T* operator->() const;
 
-            bool operator>(const Handle<Type>& rhs) const;
-            bool operator<(const Handle<Type>& rhs) const;
-            bool operator==(const Handle<Type>& rhs) const;
-            bool operator!=(const Handle<Type>& rhs) const;
+            bool operator>(const Handle<T>& rhs) const;
+            bool operator<(const Handle<T>& rhs) const;
+            bool operator==(const Handle<T>& rhs) const;
+            bool operator!=(const Handle<T>& rhs) const;
+
+            template <typename TNew>
+            Handle<TNew> StaticCast() const;
+
+            template <typename TNew>
+            Handle<TNew> DynamicCast() const;
 
             bool IsValid() const;
 
             void Release();
 
         private:
-            Type*       m_data;
-            uint32_t*   m_count;
+            T*              m_data;
+            uint32_t*       m_count;
+            const uint64_t* m_id;
             mutable std::mutex m_mutex;
 
-            Handle(Type* data, uint32_t* count);
+            Handle(T* data, uint32_t* count, const uint64_t* id);
 
-            friend class Resource<Type>;
+            friend class Resource<T>;
         };
 
-        template <typename Type>
+        template <typename T>
         class HT_API Resource : public Core::INonCopy
         {
         public:
@@ -68,9 +75,18 @@ namespace Hatchit
 
             Resource& operator=(Resource&&) = default;
 
+            template <typename... Args>
+            static Handle<T> GetHandle(uint64_t id, Args&&... args);
+
+        protected:
+            uint32_t m_count;
+            uint64_t m_id;
+
+            Resource(uint64_t id);
         };
     }
 }
 
 #include <ht_handle.inl>
+#include <ht_resource.inl>
 
