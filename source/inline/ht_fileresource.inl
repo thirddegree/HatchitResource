@@ -30,7 +30,7 @@ namespace Hatchit
 
         template <typename T>
         template <typename... Args>
-        static Handle<const T> FileResource<T>::GetHandle(const std::string& path, Args&&... args)
+        Handle<const T> FileResource<T>::GetHandle(const std::string& path, Args&&... args)
         {
             /**
             * We need to retrieve a resource handle using

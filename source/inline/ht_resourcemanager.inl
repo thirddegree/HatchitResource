@@ -86,7 +86,7 @@ namespace Hatchit
                 *       application thread. (e.g. for streaming content)
                 */
                 T* resource = new T(id);
-                if (!resource->Initialize(std::forward<Args>(arguments)))
+                if (!resource->Initialize(std::forward<Args>(arguments)...))
                 {
                     delete resource;
                     return nullptr;
