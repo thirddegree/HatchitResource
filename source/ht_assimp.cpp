@@ -18,26 +18,29 @@ namespace Hatchit {
 
     namespace Resource {
 
-        void ASSIMP_MeshBounds(const aiVector3D* in, size_t size, aiVector3D& min, aiVector3D& max)
-        {
-            min = in[0];
-            max = in[0];
-            for(size_t i = 0; i < size; i++) {
-                min.x = std::min(in[i].x, min.x);
-                min.y = std::min(in[i].y, min.y);
-                min.z = std::min(in[i].z, min.z);
+        namespace Assimp {
 
-                max.x = std::max(in[i].x, max.x);
-                max.y = std::max(in[i].y, max.y);
-                max.z = std::max(in[i].z, max.z);
+            void MeshBounds(const aiVector3D* in, size_t size, aiVector3D& min, aiVector3D& max)
+            {
+                min = in[0];
+                max = in[0];
+                for (size_t i = 0; i < size; i++) {
+                    min.x = std::min(in[i].x, min.x);
+                    min.y = std::min(in[i].y, min.y);
+                    min.z = std::min(in[i].z, min.z);
+
+                    max.x = std::max(in[i].x, max.x);
+                    max.y = std::max(in[i].y, max.y);
+                    max.z = std::max(in[i].z, max.z);
+                }
             }
-        }
 
-        void ASSIMP_FindMeshCenter(aiMesh* mesh, aiVector3D& out, aiVector3D& min, aiVector3D& max)
-        {
-            ASSIMP_MeshBounds(mesh->mVertices, mesh->mNumVertices, min, max);
+            void FindMeshCenter(aiMesh* mesh, aiVector3D& out, aiVector3D& min, aiVector3D& max)
+            {
+                MeshBounds(mesh->mVertices, mesh->mNumVertices, min, max);
 
-            out = (min + max) * 0.5f;
+                out = (min + max) * 0.5f;
+            }
         }
 
     }

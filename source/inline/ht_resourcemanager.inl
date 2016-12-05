@@ -23,6 +23,7 @@ namespace Hatchit
     {
         inline ResourceManager::ResourceManager()
         {
+
         }
 
         inline ResourceManager::~ResourceManager()

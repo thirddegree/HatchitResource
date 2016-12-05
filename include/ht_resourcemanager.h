@@ -42,3 +42,5 @@ namespace Hatchit
         };
     }
 }
+
+#include <ht_resourcemanager.inl>

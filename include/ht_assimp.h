@@ -32,11 +32,13 @@ namespace Hatchit {
 
     namespace Resource {
 
-        HT_API void ASSIMP_MeshBounds(const aiVector3D* in, size_t size, aiVector3D& min, aiVector3D& max);
+        namespace Assimp
+        {
+            HT_API void MeshBounds(const aiVector3D* in, size_t size, aiVector3D& min, aiVector3D& max);
 
-        HT_API void ASSIMP_FindMeshCenter(aiMesh* mesh, aiVector3D& out, aiVector3D& min, aiVector3D& max);
+            HT_API void FindMeshCenter(aiMesh* mesh, aiVector3D& out, aiVector3D& min, aiVector3D& max);
 
-
+        }
     }
 
 }
