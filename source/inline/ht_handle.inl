@@ -15,6 +15,7 @@
 #pragma once
 
 #include <ht_resource.h>
+#include <ht_resourcemanager.h>
 #include <utility>
 
 namespace Hatchit
@@ -69,8 +70,12 @@ namespace Hatchit
                 * This could signal to a resource manager
                 * to remove it, but this is up for debate.
                 */
-
+                ResourceManager::ReleaseResource<T>(*m_id);
             }
+
+            m_id = nullptr;
+            m_count = nullptr;
+            m_data = nullptr;
         }
 
         template <typename T>
@@ -86,6 +91,7 @@ namespace Hatchit
                 * This could signal to a resource manager
                 * to remove it, but this is up for debate.
                 */
+                ResourceManager::ReleaseResource<T>(*m_id);
             }
 
             m_data = rhs.m_data;
@@ -98,13 +104,14 @@ namespace Hatchit
         template <typename T>
         inline Handle<T>& Handle<T>::operator=(Handle<T>&& rhs)
         {
-            if (m_count && --(*m_count))
+            if (m_count && !--(*m_count))
             {
                 /**
                 * Need to release resource.
                 * This could signal to a resource manager
                 * to remove it, but this is up for debate.
                 */
+                ResourceManager::ReleaseResource<T>(*m_id);
             }
 
             m_data = std::move(rhs.m_data);
@@ -186,6 +193,7 @@ namespace Hatchit
             * This could signal to a resource manager
             * to remove it, but this is up for debate.
             */
+            ResourceManager::ReleaseResource<T>(*m_id);
 
             m_data = nullptr;
             m_count = nullptr;

@@ -27,6 +27,11 @@ namespace Hatchit
 
         }
 
+        Texture::~Texture()
+        {
+            delete[] m_data;
+        }
+
         bool Texture::Initialize(const std::string &path)
         {
             using namespace Core;

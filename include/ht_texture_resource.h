@@ -26,7 +26,7 @@ namespace Hatchit
         public:
             Texture(uint64_t id);
 
-            virtual ~Texture() = default;
+            virtual ~Texture();
 
             bool Initialize(const std::string& path);
 
