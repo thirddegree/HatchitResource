@@ -37,7 +37,7 @@ namespace Hatchit
             uint8_t  m_bpp;
             uint8_t  m_channels;
 
-            const BYTE* m_data;
+            BYTE* m_data;
         };
 
         using TextureHandle = Handle<const Texture>;

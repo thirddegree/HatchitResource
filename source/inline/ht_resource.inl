@@ -23,6 +23,8 @@ namespace Hatchit
     {
         template <typename T>
         inline Resource<T>::Resource(uint64_t id)
+            : m_count(),
+              m_id(std::move(id))
         {
 
         }

@@ -52,7 +52,7 @@ namespace Hatchit
         template <typename T>
         inline Handle<T>::Handle(T* data, uint32_t* count, const uint64_t* id)
             : m_data(std::move(data)),
-              m_count(std::move(m_count)),
+              m_count(std::move(count)),
               m_id(std::move(id))
         {
             if (m_count)
@@ -69,6 +69,7 @@ namespace Hatchit
                 * This could signal to a resource manager
                 * to remove it, but this is up for debate.
                 */
+
             }
         }
 

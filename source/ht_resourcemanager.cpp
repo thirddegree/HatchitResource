@@ -13,6 +13,7 @@
 **/
 
 #include <ht_resourcemanager.h>
+#include <ht_types.h>
 
 namespace Hatchit
 {
@@ -39,7 +40,7 @@ namespace Hatchit
                 */
                 for (auto& resource : m_resources)
                 {
-                    HT_ERROR_PRINTF("Resource Alive: %d\n", resource.first);
+                    HT_ERROR_PRINTF("Resource Alive: %" PRIu64 "\n", resource.first);
                 }
             }
         }

@@ -15,6 +15,7 @@
 #include <ht_texture_resource.h>
 #include <ht_file.h>
 #include <ht_file_exception.h>
+#include <ht_image.h>
 
 namespace Hatchit
 {
@@ -34,6 +35,17 @@ namespace Hatchit
             try {
 
                 f.Open(path, File::FileMode::ReadBinary);
+
+                auto image = Image::Load(f, Image::Channels::AUTO);
+
+                m_width = image->GetWidth();
+                m_height = image->GetHeight();
+                m_mips = 1;
+                m_bpp = static_cast<uint8_t>(image->GetBPP());
+                m_channels = static_cast<uint32_t>(image->GetChannels());
+
+                m_data = new BYTE[m_width * m_height];
+                std::memcpy(reinterpret_cast<void*>(m_data), image->GetData(), m_width*m_height);
             }
             catch(const FileException& e)
             {
