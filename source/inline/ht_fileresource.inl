@@ -16,6 +16,7 @@
 
 #include <ht_fileresource.h>
 #include <ht_hash.h>
+#include <tuple>
 
 namespace Hatchit
 {
@@ -30,16 +31,36 @@ namespace Hatchit
 
         template <typename T>
         template <typename... Args>
-        Handle<const T> FileResource<T>::GetHandle(const std::string& path, Args&&... args)
+        Handle<const T> FileResource<T>::GetHandle(Args&&... args)
         {
+            using namespace Core;
+
             /**
-            * We need to retrieve a resource handle using
-            * the file path. This means we must convert this path value,
-            * to a unique identifier. (or in future we change this signature to take both
-            * the identifier and path)
+             * We need to retrieve a resource handle using
+             * the file path. This means we must convert this path value,
+             * to a unique identifier. (or in future we change this signature to take both
+             * the identifier and path)
+             *
+             * First, we must access the path from the variable arguments. Since, the resource classes
+             * can generally take any number of arguments. It is dependent on the programmer
+             * to know that for FileResource types the PATH of the file MUST be the first argument.
+             *
+             * NOTE:
+             *      This requirement should be explained thoroughly and we should
+             *      look to find a way to enforce this requirement as more resource classes
+             *      are created.
             */
-            uint64_t id = Core::Hash::FNV1A(path);
-            Handle<T> handle = Resource<T>::GetHandle(id, std::forward<Args>(args)...);
+
+            /**
+             * Accessing Path:
+             *      Convert arguments to tuple and use get<T> accessor to
+             *      retrieve the first element in tuple -> path
+             */
+            auto tuple = std::make_tuple(args...);
+            auto path =  std::get<0>(tuple);
+
+            uint64_t id = Hash::FNV1A(path);
+            Handle<T> handle = Resource<T>::GetHandle(id, std::forward<Args>(args...)...);
             if (handle.IsValid())
             {
                 //If the returned handle is valid.

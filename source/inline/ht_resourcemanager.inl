@@ -12,8 +12,6 @@
 **
 **/
 
-#pragma once
-
 #include <ht_resourcemanager.h>
 #include <ht_debug.h>
 
@@ -21,31 +19,6 @@ namespace Hatchit
 {
     namespace Resource
     {
-        inline ResourceManager::ResourceManager()
-        {
-
-        }
-
-        inline ResourceManager::~ResourceManager()
-        {
-            /**
-            * Check the resources map to
-            * see if there are still any resources
-            * that are alive.
-            */
-            if (m_resources.size() > 0)
-            {
-                /**
-                * Output Error for each
-                * resource, as we should not have resources
-                * still alive at this point.
-                */
-                for (auto resource : m_resources)
-                {
-                    HT_ERROR_PRINTF("Resource Alive: %d\n", resource.first);
-                }
-            }
-        }
 
         template <typename T, typename... Args>
         inline T* ResourceManager::GetResource(uint64_t id, Args&&... arguments)
@@ -98,7 +71,7 @@ namespace Hatchit
         }
 
         template <typename T>
-        void ResourceManager::ReleaseResource(uint64_t id)
+        inline void ResourceManager::ReleaseResource(uint64_t id)
         {
             ResourceManager& _instance = ResourceManager::instance();
 

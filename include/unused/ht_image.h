@@ -45,7 +45,7 @@ namespace Hatchit {
                 RGBA
             };
 
-            static Image* Load(Core::File* file, Channels channels);
+            static Image* Load(Core::File& file, Channels channels);
 
 
         private:

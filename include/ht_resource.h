@@ -55,6 +55,10 @@ namespace Hatchit
             void Release();
 
         private:
+            friend class Resource<T>;
+            template <typename TNew>
+            friend class Handle;
+
             T*              m_data;
             uint32_t*       m_count;
             const uint64_t* m_id;
@@ -62,7 +66,7 @@ namespace Hatchit
 
             Handle(T* data, uint32_t* count, const uint64_t* id);
 
-            friend class Resource<T>;
+
         };
 
         template <typename T>

@@ -18,6 +18,32 @@ namespace Hatchit
 {
     namespace Resource
     {
+        ResourceManager::ResourceManager()
+        {
+
+        }
+
+        ResourceManager::~ResourceManager()
+        {
+            /**
+            * Check the resources map to
+            * see if there are still any resources
+            * that are alive.
+            */
+            if (m_resources.size() > 0)
+            {
+                /**
+                * Output Error for each
+                * resource, as we should not have resources
+                * still alive at this point.
+                */
+                for (auto& resource : m_resources)
+                {
+                    HT_ERROR_PRINTF("Resource Alive: %d\n", resource.first);
+                }
+            }
+        }
+
         ResourceManager& ResourceManager::GetInstance()
         {
             return ResourceManager::instance();

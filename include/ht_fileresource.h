@@ -28,7 +28,7 @@ namespace Hatchit
             virtual ~FileResource() {};
 
             template <typename... Args>
-            static Handle<const T> GetHandle(const std::string& path, Args&&... args);
+            static Handle<const T> GetHandle(Args&&... args);
 
         protected:
             FileResource(uint64_t id);

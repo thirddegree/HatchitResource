@@ -15,33 +15,31 @@
 #pragma once
 
 #include <ht_platform.h>
-#include <ht_singleton.h>
-#include <map>
+#include <ht_fileresource.h>
 
 namespace Hatchit
 {
     namespace Resource
     {
-        class HT_API ResourceManager : public Core::Singleton<ResourceManager>
+        class HT_API Texture : public FileResource<Texture>
         {
         public:
-            ResourceManager();
+            Texture(uint64_t id);
 
-            ~ResourceManager();
+            virtual ~Texture() = default;
 
-            template <typename T, typename... Args>
-            static T* GetResource(uint64_t id, Args&&... arguments);
-
-            template <typename T>
-            static void ReleaseResource(uint64_t id);
+            bool Initialize(const std::string& path);
 
         private:
-            std::map<uint64_t, void*> m_resources;
+            uint32_t m_width;
+            uint32_t m_height;
+            uint32_t m_mips;
+            uint8_t  m_bpp;
+            uint8_t  m_channels;
 
-            static ResourceManager& GetInstance();
+            const BYTE* m_data;
         };
 
+        using TextureHandle = Handle<const Texture>;
     }
 }
-
-#include <ht_resourcemanager.inl>
