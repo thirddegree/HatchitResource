@@ -73,7 +73,7 @@ namespace Hatchit
         template <typename T>
         inline void ResourceManager::ReleaseResource(uint64_t id)
         {
-            ResourceManager& _instance = ResourceManager::instance();
+            ResourceManager& _instance = ResourceManager::GetInstance();
 
             auto it = _instance.m_resources.find(id);
             if (it != _instance.m_resources.end())
