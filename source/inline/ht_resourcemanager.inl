@@ -83,6 +83,5 @@ namespace Hatchit
                 _instance.m_resources.erase(it);
             }
         }
-
     }
 }
