@@ -59,6 +59,8 @@ namespace Hatchit
             auto tuple = std::make_tuple(args...);
             auto path =  std::get<0>(tuple);
 
+
+
             uint64_t id = Hash::FNV1A(path);
             Handle<T> handle = Resource<T>::GetHandle(id, std::forward<Args>(args...)...);
             if (handle.IsValid())
